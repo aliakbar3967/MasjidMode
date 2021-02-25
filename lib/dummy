@@ -1,0 +1,62 @@
+import 'dart:convert';
+
+void main() {
+  final String encodedData = Music.encode([
+    Music(id: 1, name:'sabuj',size:'18',rating:'3.5',duration:'1.2',img:'aaa',favorite:false),
+    Music(id: 1, name:'sabuj',size:'18',rating:'3.5',duration:'1.2',img:'aaa',favorite:false),
+    Music(id: 1, name:'sabuj',size:'18',rating:'3.5',duration:'1.2',img:'aaa',favorite:false),
+  ]);
+
+  final List<Music> decodedData = Music.decode(encodedData);
+
+  print(decodedData[0].name);
+}
+
+class Music {
+  final int id;
+  final String name, size, rating, duration, img;
+  bool favorite;
+
+  Music({
+    this.id,
+    this.rating,
+    this.size,
+    this.duration,
+    this.name,
+    this.img,
+    this.favorite,
+  });
+
+  factory Music.fromJson(Map<String, dynamic> jsonData) {
+    return Music(
+      id: jsonData['id'],
+      rating: jsonData['rating'],
+      size: jsonData['size'],
+      duration: jsonData['duration'],
+      name: jsonData['name'],
+      img: jsonData['img'],
+      favorite: false,
+    );
+  }
+
+  static Map<String, dynamic> toMap(Music music) => {
+        'id': music.id,
+        'rating': music.rating,
+        'size': music.size,
+        'duration': music.duration,
+        'name': music.name,
+        'img': music.img,
+        'favorite': music.favorite,
+      };
+
+  static String encode(List<Music> musics) => json.encode(
+        musics
+            .map<Map<String, dynamic>>((music) => Music.toMap(music))
+            .toList(),
+      );
+
+  static List<Music> decode(String musics) =>
+      (json.decode(musics) as List<dynamic>)
+          .map<Music>((item) => Music.fromJson(item))
+          .toList();
+}
