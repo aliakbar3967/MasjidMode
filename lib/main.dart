@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  List<Schedule> __schedules__;
+  List<Schedule> __schedules;
 
   void _getDataL() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       // List<Schedule> decodedData;
       setState(() {
         print('if==');
-        __schedules__ = Schedule.decode(_getSchedule);
+        __schedules = Schedule.decode(_getSchedule);
       });
       // print(decodedData[0].name);
       // return _getSchedule;
@@ -64,11 +64,11 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Peace Time'),
         ),
-        body: __schedules__ != null ? ListView.builder(
-          itemCount: __schedules__.length,
+        body: __schedules != null ? ListView.builder(
+          itemCount: __schedules.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text('${__schedules__[index].name}'),
+              title: Text('${__schedules[index].name}'),
             );
           },
         ) : Builder(
@@ -151,9 +151,9 @@ class _MyAppState extends State<MyApp> {
 
 _setData() async {
   final String encodedData = Schedule.encode([
-    Schedule(id: 1, name:'sabuj',favorite:false),
-    Schedule(id: 1, name:'sabuj',favorite:false),
-    Schedule(id: 1, name:'sabuj',favorite:false),
+    Schedule(id: 1, name:'sabuj',status:false),
+    Schedule(id: 1, name:'sabuj',status:false),
+    Schedule(id: 1, name:'sabuj',status:false),
   ]);
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
