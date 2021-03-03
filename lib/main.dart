@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service_plugin/flutter_foreground_service_plugin.dart';
 import 'package:peace_time/model/schedule.dart';
+import 'package:peace_time/widgets/checkbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -19,6 +20,37 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   List<Schedule> __schedules;
+
+  TimeOfDay time;
+  TimeOfDay picked;
+
+  TimeOfDay start;
+  TimeOfDay end;
+  bool status = true;
+  final Map<String, String> daysName = {
+    'sat':'satarday',
+    'sun':'sunday',
+    'mon':'monday',
+    'thu':'thusday',
+    'wed':'wednesday',
+    'tue':'tuesday',
+    'fri':'friday'
+  };
+  Map<String, bool> days = {
+    'sat': true,
+    'sun': false,
+    'mon': false,
+    'tue': false,
+    'wed': false,
+    'thu': false,
+    'fri': false,
+  };
+  Map<String, bool> options = {
+    'silent': true,
+    'airplane': false,
+    'vibrate': false,
+    'notifyme':false
+  };
 
   void _getDataL() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,13 +81,39 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // _setData();
-    _getDataL();
+    // _getDataL();
+    time = TimeOfDay.now();
+    print(time);
   }
+
+  
+  Future<Null> selectTime(BuildContext context) async {
+    picked = await showTimePicker(context: context, initialTime: time);
+
+    if(picked != null)
+    {
+      setState(() {
+        time = picked;
+      });
+    }
+  }
+
+  TimeOfDay fromString(String time) {
+    int hh = 0;
+    if (time.endsWith('PM')) hh = 12;
+    time = time.split(' ')[0];
+    return TimeOfDay(
+      hour: hh + int.parse(time.split(":")[0]) % 24, // in case of a bad time format entered manually by the user
+      minute: int.parse(time.split(":")[1]) % 60,
+    );
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +122,36 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Peace Time'),
         ),
-        body: __schedules != null ? ListView.builder(
-          itemCount: __schedules.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text('${__schedules[index].name}'),
+        body: true ? 
+        ListView(
+          children: options.keys.map((String key) {
+            return CheckboxListTile(
+              title: Text(key),
+              value: options[key],
+              onChanged: (bool value) {
+                setState(() {
+                  print(key);
+                  options[key] = value;
+                });
+              }
             );
-          },
-        ) : Builder(
+          }).toList(),
+        )
+        // ListView(
+        //   children: days.keys.map((String key) {
+        //     return CheckboxListTile(
+        //       title: Text(daysName[key].toString().toUpperCase()),
+        //       value: days[key],
+        //       onChanged: (bool value) {
+        //         setState(() {
+        //           print(key);
+        //           days[key] = value;
+        //         });
+        //       }
+        //     );
+        //   }).toList(),
+        // )
+        : Builder(
           builder: (context) {
             return Center(
               child: Column(
@@ -139,6 +219,18 @@ class _MyAppState extends State<MyApp> {
                     child: Text('Set'),
                     onPressed: _setData,
                   ),
+                  TextButton(
+                    child: Text('Select Time'),
+                    onPressed: () {
+                      selectTime(context);
+                      print("Selected time = ${time.format(context)}");
+
+                      TimeOfDay _formated = fromString(time.format(context));
+
+                      print("Selected time = $_formated");
+                    },
+                  ),
+                  Text("Selected time = ${time.format(context)}"),
                 ],
               ),
             );

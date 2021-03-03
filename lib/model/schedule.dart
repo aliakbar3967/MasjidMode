@@ -5,9 +5,10 @@ import 'package:peace_time/model/day.dart';
 class Schedule {
     final int id;
     final String name;
-    final TimeOfDay start;
-    final TimeOfDay end;
-    final Day days;
+    final String start;
+    final String end;
+    final String days;
+    final String options;
     // Map days = {'sat':false, 'sun':false,'mon':false,'tue':false,'wed':false,'thu':false,'fri':false};
     bool status;
 
@@ -17,6 +18,7 @@ class Schedule {
         this.start,
         this.end,
         this.days,
+        this.options,
         this.status,
     });
 
@@ -24,6 +26,10 @@ class Schedule {
         return Schedule(
           id: jsonData['id'],
           name: jsonData['name'],
+          start: jsonData['start'],
+          end: jsonData['end'],
+          days: jsonData['days'],
+          options: jsonData['options'],
           status: false,
         );
     }
@@ -31,6 +37,10 @@ class Schedule {
     static Map<String, dynamic> toMap(Schedule schedule) => {
         'id': schedule.id,
         'name': schedule.name,
+        'start': schedule.start,
+        'end': schedule.end,
+        'days': schedule.days,
+        'options': schedule.options,
         'status': schedule.status,
     };
 

@@ -60,3 +60,13 @@ class Music {
           .map<Music>((item) => Music.fromJson(item))
           .toList();
 }
+
+{
+    id: 1,
+    name: "prayer time",
+    start: "1:20am",
+    end: "1:40am",
+    days: "{"sat","sun","mon"}",
+    options: "{silent:true,airplane:false,vibrate:false,notifyme:false}",
+    status:true
+}
