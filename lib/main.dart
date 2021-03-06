@@ -46,16 +46,28 @@ class _CreateSchduleState extends State<CreateSchdule> {
 
   TimeOfDay time;
   TimeOfDay picked;
-  TimeOfDay start;
-  TimeOfDay end;
+  String start = "5:30 am";
+  String end = "5:30 am";
+  String name;
 
   Future<Null> selectStartTime(BuildContext context) async {
-    picked = await showTimePicker(context: context, initialTime: time);
+    picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
 
     if(picked != null)
     {
       setState(() {
-        time = picked;
+        start = picked.format(context);
+      });
+    }
+  }
+
+  Future<Null> selectEndTime(BuildContext context) async {
+    picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+    if(picked != null)
+    {
+      setState(() {
+        end = picked.format(context);
       });
     }
   }
@@ -70,14 +82,34 @@ class _CreateSchduleState extends State<CreateSchdule> {
     );
   }
 
+  void saveData() {
+    // TimeOfDay test = TimeOfDay.now();
+    // String dd = test.toString();
+    // print(dd);
+
+    Schedule hold = Schedule(
+      name: name,
+      start: start,
+      end: end,
+      days: jsonEncode(days),
+      options: jsonEncode(options),
+      status: true
+    );
+
+    print(Schedule.encode([hold]));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // _setData();
     // _getDataL();
-    time = TimeOfDay.now();
+    // start = TimeOfDay.now();
+    // end = TimeOfDay.now();
     // print(time);
+    // selectEndTime(context);
+    // selectStartTime(context);
   }
 
   @override
@@ -89,17 +121,6 @@ class _CreateSchduleState extends State<CreateSchdule> {
             builder: (context) {
             return Column(
               children: [
-                TextButton(
-                  child: Text('Select Time'),
-                  onPressed: () {
-                    selectStartTime(context);
-                    print("Selected time = ${time.format(context)}");
-
-                    TimeOfDay _formated = fromString(time.format(context));
-
-                    print("Selected time = $_formated");
-                  },
-                ),
                 Row(
                   children: [
                     Text(
@@ -113,26 +134,121 @@ class _CreateSchduleState extends State<CreateSchdule> {
                   // child: Text('Schedule name'),
                 ),
                 SizedBox(height: 8,),
-                TextField(
-                  decoration: InputDecoration(
-                    // icon: Icon(Icons.favorite),
-                    labelText: 'Name',
-                    // labelStyle: TextStyle(
-                    //   color: Color(0xFF6200EE),
-                    // ),
-                    // helperText: 'Helper text',
-                    // suffixIcon: Icon(
-                    //   Icons.check_circle,
-                    // ),
-                    // enabledBorder: UnderlineInputBorder(
-                    //   borderSide: BorderSide(color: Color(0xFF6200EE)),
-                    // ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.red,//this has no effect
+                Container(
+                  padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8,
+                          spreadRadius: 2,
+                          offset: Offset(4, 4),
+                        ),
+                      ], 
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: TextField(
+                    onChanged: (String value) {
+                      name = value;
+                      print(name);
+                    },
+                    decoration: InputDecoration(
+                      // icon: Icon(Icons.favorite),
+                      labelText: 'Name',
+                      // labelStyle: TextStyle(
+                      //   color: Color(0xFF6200EE),
+                      // ),
+                      // helperText: 'Helper text',
+                      // suffixIcon: Icon(
+                      //   Icons.check_circle,
+                      // ),
+                      // enabledBorder: UnderlineInputBorder(
+                      //   borderSide: BorderSide(color: Color(0xFF6200EE)),
+                      // ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,//this has no effect
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                      borderRadius: BorderRadius.circular(10.0),
                     ),
+                  ),
+                ),
+                Container(
+                  padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                  // decoration: BoxDecoration(
+                  //   color: Colors.white,
+                  //   boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black12,
+                  //         blurRadius: 8,
+                  //         spreadRadius: 2,
+                  //         offset: Offset(4, 4),
+                  //       ),
+                  //     ], 
+                  //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                  // ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Start:",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        "$start",
+                        style: TextStyle(
+                          fontSize: 32,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.alarm_add),
+                        onPressed: () {
+                          selectStartTime(context);
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                  // decoration: BoxDecoration(
+                  //   color: Colors.white,
+                  //   boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black12,
+                  //         blurRadius: 8,
+                  //         spreadRadius: 2,
+                  //         offset: Offset(4, 4),
+                  //       ),
+                  //     ], 
+                  //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                  // ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "End:",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        "$end",
+                        style: TextStyle(
+                          fontSize: 32,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.alarm_add),
+                        onPressed: () {
+                          selectEndTime(context);
+                        },
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(height: 8,),
@@ -249,7 +365,9 @@ class _CreateSchduleState extends State<CreateSchdule> {
                       ),
                     ),
                     OutlinedButton (
-                      onPressed: () {},
+                      onPressed: () async {
+                        await saveData();
+                      },
                       child: Text('Save'),
                       style: OutlinedButton.styleFrom(
                         shape: StadiumBorder(),
