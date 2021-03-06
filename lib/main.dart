@@ -18,39 +18,252 @@ class CreateSchdule extends StatefulWidget {
 }
 
 class _CreateSchduleState extends State<CreateSchdule> {
+
+  final Map<String, String> daysName = {
+    'sat':'satarday',
+    'sun':'sunday',
+    'mon':'monday',
+    'thu':'thusday',
+    'wed':'wednesday',
+    'tue':'tuesday',
+    'fri':'friday'
+  };
+  Map<String, bool> days = {
+    'sat': true,
+    'sun': false,
+    'mon': false,
+    'tue': false,
+    'wed': false,
+    'thu': false,
+    'fri': false,
+  };
+  Map<String, bool> options = {
+    'silent': true,
+    'airplane': false,
+    'vibrate': false,
+    'notifyme':false
+  };
+
+  TimeOfDay time;
+  TimeOfDay picked;
+  TimeOfDay start;
+  TimeOfDay end;
+
+  Future<Null> selectStartTime(BuildContext context) async {
+    picked = await showTimePicker(context: context, initialTime: time);
+
+    if(picked != null)
+    {
+      setState(() {
+        time = picked;
+      });
+    }
+  }
+
+  TimeOfDay fromString(String time) {
+    int hh = 0;
+    if (time.endsWith('PM')) hh = 12;
+    time = time.split(' ')[0];
+    return TimeOfDay(
+      hour: hh + int.parse(time.split(":")[0]) % 24, // in case of a bad time format entered manually by the user
+      minute: int.parse(time.split(":")[1]) % 60,
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // _setData();
+    // _getDataL();
+    time = TimeOfDay.now();
+    // print(time);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: Column(
+          child: Builder(
+            builder: (context) {
+            return Column(
               children: [
-                Text('Schedule name'),
+                TextButton(
+                  child: Text('Select Time'),
+                  onPressed: () {
+                    selectStartTime(context);
+                    print("Selected time = ${time.format(context)}");
+
+                    TimeOfDay _formated = fromString(time.format(context));
+
+                    print("Selected time = $_formated");
+                  },
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Schedule name',
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                  ],
+                  // alignment: Alignment.center,
+                  // child: Text('Schedule name'),
+                ),
+                SizedBox(height: 8,),
                 TextField(
                   decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Name'
+                    // icon: Icon(Icons.favorite),
+                    labelText: 'Name',
+                    // labelStyle: TextStyle(
+                    //   color: Color(0xFF6200EE),
+                    // ),
+                    // helperText: 'Helper text',
+                    // suffixIcon: Icon(
+                    //   Icons.check_circle,
+                    // ),
+                    // enabledBorder: UnderlineInputBorder(
+                    //   borderSide: BorderSide(color: Color(0xFF6200EE)),
+                    // ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.red,//this has no effect
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
+                SizedBox(height: 8,),
+                // Expanded(
+                //   child: TextButton(
+                //     child: Text('Select Time'),
+                //     onPressed: () {
+                //       selectStartTime(context);
+                //       print("Selected time = ${time.format(context)}");
+
+                //       TimeOfDay _formated = fromString(time.format(context));
+
+                //       print("Selected time = $_formated");
+                //     },
+                //   ),
+                // ),
+                // Text("Selected time = ${time.format(context)}"),
+                SizedBox(height: 8,),
+                Text(
+                  'Select Days',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                Flexible(
+                  child: ListView(
+                    children: days.keys.map((String key) {
+                      return CheckboxListTile(
+                        title: Text(key),
+                        value: days[key],
+                        onChanged: (bool value) {
+                          setState(() {
+                            print(key);
+                            days[key] = value;
+                          });
+                        }
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(height: 8,),
+                Text(
+                  'Select Options',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                Flexible(
+                  child: ListView(
+                    children: options.keys.map((String key) {
+                      return CheckboxListTile(
+                        title: Text(key),
+                        value: options[key],
+                        onChanged: (bool value) {
+                          setState(() {
+                            print(key);
+                            options[key] = value;
+                          });
+                        }
+                      );
+                    }).toList(),
+                  ),
+                ),
+                // Flexible(
+                //   child: ListView.builder(
+                //     itemCount: options.length,
+                //     itemBuilder: (BuildContext context, int index) {
+                //       return Container (
+                //         child: Text('item'),
+                //       );
+                //     },
+                //   ),
+                // ),
+                SizedBox(height: 8,),
+                Wrap(
+                  spacing: 6.0,
+                  runSpacing: 6.0,
+                  children: [
+                    Chip(
+                      label: Text('Sat'),
+                    ),
+                    Chip(
+                      label: Text('Sun'),
+                    ),
+                    Chip(
+                      label: Text('Mon'),
+                    ),
+                    Chip(
+                      label: Text('Thu'),
+                    ),
+                    Chip(
+                      label: Text('Wed'),
+                    ),
+                    Chip(
+                      label: Text('Tue'),
+                    ),
+                    Chip(
+                      label: Text('Fri'),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8,),
                 ButtonBar(
                   alignment: MainAxisAlignment.end,
                   children: [
                     OutlinedButton (
                       onPressed: () {},
                       child: Text('Cancel'),
+                      style: OutlinedButton.styleFrom(
+                        primary: Colors.redAccent,
+                        shape: StadiumBorder(),
+                        side: BorderSide(width: 2, color: Colors.redAccent),
+                        padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                      ),
                     ),
                     OutlinedButton (
                       onPressed: () {},
                       child: Text('Save'),
+                      style: OutlinedButton.styleFrom(
+                        shape: StadiumBorder(),
+                        side: BorderSide(width: 2, color: Colors.blue),
+                        padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                      ),
                     ),
                   ]
                 )
               ],
-            ),
-          ),
+            );
+          },
         ),
+      )
       )
     );
   }
