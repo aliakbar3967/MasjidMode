@@ -106,8 +106,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: SafeArea(
           child: Builder(
             builder: (context) {
@@ -374,7 +373,6 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
           },
         ),
       )
-      )
-    );
+      );
   }
 }

@@ -16,15 +16,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         floatingActionButton: FloatingActionButton(
           // elevation: 0.0,
           child: new Icon(Icons.add, size: 48.0,),
           backgroundColor: Colors.blue,
-          onPressed: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context) => CreateSchduleScreen()),);
-          }
+          onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => CreateSchduleScreen()),)
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: SafeArea(
@@ -149,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
+
