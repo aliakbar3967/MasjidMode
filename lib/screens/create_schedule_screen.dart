@@ -111,265 +111,272 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
         body: SafeArea(
           child: Builder(
             builder: (context) {
-            return Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Schedule name',
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ],
-                  // alignment: Alignment.center,
-                  // child: Text('Schedule name'),
-                ),
-                SizedBox(height: 8,),
-                Container(
-                  padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          spreadRadius: 2,
-                          offset: Offset(4, 4),
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical:8),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Name',
+                          style: TextStyle(
+                            fontSize: 24,
+                          ),
                         ),
-                      ], 
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: TextField(
-                    onChanged: (String value) {
-                      name = value;
-                      print(name);
-                    },
-                    decoration: InputDecoration(
-                      // icon: Icon(Icons.favorite),
-                      labelText: 'Name',
-                      // labelStyle: TextStyle(
-                      //   color: Color(0xFF6200EE),
-                      // ),
-                      // helperText: 'Helper text',
-                      // suffixIcon: Icon(
-                      //   Icons.check_circle,
-                      // ),
-                      // enabledBorder: UnderlineInputBorder(
-                      //   borderSide: BorderSide(color: Color(0xFF6200EE)),
-                      // ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.red,//this has no effect
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                      ],
+                      // alignment: Alignment.center,
+                      // child: Text('Schedule name'),
                     ),
                   ),
-                ),
-                Container(
-                  padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  // decoration: BoxDecoration(
-                  //   color: Colors.white,
-                  //   boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.black12,
-                  //         blurRadius: 8,
-                  //         spreadRadius: 2,
-                  //         offset: Offset(4, 4),
-                  //       ),
-                  //     ], 
-                  //     borderRadius: BorderRadius.all(Radius.circular(10)),
-                  // ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Start:",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "$start",
-                        style: TextStyle(
-                          fontSize: 32,
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.alarm_add),
-                        onPressed: () {
-                          selectStartTime(context);
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  // decoration: BoxDecoration(
-                  //   color: Colors.white,
-                  //   boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.black12,
-                  //         blurRadius: 8,
-                  //         spreadRadius: 2,
-                  //         offset: Offset(4, 4),
-                  //       ),
-                  //     ], 
-                  //     borderRadius: BorderRadius.all(Radius.circular(10)),
-                  // ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "End:",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "$end",
-                        style: TextStyle(
-                          fontSize: 32,
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.alarm_add),
-                        onPressed: () {
-                          selectEndTime(context);
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: 8,),
-                // Expanded(
-                //   child: TextButton(
-                //     child: Text('Select Time'),
-                //     onPressed: () {
-                //       selectStartTime(context);
-                //       print("Selected time = ${time.format(context)}");
-
-                //       TimeOfDay _formated = fromString(time.format(context));
-
-                //       print("Selected time = $_formated");
-                //     },
-                //   ),
-                // ),
-                // Text("Selected time = ${time.format(context)}"),
-                SizedBox(height: 8,),
-                Text(
-                  'Select Days',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                Flexible(
-                  child: ListView(
-                    children: days.keys.map((String key) {
-                      return CheckboxListTile(
-                        title: Text(key),
-                        value: days[key],
-                        onChanged: (bool value) {
-                          setState(() {
-                            print(key);
-                            days[key] = value;
-                          });
-                        }
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(height: 8,),
-                Text(
-                  'Select Options',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                Flexible(
-                  child: ListView(
-                    children: options.keys.map((String key) {
-                      return CheckboxListTile(
-                        title: Text(key),
-                        value: options[key],
-                        onChanged: (bool value) {
-                          setState(() {
-                            print(key);
-                            options[key] = value;
-                          });
-                        }
-                      );
-                    }).toList(),
-                  ),
-                ),
-                // Flexible(
-                //   child: ListView.builder(
-                //     itemCount: options.length,
-                //     itemBuilder: (BuildContext context, int index) {
-                //       return Container (
-                //         child: Text('item'),
-                //       );
-                //     },
-                //   ),
-                // ),
-                SizedBox(height: 8,),
-                Wrap(
-                  spacing: 6.0,
-                  runSpacing: 6.0,
-                  children: [
-                    Chip(
-                      label: Text('Sat'),
+                  SizedBox(height: 8,),
+                  Container(
+                    padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                          ),
+                        ], 
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
-                    Chip(
-                      label: Text('Sun'),
-                    ),
-                    Chip(
-                      label: Text('Mon'),
-                    ),
-                    Chip(
-                      label: Text('Thu'),
-                    ),
-                    Chip(
-                      label: Text('Wed'),
-                    ),
-                    Chip(
-                      label: Text('Tue'),
-                    ),
-                    Chip(
-                      label: Text('Fri'),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8,),
-                ButtonBar(
-                  alignment: MainAxisAlignment.end,
-                  children: [
-                    OutlinedButton (
-                      onPressed: () {},
-                      child: Text('Cancel'),
-                      style: OutlinedButton.styleFrom(
-                        primary: Colors.redAccent,
-                        shape: StadiumBorder(),
-                        side: BorderSide(width: 2, color: Colors.redAccent),
-                        padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
-                      ),
-                    ),
-                    OutlinedButton (
-                      onPressed: () async {
-                        await saveData();
+                    child: TextField(
+                      onChanged: (String value) {
+                        name = value;
+                        print(name);
                       },
-                      child: Text('Save'),
-                      style: OutlinedButton.styleFrom(
-                        shape: StadiumBorder(),
-                        side: BorderSide(width: 2, color: Colors.blue),
-                        padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                      decoration: InputDecoration(
+                        // icon: Icon(Icons.favorite),
+                        // labelText: 'Name',
+                        // labelStyle: TextStyle(
+                        //   color: Color(0xFF6200EE),
+                        // ),
+                        // helperText: 'Helper text',
+                        // suffixIcon: Icon(
+                        //   Icons.check_circle,
+                        // ),
+                        // enabledBorder: UnderlineInputBorder(
+                        //   borderSide: BorderSide(color: Color(0xFF6200EE)),
+                        // ),
+                        hintText: 'Name',
+                        // border: OutlineInputBorder(
+                        //   borderSide: BorderSide(
+                        //     color: Colors.red,//this has no effect
+                        //   ),
+                        //   borderRadius: BorderRadius.circular(10.0),
+                        // ),
                       ),
                     ),
-                  ]
-                )
-              ],
+                  ),
+                  SizedBox(height: 8),
+                  Container(
+                    padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    // decoration: BoxDecoration(
+                    //   color: Colors.white,
+                    //   boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.black12,
+                    //         blurRadius: 8,
+                    //         spreadRadius: 2,
+                    //         offset: Offset(4, 4),
+                    //       ),
+                    //     ], 
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    // ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Start:",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          "$start",
+                          style: TextStyle(
+                            fontSize: 32,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.alarm_add),
+                          onPressed: () {
+                            selectStartTime(context);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    // decoration: BoxDecoration(
+                    //   color: Colors.white,
+                    //   boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.black12,
+                    //         blurRadius: 8,
+                    //         spreadRadius: 2,
+                    //         offset: Offset(4, 4),
+                    //       ),
+                    //     ], 
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    // ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "End:",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          "$end",
+                          style: TextStyle(
+                            fontSize: 32,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.alarm_add),
+                          onPressed: () {
+                            selectEndTime(context);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 8,),
+                  // Expanded(
+                  //   child: TextButton(
+                  //     child: Text('Select Time'),
+                  //     onPressed: () {
+                  //       selectStartTime(context);
+                  //       print("Selected time = ${time.format(context)}");
+
+                  //       TimeOfDay _formated = fromString(time.format(context));
+
+                  //       print("Selected time = $_formated");
+                  //     },
+                  //   ),
+                  // ),
+                  // Text("Selected time = ${time.format(context)}"),
+                  SizedBox(height: 8,),
+                  Text(
+                    'Select Days',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  Flexible(
+                    child: ListView(
+                      children: days.keys.map((String key) {
+                        return CheckboxListTile(
+                          title: Text(key),
+                          value: days[key],
+                          onChanged: (bool value) {
+                            setState(() {
+                              print(key);
+                              days[key] = value;
+                            });
+                          }
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(height: 8,),
+                  Text(
+                    'Select Options',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  Flexible(
+                    child: ListView(
+                      children: options.keys.map((String key) {
+                        return CheckboxListTile(
+                          title: Text(key),
+                          value: options[key],
+                          onChanged: (bool value) {
+                            setState(() {
+                              print(key);
+                              options[key] = value;
+                            });
+                          }
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  // Flexible(
+                  //   child: ListView.builder(
+                  //     itemCount: options.length,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       return Container (
+                  //         child: Text('item'),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                  SizedBox(height: 8,),
+                  Wrap(
+                    spacing: 6.0,
+                    runSpacing: 6.0,
+                    children: [
+                      Chip(
+                        label: Text('Sat'),
+                      ),
+                      Chip(
+                        label: Text('Sun'),
+                      ),
+                      Chip(
+                        label: Text('Mon'),
+                      ),
+                      Chip(
+                        label: Text('Thu'),
+                      ),
+                      Chip(
+                        label: Text('Wed'),
+                      ),
+                      Chip(
+                        label: Text('Tue'),
+                      ),
+                      Chip(
+                        label: Text('Fri'),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8,),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.end,
+                    children: [
+                      OutlinedButton (
+                        onPressed: () {},
+                        child: Text('Cancel'),
+                        style: OutlinedButton.styleFrom(
+                          primary: Colors.redAccent,
+                          shape: StadiumBorder(),
+                          side: BorderSide(width: 2, color: Colors.redAccent),
+                          padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                        ),
+                      ),
+                      OutlinedButton (
+                        onPressed: () async {
+                          await saveData();
+                        },
+                        child: Text('Save'),
+                        style: OutlinedButton.styleFrom(
+                          shape: StadiumBorder(),
+                          side: BorderSide(width: 2, color: Colors.blue),
+                          padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                        ),
+                      ),
+                    ]
+                  )
+                ],
+              ),
             );
           },
         ),
