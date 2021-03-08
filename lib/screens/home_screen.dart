@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
+import 'package:peace_time/screens/edit_schedule_screen.dart';
+import 'package:peace_time/screens/settings_screen.dart';
 import 'package:peace_time/widgets/checkbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -12,49 +15,79 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Map<String> options = {'1','2','3','4','5','6','7','8','9','0'};
-  List options = [1,2,3,4,5,6,7,8,9,0];
+  List<Schedule> schedules;
+
+  bool loading = true;
+
+  void _getSchedulesDataFromSharedPreference() async {
+    List<Schedule> results = await ScheduleController.getSchedules();
+
+    if(results != null)
+    {
+      setState(() {
+        schedules = results;
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getSchedulesDataFromSharedPreference();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('Schedules'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => SettingsScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null),
+            ),
+          ],
+          elevation: 0,
+        ),
         floatingActionButton: FloatingActionButton(
           // elevation: 0.0,
           child: new Icon(Icons.add, size: 48.0,),
           backgroundColor: Colors.blue,
-          onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),)
+          onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null)
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Schedule',
-                      style: TextStyle(
-                          fontFamily: 'avenir',
-                          fontWeight: FontWeight.w100,
-                          fontSize: 20),
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.settings, color: Colors.black45,)
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(height: 8.0,),
-                Expanded(
-                  child: ListView.builder(
-                    // padding: const EdgeInsets.all(8),
-                    itemCount: options.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 32),
+        body: loading ? Center(child: CircularProgressIndicator(),) :SafeArea(
+          child: Column(
+            children: [
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       'Schedule',
+              //       style: TextStyle(
+              //           fontFamily: 'avenir',
+              //           fontWeight: FontWeight.w100,
+              //           fontSize: 20),
+              //     ),
+              //     Row(
+              //       children: [
+              //         Icon(Icons.settings, color: Colors.black45,)
+              //       ],
+              //     )
+              //   ],
+              // ),
+              // SizedBox(height: 8.0,),
+              Expanded(
+                child: ListView.builder(
+                  // padding: const EdgeInsets.all(8),
+                  itemCount: schedules.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => EditSchduleScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null),
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 24),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -62,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
                             ),
+                          // color: Colors.black12,
                           boxShadow: [
                               BoxShadow(
                                 color: Colors.black12,
@@ -70,15 +104,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 offset: Offset(4, 4),
                               ),
                             ], 
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            // borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         child: Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Juma Time"),
-                                Switch(value: true, onChanged: (bool value) {},activeColor: Colors.white,)
+                                Text("${schedules[index].name}"),
+                                Switch(
+                                  value: schedules[index].status, 
+                                  onChanged: (bool value) async {
+                                    await ScheduleController.remove(index);
+                                    _getSchedulesDataFromSharedPreference();
+                                  },
+                                  activeColor: Colors.white,
+                                )
                               ],
                             ),
                             SizedBox(height: 5.0),
@@ -139,12 +180,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                      );
-                    }
-                  ),
+                      ),
+                    );
+                  }
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );

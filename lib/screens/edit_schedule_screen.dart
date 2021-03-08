@@ -4,12 +4,12 @@ import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/widgets/checkbox.dart';
 import 'dart:convert';
 
-class CreateSchduleScreen extends StatefulWidget {
+class EditSchduleScreen extends StatefulWidget {
   @override
-  _CreateSchduleScreenState createState() => _CreateSchduleScreenState();
+  _EditSchduleScreenState createState() => _EditSchduleScreenState();
 }
 
-class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
+class _EditSchduleScreenState extends State<EditSchduleScreen> {
 
   final Map<String, String> daysName = {
     'sat':'satarday',
