@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // elevation: 0.0,
           child: new Icon(Icons.add, size: 48.0,),
           backgroundColor: Colors.blue,
-          onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => CreateSchduleScreen()),)
+          onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),)
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: SafeArea(

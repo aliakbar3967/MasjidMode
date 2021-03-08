@@ -80,6 +80,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
     // print(dd);
 
     Schedule hold = Schedule(
+      id: 1,
       name: name,
       start: start,
       end: end,
@@ -87,8 +88,8 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
       options: jsonEncode(options),
       status: true
     );
-
-    print(Schedule.encode([hold]));
+    String encoded = Schedule.encode([hold]);
+    print(encoded);
   }
 
   @override
