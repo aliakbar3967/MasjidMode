@@ -18,15 +18,26 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Schedule> schedules;
 
   bool loading = true;
+  bool nodata = false;
 
   void _getSchedulesDataFromSharedPreference() async {
+    setState(() {
+      loading = true;
+    });
     List<Schedule> results = await ScheduleController.getSchedules();
-
-    if(results != null)
+    // print(results);
+    if(results == null)
     {
+      setState(() {
+        schedules = null;
+        nodata = true;
+      });
+    }
+    else {
       setState(() {
         schedules = results;
         loading = false;
+        nodata = false;
       });
     }
   }
@@ -58,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null)
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: loading ? Center(child: CircularProgressIndicator(),) :SafeArea(
+        body: loading ? nodata ? Center(child: Text('No Data Found!')) : Center(child: CircularProgressIndicator(),) :SafeArea(
           child: Column(
             children: [
               // Row(

@@ -80,7 +80,6 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
     // print(dd);
 
     Schedule schedule = Schedule(
-      id: 1,
       name: name,
       start: start,
       end: end,

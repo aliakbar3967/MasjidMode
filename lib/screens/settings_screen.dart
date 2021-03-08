@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service_plugin/flutter_foreground_service_plugin.dart';
+import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
 import 'package:peace_time/screens/home_screen.dart';
@@ -108,5 +109,21 @@ void periodicTaskFun() {
     // );
 
     print(DateTime.now());
+    // print('=====');
+
+    List<Schedule> schedules = await ScheduleController.getSchedules();
+
+    if(schedules == null) return;
+    else {
+      // schedules.forEach((element) => print(element.name)); 
+      schedules.forEach((schedule) {
+        if(schedule.status == true)
+        {
+          print('Schedule ${schedule.name} status true');
+        } else {
+          print('Schedule ${schedule.name} status false');
+        }
+      }); 
+    }
   });
 }

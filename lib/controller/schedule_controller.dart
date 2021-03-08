@@ -25,7 +25,7 @@ class ScheduleController {
         } else {
           Map<String, dynamic> jsonSchedule = Schedule.toMap(_schedule);
           String encodedStringSchedule = json.encode(jsonSchedule);
-          print(encodedStringSchedule); // single schedule string
+          // print(encodedStringSchedule); // single schedule string
 
           String encodedSchedulesList = Schedule.encode([_schedule]);
           await prefs.setString('__schedules', encodedSchedulesList);
@@ -40,13 +40,12 @@ class ScheduleController {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         
         String schedules = prefs.getString('__schedules');
-        List<Schedule> results = Schedule.decode(schedules);
         // print(schedules);
-        // String counter = _map.toString();
-        // final List<Map<String, dynamic>> counter = jsonDecode(prefs.getString('_schedules'));
-        // print(counter);
-        // await prefs.setString('__schedule', encodedData);
-        return results;
+        if(schedules == null) return null;
+        else {
+          List<Schedule> results = Schedule.decode(schedules);
+          return results;
+        }
     }
 
     static remove(int index) async
@@ -55,11 +54,13 @@ class ScheduleController {
         
       String schedules = prefs.getString('__schedules');
       List<Schedule> results = Schedule.decode(schedules);
-
       results.removeAt(index);
-
-      String encodedSchedulesList = Schedule.encode(results);
-      await prefs.setString('__schedules', encodedSchedulesList);
+      // print('schedules = ${results.length}');
+      if(results == null || results.length == 0) await prefs.setString('__schedules', null);
+      else {
+        String encodedSchedulesList = Schedule.encode(results);
+        await prefs.setString('__schedules', encodedSchedulesList);
+      }
       // print('no data fount. data store failed.');
       print('Data remove done');
       // print(results);

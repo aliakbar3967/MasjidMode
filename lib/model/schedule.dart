@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:peace_time/model/day.dart';
 
 class Schedule {
-    final int id;
     final String name;
     final String start;
     final String end;
@@ -13,7 +12,6 @@ class Schedule {
     bool status;
 
     Schedule({
-        this.id,
         this.name,
         this.start,
         this.end,
@@ -24,7 +22,6 @@ class Schedule {
 
     factory Schedule.fromJson(Map<String, dynamic> jsonData) {
         return Schedule(
-          id: jsonData['id'],
           name: jsonData['name'],
           start: jsonData['start'],
           end: jsonData['end'],
@@ -35,7 +32,6 @@ class Schedule {
     }
 
     static Map<String, dynamic> toMap(Schedule schedule) => {
-        'id': schedule.id,
         'name': schedule.name,
         'start': schedule.start,
         'end': schedule.end,
