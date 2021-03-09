@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
+import 'package:peace_time/controller/settings_controller.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/widgets/checkbox.dart';
 import 'dart:convert';
@@ -55,7 +56,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
 
   Future<Null> selectEndTime(BuildContext context) async {
     picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-
+    
     if(picked != null)
     {
       setState(() {
@@ -74,7 +75,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
     );
   }
 
-  void saveData() {
+  void saveData() async {
     // TimeOfDay test = TimeOfDay.now();
     // String dd = test.toString();
     // print(dd);
@@ -89,6 +90,10 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
     );
 
     ScheduleController.store(schedule);
+    if(await Settings.isRunningForgroundService()){
+      await Settings.stopTask();
+      await Settings.startTask();
+    }
     Navigator.pop(context, true);
     // String encoded = Schedule.encode([hold]);
     // print(encoded);

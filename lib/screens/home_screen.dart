@@ -5,9 +5,6 @@ import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
 import 'package:peace_time/screens/edit_schedule_screen.dart';
 import 'package:peace_time/screens/settings_screen.dart';
-import 'package:peace_time/widgets/checkbox.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -130,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     _getSchedulesDataFromSharedPreference();
                                   },
                                   activeColor: Colors.white,
-                                )
+                                ),
                               ],
                             ),
                             SizedBox(height: 5.0),
@@ -138,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "9:30 am - 10:30 am",
+                                  "${schedules[index].start} - ${schedules[index].end}",
                                   style: TextStyle(
                                     fontFamily: 'avenir',
                                     fontWeight: FontWeight.w100,
