@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service_plugin/flutter_foreground_service_plugin.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/model/schedule.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:sound_mode/permission_handler.dart';
+import 'package:sound_mode/sound_mode.dart';
+import 'package:sound_mode/utils/sound_profiles.dart';
 
 class Settings {
   static TimeOfDay fromString(String time) {
@@ -75,6 +80,90 @@ class Settings {
   static stopTask() async {
     await FlutterForegroundServicePlugin.stopPeriodicTask();
   }
+
+  static Future<void> getCurrentSoundMode() async {
+    String ringerStatus;
+    try {
+      ringerStatus = await SoundMode.ringerModeStatus;
+      if (Platform.isIOS) {
+        //because i no push meesage form ios to flutter,so need read two times
+        await Future.delayed(Duration(milliseconds: 1000), () async {
+          ringerStatus = await SoundMode.ringerModeStatus;
+        });
+      }
+    } catch (err) {
+      ringerStatus = 'Failed to get device\'s ringer status.$err';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    // if (!mounted) return;
+
+    // setState(() {
+    //   _soundMode = ringerStatus;
+    // });
+  }
+
+  static Future<void> getPermissionStatus() async {
+    bool permissionStatus = false;
+    try {
+      permissionStatus = await PermissionHandler.permissionsGranted;
+      print(permissionStatus);
+    } catch (err) {
+      print(err);
+    }
+
+    // setState(() {
+    //   _permissionStatus =
+    //   permissionStatus ? "Permissions Enabled" : "Permissions not granted";
+    // });
+  }
+
+  static Future<void> setSilentMode() async {
+    String message;
+
+    try {
+      message = await SoundMode.setSoundMode(Profiles.SILENT);
+
+      // setState(() {
+      //   _soundMode = message;
+      // });
+    } on PlatformException {
+      print('Do Not Disturb access permissions required!');
+    }
+  }
+
+  static Future<void> setNormalMode() async {
+    String message;
+
+    try {
+      message = await SoundMode.setSoundMode(Profiles.NORMAL);
+      // setState(() {
+      //   _soundMode = message;
+      // });
+    } on PlatformException {
+      print('Do Not Disturb access permissions required!');
+    }
+  }
+
+  static Future<void> setVibrateMode() async {
+    String message;
+
+    try {
+      message = await SoundMode.setSoundMode(Profiles.VIBRATE);
+
+      // setState(() {
+      //   _soundMode = message;
+      // });
+    } on PlatformException {
+      print('Do Not Disturb access permissions required!');
+    }
+  }
+
+  static Future<void> openDoNotDisturbSettings() async {
+    await PermissionHandler.openDoNotDisturbSetting();
+  }
 }
 
 void periodicTaskFun() {
@@ -101,14 +190,16 @@ void periodicTaskFun() {
     else {
       // schedules.forEach((element) => print(element.name)); 
       schedules.forEach((schedule) {
-        if(schedule.status == true)
+        if(schedule.status == true && Settings._timeBetween(schedule.start, schedule.end))
         {
           // timeDifference(schedule.start, schedule.end);
-          print('Schedule ${schedule.start} status true');
+          // print('Schedule ${schedule.start} status true');
+          Settings.setSilentMode();
         } else {
-          bool diff = Settings._timeBetween(schedule.start, schedule.end);
-          if(diff) print('true');
-          else print('false');
+          Settings.setNormalMode();
+          // bool diff = Settings._timeBetween(schedule.start, schedule.end);
+          // if(diff) print('true');
+          // else print('false');
           // isBefore(schedule.start);
           // isAfter(schedule.start);
           // print('Schedule ${schedule.start} status false');

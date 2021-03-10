@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:peace_time/model/day.dart';
 
 class Schedule {
-    final String name;
-    final String start;
-    final String end;
-    final String days;
-    final String options;
+    String name;
+    String start;
+    String end;
+    String days;
+    String options;
+    bool selected;
     // Map days = {'sat':false, 'sun':false,'mon':false,'tue':false,'wed':false,'thu':false,'fri':false};
     bool status;
 
@@ -18,6 +19,7 @@ class Schedule {
         this.days,
         this.options,
         this.status,
+        this.selected,
     });
 
     factory Schedule.fromJson(Map<String, dynamic> jsonData) {
@@ -27,7 +29,8 @@ class Schedule {
           end: jsonData['end'],
           days: jsonData['days'],
           options: jsonData['options'],
-          status: false,
+          status: jsonData['status'],
+          selected: false,
         );
     }
 
@@ -38,6 +41,7 @@ class Schedule {
         'days': schedule.days,
         'options': schedule.options,
         'status': schedule.status,
+        'selected': schedule.selected,
     };
 
     static String encode(List<Schedule> schedules) => json.encode(schedules.map<Map<String, dynamic>>((schedule) => Schedule.toMap(schedule)).toList(),);

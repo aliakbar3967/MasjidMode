@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/model/schedule.dart';
@@ -16,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool loading = true;
   bool nodata = false;
+  bool selectingmode = false;
 
   void _getSchedulesDataFromSharedPreference() async {
     setState(() {
@@ -50,14 +52,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Schedules'),
+          elevation: 0,
+          leading: selectingmode
+          ? IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              setState(() {
+                selectingmode = false;
+                schedules.forEach((element) => element.selected = false);
+              });
+            },
+          ) : null,
+          title: Text("Schedules"),
           actions: [
             IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => SettingsScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null),
+              icon: selectingmode ? Icon(Icons.check_box_outline_blank) : Icon(Icons.settings),
+              onPressed: () {
+                if(selectingmode) {
+                } else {
+                  Navigator.push(context,CupertinoPageRoute(builder: (context) => SettingsScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null);
+                }
+
+              }
             ),
           ],
-          elevation: 0,
         ),
         floatingActionButton: FloatingActionButton(
           // elevation: 0.0,
@@ -66,134 +84,97 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null)
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: loading ? nodata ? Center(child: Text('No Data Found!')) : Center(child: CircularProgressIndicator(),) :SafeArea(
-          child: Column(
-            children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text(
-              //       'Schedule',
-              //       style: TextStyle(
-              //           fontFamily: 'avenir',
-              //           fontWeight: FontWeight.w100,
-              //           fontSize: 20),
-              //     ),
-              //     Row(
-              //       children: [
-              //         Icon(Icons.settings, color: Colors.black45,)
-              //       ],
-              //     )
-              //   ],
-              // ),
-              // SizedBox(height: 8.0,),
-              Expanded(
-                child: ListView.builder(
-                  // padding: const EdgeInsets.all(8),
-                  itemCount: schedules.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => EditSchduleScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null),
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 24),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [Colors.blue, Colors.blueAccent],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                          // color: Colors.black12,
-                          boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 8,
-                                spreadRadius: 2,
-                                offset: Offset(4, 4),
-                              ),
-                            ], 
-                            // borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("${schedules[index].name}"),
-                                Switch(
-                                  value: schedules[index].status, 
-                                  onChanged: (bool value) async {
-                                    await ScheduleController.remove(index);
-                                    _getSchedulesDataFromSharedPreference();
-                                  },
-                                  activeColor: Colors.white,
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "${schedules[index].start} - ${schedules[index].end}",
-                                  style: TextStyle(
-                                    fontFamily: 'avenir',
-                                    fontWeight: FontWeight.w100,
-                                    fontSize: 32,
-                                    color: Colors.white
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  // margin: const EdgeInsets.only(bottom: 32),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text('sat'),
-                                ),
-                                Container(
-                                  // margin: const EdgeInsets.only(bottom: 32),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text('sun'),
-                                ),
-                                Container(
-                                  // margin: const EdgeInsets.only(bottom: 32),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text('mon'),
-                                ),
-                                Container(
-                                  // margin: const EdgeInsets.only(bottom: 32),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text('thu'),
-                                ),
-                                Container(
-                                  // margin: const EdgeInsets.only(bottom: 32),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text('wed'),
-                                ),
-                                Container(
-                                  // margin: const EdgeInsets.only(bottom: 32),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text('tue'),
-                                ),
-                                Container(
-                                  // margin: const EdgeInsets.only(bottom: 32),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text('fri'),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+        body: loading 
+        ? nodata 
+        ? Center(child: Text('No Data Found!')) 
+        : Center(child: CircularProgressIndicator(),) 
+        : SafeArea(
+          child: ListView(
+            children: List.generate(schedules.length, (index) {
+              return ListTile(
+                // tileColor:  Colors.blue,
+                // selectedTileColor: Colors.blue[200],
+                onLongPress: () {
+                  setState(() {
+                    selectingmode = true;
+                  });
+                },
+                onTap: () {
+                  if(selectingmode) {
+                    setState(() {
+                        schedules[index].selected = !schedules[index].selected;
+                        print(schedules[index].selected.toString());
+                    });
+                  } else {
+                    Navigator.push(context,CupertinoPageRoute(builder: (context) => EditSchduleScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null);
                   }
+                },
+                selected: schedules[index].selected,
+                title: Text(
+                  schedules[index].name.toString().toUpperCase(),
+                  style: TextStyle(
+                    fontFamily: 'avenir',
+                    // fontWeight: FontWeight.w100,
+                    fontSize: 24,
+                    color: Colors.black
+                  ),
                 ),
-              ),
-            ],
+                subtitle: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${schedules[index].start} - ${schedules[index].end}",
+                      style: TextStyle(
+                        fontFamily: 'avenir',
+                        fontWeight: FontWeight.w100,
+                        fontSize: 16,
+                        color: Colors.black
+                      ),
+                    ),
+                    Wrap(
+                        spacing: 6.0,
+                        runSpacing: 6.0,
+                        children: [
+                          Chip(
+                            label: Text('S'),
+                          ),
+                          Chip(
+                            label: Text('S'),
+                          ),
+                          Chip(
+                            label: Text('M'),
+                          ),
+                          Chip(
+                            label: Text('T'),
+                          ),
+                          Chip(
+                            label: Text('W'),
+                          ),
+                          Chip(
+                            label: Text('T'),
+                          ),
+                          Chip(
+                            label: Text('F'),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+                trailing: (selectingmode)
+                ? ((schedules[index].selected)
+                ? Icon(Icons.check_box)
+                : Icon(Icons.check_box_outline_blank))
+                : Switch (
+                  value: schedules[index].status, 
+                  onChanged: (bool value) async {
+                    await ScheduleController.remove(index);
+                    _getSchedulesDataFromSharedPreference();
+                  },
+                  activeColor: Colors.white,
+                ),
+              );
+            }),
           ),
         ),
       );

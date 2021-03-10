@@ -85,7 +85,8 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
       end: end,
       days: jsonEncode(days),
       options: jsonEncode(options),
-      status: true
+      status: true,
+      selected: false
     );
 
     ScheduleController.store(schedule);

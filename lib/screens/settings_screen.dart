@@ -84,6 +84,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         // await FlutterForegroundServicePlugin.stopPeriodicTask();
                       },
                     ),
+                    TextButton(
+                      child: Text('Open Do Not Access Settings'),
+                      onPressed: () => Settings.openDoNotDisturbSettings(),
+                    ),
                   ],
                 ),
               );
