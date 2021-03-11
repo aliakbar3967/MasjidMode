@@ -20,8 +20,7 @@ class Settings {
     );
   }
 
-  static bool _timeBetween(String start, String end)
-  {
+  static bool _timeBetween(String start, String end) {
     print("start $start and end $end");
     TimeOfDay startTime = Settings.fromString(start);
     TimeOfDay endTime = Settings.fromString(end);
@@ -81,6 +80,20 @@ class Settings {
     await FlutterForegroundServicePlugin.stopPeriodicTask();
   }
 
+  static startForgroundServiceAndTask() async {
+    if(await Settings.isRunningForgroundService() == false) {
+      await Settings.startForgroundService();
+      await Settings.startTask();
+    }
+  }
+
+  static stopForgroundServiceAndTask() async {
+    if(await Settings.isRunningForgroundService()) {
+      await Settings.stopTask();
+      await Settings.stopForgroundService();
+    }
+  }
+
   static Future<void> getCurrentSoundMode() async {
     String ringerStatus;
     try {
@@ -94,7 +107,7 @@ class Settings {
     } catch (err) {
       ringerStatus = 'Failed to get device\'s ringer status.$err';
     }
-
+    // print("v$ringerStatus v");
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
@@ -186,6 +199,10 @@ void periodicTaskFun() {
 
     List<Schedule> schedules = await ScheduleController.getSchedules();
 
+          Settings.getCurrentSoundMode();
+          // "Silent Mode"
+          // "Normal Mode"
+          // "Vibrate Mode"
     if(schedules == null) return;
     else {
       // schedules.forEach((element) => print(element.name)); 
