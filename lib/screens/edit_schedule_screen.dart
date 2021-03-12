@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
+import 'package:peace_time/controller/settings_controller.dart';
+import 'package:peace_time/model/day.dart';
+import 'package:peace_time/model/options.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/widgets/checkbox.dart';
 import 'dart:convert';
 
 class EditSchduleScreen extends StatefulWidget {
+  final List<Schedule> _schedules;
+  final int _index;
+  const EditSchduleScreen(this._schedules,this._index);
+
   @override
   _EditSchduleScreenState createState() => _EditSchduleScreenState();
 }
@@ -20,27 +27,15 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
     'tue':'tuesday',
     'fri':'friday'
   };
-  Map<String, bool> days = {
-    'sat': true,
-    'sun': false,
-    'mon': false,
-    'tue': false,
-    'wed': false,
-    'thu': false,
-    'fri': false,
-  };
-  Map<String, bool> options = {
-    'silent': true,
-    'airplane': false,
-    'vibrate': false,
-    'notifyme':false
-  };
+  Map<String, dynamic> days;
+  Map<String, dynamic> options;
 
   TimeOfDay time;
   TimeOfDay picked;
-  String start = "5:30 am";
-  String end = "5:30 am";
-  String name;
+  String start;
+  String end;
+  // String name;
+  TextEditingController name;
 
   Future<Null> selectStartTime(BuildContext context) async {
     picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
@@ -55,7 +50,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
 
   Future<Null> selectEndTime(BuildContext context) async {
     picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-
+    
     if(picked != null)
     {
       setState(() {
@@ -74,22 +69,18 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
     );
   }
 
-  void saveData() {
-    // TimeOfDay test = TimeOfDay.now();
-    // String dd = test.toString();
-    // print(dd);
+  void saveData() async {
+    widget._schedules[widget._index].name = name.text;
+    widget._schedules[widget._index].start = start;
+    widget._schedules[widget._index].end = end;
+    widget._schedules[widget._index].days = jsonEncode(days);
+    widget._schedules[widget._index].options = jsonEncode(options);
 
-    Schedule schedule = Schedule(
-      name: name,
-      start: start,
-      end: end,
-      days: jsonEncode(days),
-      options: jsonEncode(options),
-      status: true,
-      selected: false
-    );
-
-    ScheduleController.store(schedule);
+    ScheduleController.update(widget._schedules);
+    if(await SettingsController.isRunningForgroundService()){
+      await SettingsController.stopTask();
+      await SettingsController.startTask();
+    }
     Navigator.pop(context, true);
     // String encoded = Schedule.encode([hold]);
     // print(encoded);
@@ -97,7 +88,16 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
 
   void checkSchedules() async {
     // Navigator.pop(context);
-    await ScheduleController.getSchedules();
+    // await ScheduleController.getSchedules();
+    Option _option = Option.decode(widget._schedules[widget._index].options);
+    this.options = Option.toMap(_option);
+    Day _days = Day.decode(widget._schedules[widget._index].days);
+    this.days = Day.toMap(_days);
+
+    this.start = widget._schedules[widget._index].start;
+    this.end = widget._schedules[widget._index].end;
+    this.name = new TextEditingController(text: widget._schedules[widget._index].name);
+    // print(days['sat']);
   }
 
   @override
@@ -111,287 +111,321 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
     // print(time);
     // selectEndTime(context);
     // selectStartTime(context);
+    checkSchedules();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-          child: Builder(
-            builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical:8),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Name',
-                          style: TextStyle(
-                            fontSize: 24,
+      appBar: AppBar(
+        elevation: 0,
+        title: Text('New Schedule'),
+      ),
+      body: SafeArea(
+        bottom: false,
+        child: Container(
+          // padding: EdgeInsets.only(left: 15, right: 15),
+          // height: double.infinity,
+          // width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 8,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                          child: TextField(
+                            controller: name,
+                            // onChanged: (String value) {
+                            //   setState(() {
+                            //     name = value;
+                            //   });
+                            //   // print(name);
+                            // },
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              // icon: Icon(Icons.favorite),
+                              // labelText: 'Name',
+                              // labelStyle: TextStyle(
+                              //   color: Color(0xFF6200EE),
+                              // ),
+                              // helperText: 'Helper text',
+                              // suffixIcon: Icon(
+                              //   Icons.check_circle,
+                              // ),
+                              // enabledBorder: UnderlineInputBorder(
+                              //   borderSide: BorderSide(color: Color(0xFF6200EE)),
+                              // ),
+                              hintText: 'Name',
+                              // border: OutlineInputBorder(
+                              //   borderSide: BorderSide(
+                              //     color: Colors.red,//this has no effect
+                              //   ),
+                              //   borderRadius: BorderRadius.circular(10.0),
+                              // ),
+                            ),
                           ),
                         ),
-                      ],
-                      // alignment: Alignment.center,
-                      // child: Text('Schedule name'),
-                    ),
-                  ),
-                  SizedBox(height: 8,),
-                  Container(
-                    padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 8,
-                            spreadRadius: 2,
-                          ),
-                        ], 
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: TextField(
-                      onChanged: (String value) {
-                        name = value;
-                        print(name);
-                      },
-                      decoration: InputDecoration(
-                        // icon: Icon(Icons.favorite),
-                        // labelText: 'Name',
-                        // labelStyle: TextStyle(
-                        //   color: Color(0xFF6200EE),
-                        // ),
-                        // helperText: 'Helper text',
-                        // suffixIcon: Icon(
-                        //   Icons.check_circle,
-                        // ),
-                        // enabledBorder: UnderlineInputBorder(
-                        //   borderSide: BorderSide(color: Color(0xFF6200EE)),
-                        // ),
-                        hintText: 'Name',
-                        // border: OutlineInputBorder(
-                        //   borderSide: BorderSide(
-                        //     color: Colors.red,//this has no effect
-                        //   ),
-                        //   borderRadius: BorderRadius.circular(10.0),
-                        // ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Container(
-                    padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    // decoration: BoxDecoration(
-                    //   color: Colors.white,
-                    //   boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.black12,
-                    //         blurRadius: 8,
-                    //         spreadRadius: 2,
-                    //         offset: Offset(4, 4),
-                    //       ),
-                    //     ], 
-                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    // ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Start:",
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          "$start",
-                          style: TextStyle(
-                            fontSize: 32,
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.alarm_add),
-                          onPressed: () {
+                      Card(
+                        child: GestureDetector(
+                          onTap: () {
                             selectStartTime(context);
                           },
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding:  EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    // decoration: BoxDecoration(
-                    //   color: Colors.white,
-                    //   boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.black12,
-                    //         blurRadius: 8,
-                    //         spreadRadius: 2,
-                    //         offset: Offset(4, 4),
-                    //       ),
-                    //     ], 
-                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    // ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "End:",
-                          style: TextStyle(
-                            fontSize: 16,
+                          child: ListTile(
+                            title: Text("$start"),
+                            subtitle: Text("Start Time"),
+                            trailing: IconButton(
+                              icon: Icon(Icons.alarm_add),
+                              onPressed: () {
+                                selectStartTime(context);
+                              },
+                            ),
                           ),
                         ),
-                        Text(
-                          "$end",
-                          style: TextStyle(
-                            fontSize: 32,
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.alarm_add),
-                          onPressed: () {
+                      ),
+                      Card(
+                        child: GestureDetector(
+                          onTap: () {
                             selectEndTime(context);
                           },
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 8,),
-                  // Expanded(
-                  //   child: TextButton(
-                  //     child: Text('Select Time'),
-                  //     onPressed: () {
-                  //       selectStartTime(context);
-                  //       print("Selected time = ${time.format(context)}");
-
-                  //       TimeOfDay _formated = fromString(time.format(context));
-
-                  //       print("Selected time = $_formated");
-                  //     },
-                  //   ),
-                  // ),
-                  // Text("Selected time = ${time.format(context)}"),
-                  SizedBox(height: 8,),
-                  Text(
-                    'Select Days',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  Flexible(
-                    child: ListView(
-                      children: days.keys.map((String key) {
-                        return CheckboxListTile(
-                          title: Text(key),
-                          value: days[key],
-                          onChanged: (bool value) {
-                            setState(() {
-                              print(key);
-                              days[key] = value;
-                            });
-                          }
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(height: 8,),
-                  Text(
-                    'Select Options',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  Flexible(
-                    child: ListView(
-                      children: options.keys.map((String key) {
-                        return CheckboxListTile(
-                          title: Text(key),
-                          value: options[key],
-                          onChanged: (bool value) {
-                            setState(() {
-                              print(key);
-                              options[key] = value;
-                            });
-                          }
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  // Flexible(
-                  //   child: ListView.builder(
-                  //     itemCount: options.length,
-                  //     itemBuilder: (BuildContext context, int index) {
-                  //       return Container (
-                  //         child: Text('item'),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-                  SizedBox(height: 8,),
-                  Wrap(
-                    spacing: 6.0,
-                    runSpacing: 6.0,
-                    children: [
-                      Chip(
-                        label: Text('Sat'),
-                      ),
-                      Chip(
-                        label: Text('Sun'),
-                      ),
-                      Chip(
-                        label: Text('Mon'),
-                      ),
-                      Chip(
-                        label: Text('Thu'),
-                      ),
-                      Chip(
-                        label: Text('Wed'),
-                      ),
-                      Chip(
-                        label: Text('Tue'),
-                      ),
-                      Chip(
-                        label: Text('Fri'),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8,),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton (
-                        onPressed: () {
-                          checkSchedules();
-                          Navigator.pop(context, true);
-                        },
-                        child: Text('Cancel'),
-                        style: OutlinedButton.styleFrom(
-                          primary: Colors.redAccent,
-                          shape: StadiumBorder(),
-                          side: BorderSide(width: 2, color: Colors.redAccent),
-                          padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                          child: ListTile(
+                            title: Text("$end"),
+                            subtitle: Text("End Time"),
+                            trailing: IconButton(
+                              icon: Icon(Icons.alarm_add),
+                              onPressed: () {
+                                selectEndTime(context);
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                      OutlinedButton (
-                        onPressed: () async {
-                          await saveData();
-                        },
-                        child: Text('Save'),
-                        style: OutlinedButton.styleFrom(
-                          shape: StadiumBorder(),
-                          side: BorderSide(width: 2, color: Colors.blue),
-                          padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                      Wrap(
+                        spacing: 10.0,
+                        runSpacing: 10.0,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // print(days['sat']);
+                              setState(() {
+                                days['sat'] = !days['sat'];
+                              });
+                            },
+                            child: Chip(
+                              label: Text('s'.toUpperCase()),
+                              labelStyle: TextStyle(
+                                color: days['sat'] ? Colors.white : null
+                              ),
+                              backgroundColor: days['sat'] ? Colors.blue : null,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // print(days['sat']);
+                              setState(() {
+                                days['sun'] = !days['sun'];
+                              });
+                            },
+                            child: Chip(
+                              label: Text('S'.toUpperCase()),
+                              labelStyle: TextStyle(
+                                color: days['sun'] ? Colors.white : null
+                              ),
+                              backgroundColor: days['sun'] ? Colors.blue : null,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // print(days['sat']);
+                              setState(() {
+                                days['mon'] = !days['mon'];
+                              });
+                            },
+                            child: Chip(
+                              label: Text('m'.toUpperCase()),
+                              labelStyle: TextStyle(
+                                color: days['mon'] ? Colors.white : null
+                              ),
+                              backgroundColor: days['mon'] ? Colors.blue : null,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // print(days['sat']);
+                              setState(() {
+                                days['thu'] = !days['thu'];
+                              });
+                            },
+                            child: Chip(
+                              label: Text('t'.toUpperCase()),
+                              labelStyle: TextStyle(
+                                color: days['thu'] ? Colors.white : null
+                              ),
+                              backgroundColor: days['thu'] ? Colors.blue : null,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // print(days['sat']);
+                              setState(() {
+                                days['wed'] = !days['wed'];
+                              });
+                            },
+                            child: Chip(
+                              label: Text('w'.toUpperCase()),
+                              labelStyle: TextStyle(
+                                color: days['wed'] ? Colors.white : null
+                              ),
+                              backgroundColor: days['wed'] ? Colors.blue : null,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // print(days['sat']);
+                              setState(() {
+                                days['tue'] = !days['tue'];
+                              });
+                            },
+                            child: Chip(
+                              label: Text('t'.toUpperCase()),
+                              labelStyle: TextStyle(
+                                color: days['tue'] ? Colors.white : null
+                              ),
+                              backgroundColor: days['tue'] ? Colors.blue : null,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // print(days['sat']);
+                              setState(() {
+                                days['fri'] = !days['fri'];
+                              });
+                            },
+                            child: Chip(
+                              label: Text('f'.toUpperCase()),
+                              labelStyle: TextStyle(
+                                color: days['fri'] ? Colors.white : null
+                              ),
+                              backgroundColor: days['fri'] ? Colors.blue : null,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text("Silent Mode"),
+                          subtitle: Text("Phone will automatically silent."),
+                          trailing: Switch(
+                            value: options['silent'],
+                            activeColor: Colors.blue,
+                            onChanged: (bool value) {
+                              setState(() {
+                                options['silent'] = !options['silent'];
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text("Vibrate Mode"),
+                          subtitle: Text("Phone will automatically vibrate."),
+                          trailing: Switch(
+                            value: options['vibrate'],
+                            activeColor: Colors.blue,
+                            onChanged: (bool value) {
+                              setState(() {
+                                options['vibrate'] = !options['vibrate'];
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text("Airplane Mode"),
+                          subtitle: Text("Phone will automatically airplane."),
+                          trailing: Switch(
+                            value: options['airplane'],
+                            activeColor: Colors.blue,
+                            onChanged: (bool value) {
+                              setState(() {
+                                options['airplane'] = !options['airplane'];
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text("Notify Me"),
+                          subtitle: Text("Phone will automatically notify you."),
+                          trailing: Switch(
+                            value: options['notifyme'],
+                            activeColor: Colors.blue,
+                            onChanged: (bool value) {
+                              setState(() {
+                                options['notifyme'] = !options['notifyme'];
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ]
-                  )
-                ],
+                  ),
+                ),
               ),
-            );
-          },
+              Expanded(
+                flex: 2,
+                child: ButtonBar(
+                  alignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton (
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      child: Text('Cancel'),
+                      autofocus: false,
+                      style: OutlinedButton.styleFrom(
+                        primary: Colors.redAccent,
+                        shape: StadiumBorder(),
+                        side: BorderSide(width: 2, color: Colors.redAccent),
+                        padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                      ),
+                    ),
+                    OutlinedButton (
+                      onPressed: () {
+                        if(name != null && name != '') {
+                          saveData();
+                        }
+                      },
+                      child: Text(
+                        'Save', 
+                        style: TextStyle(
+                          color: (name != null && name != '') ? Colors.blue : Colors.black12
+                        ),
+                      ),
+                      autofocus: (name != null && name != '') ? true : false,
+                      style: OutlinedButton.styleFrom(
+                        shape: StadiumBorder(),
+                        side: BorderSide(width: 2, color: (name != null && name != '') ? Colors.blue : Colors.black12),
+                        padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
+                      ),
+                    ),
+                  ]
+                ),
+              ),
+            ],
+          ),
         ),
-      )
-      );
+      ),
+    );
   }
 }
+

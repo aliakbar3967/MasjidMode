@@ -17,7 +17,7 @@ class _RootScreenState extends State<RootScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Settings.startForgroundServiceAndTask();
+    SettingsController.startForgroundServiceAndTask();
   }
   @override
   Widget build(BuildContext context) {
@@ -70,41 +70,43 @@ class _MyAppState extends State<MyApp> {
         ),
         body: ListView(
           children: List.generate(paints.length, (index) {
-            return ListTile(
-              onLongPress: () {
-                setState(() {
-                  selectingmode = true;
-                });
-              },
-              onTap: () {
-                setState(() {
-                  if (selectingmode) {
-                    paints[index].selected = !paints[index].selected;
-                    print(paints[index].selected.toString());
-                  }
-                });
-              },
-              selected: paints[index].selected,
-              leading: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {},
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  padding: EdgeInsets.symmetric(vertical: 4.0),
-                  alignment: Alignment.center,
-                  child: CircleAvatar(
-                    backgroundColor: paints[index].colorpicture,
+            return Card(
+              child: ListTile(
+                onLongPress: () {
+                  setState(() {
+                    selectingmode = true;
+                  });
+                },
+                onTap: () {
+                  setState(() {
+                    if (selectingmode) {
+                      paints[index].selected = !paints[index].selected;
+                      print(paints[index].selected.toString());
+                    }
+                  });
+                },
+                selected: paints[index].selected,
+                leading: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {},
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    padding: EdgeInsets.symmetric(vertical: 4.0),
+                    alignment: Alignment.center,
+                    child: CircleAvatar(
+                      backgroundColor: paints[index].colorpicture,
+                    ),
                   ),
                 ),
+                title: Text('ID: ' + paints[index].id.toString()),
+                subtitle: Text(paints[index].title),
+                trailing: (selectingmode)
+                    ? ((paints[index].selected)
+                        ? Icon(Icons.check_box)
+                        : Icon(Icons.check_box_outline_blank))
+                    : Icon(Icons.keyboard_arrow_right),
               ),
-              title: Text('ID: ' + paints[index].id.toString()),
-              subtitle: Text(paints[index].title),
-              trailing: (selectingmode)
-                  ? ((paints[index].selected)
-                      ? Icon(Icons.check_box)
-                      : Icon(Icons.check_box_outline_blank))
-                  : null,
             );
           }),
         ),

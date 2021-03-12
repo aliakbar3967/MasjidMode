@@ -9,7 +9,7 @@ import 'package:sound_mode/permission_handler.dart';
 import 'package:sound_mode/sound_mode.dart';
 import 'package:sound_mode/utils/sound_profiles.dart';
 
-class Settings {
+class SettingsController {
   static TimeOfDay fromString(String time) {
     int hh = 0;
     if (time.endsWith('PM')) hh = 12;
@@ -22,8 +22,8 @@ class Settings {
 
   static bool _timeBetween(String start, String end) {
     print("start $start and end $end");
-    TimeOfDay startTime = Settings.fromString(start);
-    TimeOfDay endTime = Settings.fromString(end);
+    TimeOfDay startTime = SettingsController.fromString(start);
+    TimeOfDay endTime = SettingsController.fromString(end);
     // TimeOfDay currentTime = fromString("5:30 am");
     TimeOfDay currentTime = TimeOfDay.now();
 
@@ -81,16 +81,16 @@ class Settings {
   }
 
   static startForgroundServiceAndTask() async {
-    if(await Settings.isRunningForgroundService() == false) {
-      await Settings.startForgroundService();
-      await Settings.startTask();
+    if(await SettingsController.isRunningForgroundService() == false) {
+      await SettingsController.startForgroundService();
+      await SettingsController.startTask();
     }
   }
 
   static stopForgroundServiceAndTask() async {
-    if(await Settings.isRunningForgroundService()) {
-      await Settings.stopTask();
-      await Settings.stopForgroundService();
+    if(await SettingsController.isRunningForgroundService()) {
+      await SettingsController.stopTask();
+      await SettingsController.stopForgroundService();
     }
   }
 
@@ -118,13 +118,15 @@ class Settings {
     // });
   }
 
-  static Future<void> getPermissionStatus() async {
+  static Future<bool> getPermissionStatus() async {
     bool permissionStatus = false;
     try {
       permissionStatus = await PermissionHandler.permissionsGranted;
       print(permissionStatus);
+      return permissionStatus;
     } catch (err) {
       print(err);
+      return false;
     }
 
     // setState(() {
@@ -199,7 +201,7 @@ void periodicTaskFun() {
 
     List<Schedule> schedules = await ScheduleController.getSchedules();
 
-          Settings.getCurrentSoundMode();
+          SettingsController.getCurrentSoundMode();
           // "Silent Mode"
           // "Normal Mode"
           // "Vibrate Mode"
@@ -207,13 +209,13 @@ void periodicTaskFun() {
     else {
       // schedules.forEach((element) => print(element.name)); 
       schedules.forEach((schedule) {
-        if(schedule.status == true && Settings._timeBetween(schedule.start, schedule.end))
+        if(schedule.status == true && SettingsController._timeBetween(schedule.start, schedule.end))
         {
           // timeDifference(schedule.start, schedule.end);
           // print('Schedule ${schedule.start} status true');
-          Settings.setSilentMode();
+          SettingsController.setSilentMode();
         } else {
-          Settings.setNormalMode();
+          SettingsController.setNormalMode();
           // bool diff = Settings._timeBetween(schedule.start, schedule.end);
           // if(diff) print('true');
           // else print('false');

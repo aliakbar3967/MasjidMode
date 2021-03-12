@@ -1,3 +1,4 @@
+import 'dart:convert';
 class Day {
     final bool sat;
     final bool sun;
@@ -38,4 +39,26 @@ class Day {
         'thu': day.thu,
         'fri': day.fri,
     };
+
+    static Day decode(String day) {
+      Map<dynamic,dynamic> _mapDay = jsonDecode(day);
+      Day _jsonDay = Day.fromJson(_mapDay);
+      return _jsonDay;
+    }
+
+    // static bool isDayTrue(String name)
+
+    static String getDaysNames(String day) {
+      Day _day = Day.decode(day);
+      String _resultString = '';
+      if(_day.sat) _resultString += 'sat, ';
+      if(_day.sun) _resultString += 'sun, ';
+      if(_day.mon) _resultString += 'mon, ';
+      if(_day.thu) _resultString += 'thu, ';
+      if(_day.wed) _resultString += 'wed, ';
+      if(_day.tue) _resultString += 'tue, ';
+      if(_day.fri) _resultString += 'fri' ;
+      // print(_resultString);
+      return _resultString;
+    }
 }

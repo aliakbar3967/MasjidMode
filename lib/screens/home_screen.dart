@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
+import 'package:peace_time/model/day.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
 import 'package:peace_time/screens/edit_schedule_screen.dart';
 import 'package:peace_time/screens/settings_screen.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -51,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
           elevation: 0,
           leading: selectingmode
@@ -63,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             },
           ) : null,
-          title: Text("Schedules"),
+          title: Text("Peace Time - Auto silent scheduler"),
           actions: [
             IconButton(
               icon: selectingmode ? Icon(Icons.check_box_outline_blank) : Icon(Icons.settings),
               onPressed: () {
                 if(selectingmode) {
                 } else {
-                  Navigator.push(context,CupertinoPageRoute(builder: (context) => SettingsScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null);
+                  Navigator.push(context,CupertinoPageRoute(builder: (context) => SettingsScreen()),).then((response)=>response != null ?_getSchedulesDataFromSharedPreference():null);
                 }
 
               }
@@ -92,87 +98,86 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView(
             children: List.generate(schedules.length, (index) {
               return Card(
-                child: ListTile(
-                  // tileColor:  Colors.blue,
-                  // selectedTileColor: Colors.blue[200],
-                  onLongPress: () {
-                    setState(() {
-                      selectingmode = true;
-                    });
-                  },
-                  onTap: () {
-                    if(selectingmode) {
-                      setState(() {
-                          schedules[index].selected = !schedules[index].selected;
-                          print(schedules[index].selected.toString());
-                      });
-                    } else {
-                      Navigator.push(context,CupertinoPageRoute(builder: (context) => EditSchduleScreen()),).then((response)=>response?_getSchedulesDataFromSharedPreference():null);
-                    }
-                  },
-                  selected: schedules[index].selected,
-                  title: Text(
-                    schedules[index].name.toString().toUpperCase(),
-                    style: TextStyle(
-                      fontFamily: 'avenir',
-                      // fontWeight: FontWeight.w100,
-                      fontSize: 24,
-                      color: Colors.black
-                    ),
-                  ),
-                  subtitle: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${schedules[index].start} - ${schedules[index].end}",
-                        style: TextStyle(
-                          fontFamily: 'avenir',
-                          fontWeight: FontWeight.w100,
-                          fontSize: 16,
-                          color: Colors.black
-                        ),
-                      ),
-                      Wrap(
-                          spacing: 6.0,
-                          runSpacing: 6.0,
-                          children: [
-                            Chip(
-                              label: Text('S'),
-                            ),
-                            Chip(
-                              label: Text('S'),
-                            ),
-                            Chip(
-                              label: Text('M'),
-                            ),
-                            Chip(
-                              label: Text('T'),
-                            ),
-                            Chip(
-                              label: Text('W'),
-                            ),
-                            Chip(
-                              label: Text('T'),
-                            ),
-                            Chip(
-                              label: Text('F'),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                  trailing: (selectingmode)
-                  ? ((schedules[index].selected)
-                  ? Icon(Icons.check_box)
-                  : Icon(Icons.check_box_outline_blank))
-                  : Switch (
-                    value: schedules[index].status, 
-                    onChanged: (bool value) async {
-                      await ScheduleController.remove(index);
-                      _getSchedulesDataFromSharedPreference();
+                child: Dismissible(
+                    background: Container(color: Colors.red),
+                    key: Key(index.toString()),
+                    onDismissed: (direction) async {
+                      // Remove the item from the data source.
+                      await ScheduleController.remove(schedules,index);
+
+                      // Show a snackbar. This snackbar could also contain "Undo" actions.
+                      ScaffoldMessenger
+                          .of(context)
+                          .showSnackBar(SnackBar(content: Text("${schedules[index].name} Successfully Deleted.")));
                     },
-                    activeColor: Colors.blue,
+                    child: ListTile(
+                    // tileColor:  Colors.blue,
+                    // selectedTileColor: Colors.blue[200],
+                    onLongPress: () {
+                      setState(() {
+                        selectingmode = true;
+                      });
+                    },
+                    onTap: () {
+                      if(selectingmode) {
+                        setState(() {
+                            schedules[index].selected = !schedules[index].selected;
+                            print(schedules[index].selected.toString());
+                        });
+                      } else {
+                        Navigator.push(context,CupertinoPageRoute(builder: (context) => EditSchduleScreen(schedules,index)),).then((response)=>response?_getSchedulesDataFromSharedPreference():null);
+                      }
+                    },
+                    selected: schedules[index].selected,
+                    title: Text(
+                      "${schedules[index].start} - ${schedules[index].end}",
+                      style: TextStyle(
+                        // fontFamily: 'avenir',
+                        fontWeight: FontWeight.w300,
+                        fontSize: 16,
+                        color: Colors.black54
+                      ),
+                    ),
+                    subtitle: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          schedules[index].name.toString().toUpperCase(),
+                          style: TextStyle(
+                            // fontFamily: 'avenir',
+                            // fontWeight: FontWeight.w100,
+                            fontSize: 24,
+                            color: Colors.black87
+                          ),
+                        ),
+                        Text(
+                          "${schedules[index].dayNames.toString().toUpperCase()}",
+                          style: TextStyle(
+                            // fontFamily: 'avenir',
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
+                            color: Colors.blue
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: (selectingmode)
+                    ? ((schedules[index].selected)
+                    ? Icon(Icons.check_box)
+                    : Icon(Icons.check_box_outline_blank))
+                    : Switch(
+                      value: schedules[index].status, 
+                      onChanged: (bool value) async {
+                          schedules[index].status = !schedules[index].status;
+                        // setState(() {
+                        // });
+                        await ScheduleController.update(schedules);
+                        // await ScheduleController.remove(schedules,index);
+                        _getSchedulesDataFromSharedPreference();
+                      },
+                      activeColor: Colors.blue,
+                    ),
                   ),
                 ),
               );

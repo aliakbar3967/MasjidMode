@@ -8,7 +8,7 @@ class ScheduleController {
 
     static store(Schedule _schedule) async
     {
-        print(_schedule);
+        // print(_schedule);
         // SharedPreferences prefs;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         
@@ -21,7 +21,7 @@ class ScheduleController {
           String encodedSchedulesList = Schedule.encode(decodedSchedules);
           await prefs.setString('__schedules', encodedSchedulesList);
           // print(encodedSchedulesList);
-          print('Data stored done');
+          // print('Data stored done');
         } else {
           Map<String, dynamic> jsonSchedule = Schedule.toMap(_schedule);
           String encodedStringSchedule = json.encode(jsonSchedule);
@@ -30,8 +30,37 @@ class ScheduleController {
           String encodedSchedulesList = Schedule.encode([_schedule]);
           await prefs.setString('__schedules', encodedSchedulesList);
           // print('no data fount. data store failed.');
-          print('Data stored done');
+          // print('Data stored done');
         }
+    }
+
+    static update(List<Schedule> _schedules) async
+    {
+        // print(_schedule);
+        // SharedPreferences prefs;
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        
+        // String schedules = prefs.getString('__schedules');
+        if(_schedules != null)
+        {
+          // List<Schedule> decodedSchedules = Schedule.decode(_schedules);
+          // decodedSchedules.add(_schedule);
+
+          String encodedSchedulesList = Schedule.encode(_schedules);
+          await prefs.setString('__schedules', encodedSchedulesList);
+          // print(encodedSchedulesList);
+          // print('Data stored done');
+        }
+        //  else {
+        //   // Map<String, dynamic> jsonSchedule = Schedule.toMap(_schedule);
+        //   // String encodedStringSchedule = json.encode(jsonSchedule);
+        //   // print(encodedStringSchedule); // single schedule string
+
+        //   // String encodedSchedulesList = Schedule.encode([_schedule]);
+        //   await prefs.setString('__schedules', null);
+        //   // print('no data fount. data store failed.');
+        //   // print('Data stored done');
+        // }
     }
 
     static Future<List<Schedule>> getSchedules() async
@@ -48,21 +77,21 @@ class ScheduleController {
         }
     }
 
-    static remove(int index) async
+    static remove(List<Schedule> schedules, int index) async
     {
       SharedPreferences prefs = await SharedPreferences.getInstance();
         
-      String schedules = prefs.getString('__schedules');
-      List<Schedule> results = Schedule.decode(schedules);
-      results.removeAt(index);
+      // String schedules = prefs.getString('__schedules');
+      // List<Schedule> results = Schedule.decode(schedules);
+      schedules.removeAt(index);
       // print('schedules = ${results.length}');
-      if(results == null || results.length == 0) await prefs.setString('__schedules', null);
+      if(schedules == null || schedules.length == 0) await prefs.setString('__schedules', null);
       else {
-        String encodedSchedulesList = Schedule.encode(results);
+        String encodedSchedulesList = Schedule.encode(schedules);
         await prefs.setString('__schedules', encodedSchedulesList);
       }
       // print('no data fount. data store failed.');
-      print('Data remove done');
+      // print('Data remove done');
       // print(results);
     }
 }

@@ -7,6 +7,7 @@ class Schedule {
     String start;
     String end;
     String days;
+    String dayNames;
     String options;
     bool selected;
     // Map days = {'sat':false, 'sun':false,'mon':false,'tue':false,'wed':false,'thu':false,'fri':false};
@@ -17,6 +18,7 @@ class Schedule {
         this.start,
         this.end,
         this.days,
+        this.dayNames,
         this.options,
         this.status,
         this.selected,
@@ -28,6 +30,7 @@ class Schedule {
           start: jsonData['start'],
           end: jsonData['end'],
           days: jsonData['days'],
+          dayNames: Day.getDaysNames(jsonData['days']),
           options: jsonData['options'],
           status: jsonData['status'],
           selected: false,
@@ -39,6 +42,7 @@ class Schedule {
         'start': schedule.start,
         'end': schedule.end,
         'days': schedule.days,
+        'dayNames': schedule.dayNames,
         'options': schedule.options,
         'status': schedule.status,
         'selected': schedule.selected,
