@@ -72,7 +72,7 @@ class SettingsController {
   static startTask() async {
     await FlutterForegroundServicePlugin.startPeriodicTask(
       periodicTaskFun: periodicTaskFun,
-      period: const Duration(seconds: 5),
+      period: const Duration(seconds: 15),
     );
   }
 

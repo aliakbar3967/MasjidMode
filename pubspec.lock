@@ -83,13 +83,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.7"
-  flutter_switch:
-    dependency: "direct main"
-    description:
-      name: flutter_switch
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -121,6 +114,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -170,6 +170,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.0"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0"
   shared_preferences:
     dependency: "direct main"
     description:

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/controller/settings_controller.dart';
 import 'package:peace_time/model/schedule.dart';
@@ -41,8 +40,9 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
 
   TimeOfDay time;
   TimeOfDay picked;
-  String start = TimeOfDay.now().toString();
-  String end = TimeOfDay.now().toString();
+
+  String start = "12:00 am";
+  String end = "12:00 am";
   String name;
 
   Future<Null> selectStartTime(BuildContext context) async {

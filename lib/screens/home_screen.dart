@@ -9,7 +9,6 @@ import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
 import 'package:peace_time/screens/edit_schedule_screen.dart';
 import 'package:peace_time/screens/settings_screen.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -29,8 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
       loading = true;
     });
     List<Schedule> results = await ScheduleController.getSchedules();
-    // print(results);
-    if(results == null)
+    print(results);
+    if(results == null && results.length == 0)
     {
       setState(() {
         schedules = null;
@@ -99,16 +98,21 @@ class _HomeScreenState extends State<HomeScreen> {
             children: List.generate(schedules.length, (index) {
               return Card(
                 child: Dismissible(
-                    background: Container(color: Colors.red),
+                    direction: DismissDirection.startToEnd,
+                    background: Container(
+                      padding: EdgeInsets.only(left: 12),
+                      color: Colors.red,
+                      child: Icon(Icons.delete, color: Colors.white,),
+                      alignment: Alignment.centerLeft,
+                    ),
                     key: Key(index.toString()),
                     onDismissed: (direction) async {
                       // Remove the item from the data source.
                       await ScheduleController.remove(schedules,index);
+                      _getSchedulesDataFromSharedPreference();
 
                       // Show a snackbar. This snackbar could also contain "Undo" actions.
-                      ScaffoldMessenger
-                          .of(context)
-                          .showSnackBar(SnackBar(content: Text("${schedules[index].name} Successfully Deleted.")));
+                      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${schedules[index].name} Successfully Deleted.")));
                     },
                     child: ListTile(
                     // tileColor:  Colors.blue,
