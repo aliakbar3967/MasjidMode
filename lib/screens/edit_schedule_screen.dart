@@ -7,6 +7,8 @@ import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/widgets/checkbox.dart';
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
+
 class EditSchduleScreen extends StatefulWidget {
   final List<Schedule> _schedules;
   final int _index;
@@ -76,7 +78,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
     widget._schedules[widget._index].days = jsonEncode(days);
     widget._schedules[widget._index].options = jsonEncode(options);
 
-    ScheduleController.update(widget._schedules);
+    Provider.of<ScheduleController>(context,listen: false).update(widget._schedules[widget._index], widget._index);
     if(await SettingsController.isRunningForgroundService()){
       await SettingsController.stopTask();
       await SettingsController.startTask();
@@ -104,13 +106,6 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _setData();
-    // _getDataL();
-    // start = TimeOfDay.now();
-    // end = TimeOfDay.now();
-    // print(time);
-    // selectEndTime(context);
-    // selectStartTime(context);
     checkSchedules();
   }
 
@@ -119,7 +114,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('New Schedule'),
+        title: Text('Edit Schedule'),
       ),
       body: SafeArea(
         bottom: false,
@@ -141,33 +136,9 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                           child: TextField(
                             controller: name,
-                            // onChanged: (String value) {
-                            //   setState(() {
-                            //     name = value;
-                            //   });
-                            //   // print(name);
-                            // },
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              // icon: Icon(Icons.favorite),
-                              // labelText: 'Name',
-                              // labelStyle: TextStyle(
-                              //   color: Color(0xFF6200EE),
-                              // ),
-                              // helperText: 'Helper text',
-                              // suffixIcon: Icon(
-                              //   Icons.check_circle,
-                              // ),
-                              // enabledBorder: UnderlineInputBorder(
-                              //   borderSide: BorderSide(color: Color(0xFF6200EE)),
-                              // ),
                               hintText: 'Name',
-                              // border: OutlineInputBorder(
-                              //   borderSide: BorderSide(
-                              //     color: Colors.red,//this has no effect
-                              //   ),
-                              //   borderRadius: BorderRadius.circular(10.0),
-                              // ),
                             ),
                           ),
                         ),

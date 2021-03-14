@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:peace_time/controller/settings_controller.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,9 @@ class ScheduleController with ChangeNotifier {
   bool isLoading = true;
 
   // String get name => schedule;
+  ScheduleController() {
+    getScheduesData();
+  }
 
   void toggleSelectedMode() {
     selectedMode = !selectedMode;
@@ -55,15 +59,17 @@ class ScheduleController with ChangeNotifier {
   }
 
   Future<void> removeSchedule(index) async {
+    SettingsController.stopTask();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     schedules.removeAt(index);
     if(schedules == null || schedules.length == 0) {
-      await prefs.setString('__schedules', null);
+      await prefs.setString('__schedules', Schedule.encode(schedules));
     }
     else {
       String encodedSchedulesList = Schedule.encode(schedules);
       await prefs.setString('__schedules', encodedSchedulesList);
     }
+    SettingsController.startTask();
     notifyListeners();
   }
 
@@ -74,72 +80,37 @@ class ScheduleController with ChangeNotifier {
     schedules[index].status = !schedules[index].status;
     if(schedules != null)
     {
-      // List<Schedule> decodedSchedules = Schedule.decode(_schedules);
-      // decodedSchedules.add(_schedule);
       String encodedSchedulesList = Schedule.encode(schedules);
       await prefs.setString('__schedules', encodedSchedulesList);
-      // print(encodedSchedulesList);
-      // print('Data stored done');
     }
     notifyListeners();
   }
 
-    static store(Schedule _schedule) async
+    Future<void> store(Schedule _schedule) async
     {
-        // print(_schedule);
-        // SharedPreferences prefs;
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        
-        String schedules = prefs.getString('__schedules');
-        if(schedules != null)
-        {
-          List<Schedule> decodedSchedules = Schedule.decode(schedules);
-          decodedSchedules.add(_schedule);
+          schedules.add(_schedule);
 
-          String encodedSchedulesList = Schedule.encode(decodedSchedules);
+          String encodedSchedulesList = Schedule.encode(schedules);
           await prefs.setString('__schedules', encodedSchedulesList);
-          // print(encodedSchedulesList);
-          // print('Data stored done');
-        } else {
-          Map<String, dynamic> jsonSchedule = Schedule.toMap(_schedule);
-          String encodedStringSchedule = json.encode(jsonSchedule);
-          // print(encodedStringSchedule); // single schedule string
 
-          String encodedSchedulesList = Schedule.encode([_schedule]);
-          await prefs.setString('__schedules', encodedSchedulesList);
-          // print('no data fount. data store failed.');
-          // print('Data stored done');
-        }
-      
+          schedules = Schedule.decode(encodedSchedulesList);
+      notifyListeners();
     }
 
-    static update(List<Schedule> _schedules) async
+    Future<void> update(schedule, index) async
     {
-        // print(_schedule);
-        // SharedPreferences prefs;
         SharedPreferences prefs = await SharedPreferences.getInstance();
         
-        // String schedules = prefs.getString('__schedules');
-        if(_schedules != null)
+        if(schedules != null)
         {
-          // List<Schedule> decodedSchedules = Schedule.decode(_schedules);
-          // decodedSchedules.add(_schedule);
+          schedules[index] = schedule;
 
-          String encodedSchedulesList = Schedule.encode(_schedules);
+          String encodedSchedulesList = Schedule.encode(schedules);
           await prefs.setString('__schedules', encodedSchedulesList);
-          // print(encodedSchedulesList);
-          // print('Data stored done');
+          schedules = Schedule.decode(encodedSchedulesList);
         }
-        //  else {
-        //   // Map<String, dynamic> jsonSchedule = Schedule.toMap(_schedule);
-        //   // String encodedStringSchedule = json.encode(jsonSchedule);
-        //   // print(encodedStringSchedule); // single schedule string
-
-        //   // String encodedSchedulesList = Schedule.encode([_schedule]);
-        //   await prefs.setString('__schedules', null);
-        //   // print('no data fount. data store failed.');
-        //   // print('Data stored done');
-        // }
+        notifyListeners();
     }
 
     static Future<List<Schedule>> getSchedules() async

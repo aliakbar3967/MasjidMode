@@ -6,6 +6,8 @@ import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/widgets/checkbox.dart';
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
+
 class CreateSchduleScreen extends StatefulWidget {
   @override
   _CreateSchduleScreenState createState() => _CreateSchduleScreenState();
@@ -92,7 +94,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
       selected: false,
     );
 
-    ScheduleController.store(schedule);
+    Provider.of<ScheduleController>(context,listen: false).store(schedule);
     if(await SettingsController.isRunningForgroundService()){
       await SettingsController.stopTask();
       await SettingsController.startTask();
