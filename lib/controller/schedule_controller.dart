@@ -48,13 +48,13 @@ class ScheduleController with ChangeNotifier {
     notifyListeners();
   }
   
-  void getScheduesData() async {
+  Future<void> getScheduesData() async {
     // SharedPreferences prefs;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     
     String schedulesFromPrefs = prefs.getString('__schedules');
 
-    schedules = Schedule.decode(schedulesFromPrefs);
+    if(schedulesFromPrefs != null) schedules = Schedule.decode(schedulesFromPrefs);
     isLoading = false;
     notifyListeners();
   }

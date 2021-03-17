@@ -9,7 +9,7 @@
     
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="peace_time"
+        android:label="Peace Time"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -54,7 +54,9 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: context.watch<ScheduleController>().isLoading
-      ? Center(child: CircularProgressIndicator(),)
+      ? Center(child: CupertinoActivityIndicator(),)
+      : context.watch<ScheduleController>().schedules == null
+      ? Center(child: Text('No items'),)
       : Consumer<ScheduleController>(
         builder: (context, schedulesController, child) {
           return schedulesController.schedules.isNotEmpty
@@ -137,7 +139,7 @@ class HomeScreen extends StatelessWidget {
               )
               : Center(child: Text('No items'),);
         }
-      ),
+      )
     );
   }
 }
