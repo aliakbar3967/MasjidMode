@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/controller/settings_controller.dart';
@@ -20,24 +21,24 @@ class EditSchduleScreen extends StatefulWidget {
 
 class _EditSchduleScreenState extends State<EditSchduleScreen> {
 
-  final Map<String, String> daysName = {
-    'sat':'satarday',
-    'sun':'sunday',
-    'mon':'monday',
-    'thu':'thusday',
-    'wed':'wednesday',
-    'tue':'tuesday',
-    'fri':'friday'
-  };
-  Map<String, dynamic> days;
-  Map<String, dynamic> options;
-
   TimeOfDay time;
   TimeOfDay picked;
   String start;
   String end;
   // String name;
   TextEditingController name;
+  bool silent = false;
+  bool vibrate = false;
+  bool airplane = false;
+  bool notify = false;
+  bool saturday = false;
+  bool sunday = false;
+  bool monday = false;
+  bool tuesday = false;
+  bool wednesday = false;
+  bool thursday = false;
+  bool friday = false;
+  bool status = false;
 
   Future<Null> selectStartTime(BuildContext context) async {
     picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
@@ -75,8 +76,17 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
     widget._schedules[widget._index].name = name.text;
     widget._schedules[widget._index].start = start;
     widget._schedules[widget._index].end = end;
-    widget._schedules[widget._index].days = jsonEncode(days);
-    widget._schedules[widget._index].options = jsonEncode(options);
+    widget._schedules[widget._index].silent = silent;
+    widget._schedules[widget._index].vibrate = vibrate;
+    widget._schedules[widget._index].airplane = airplane;
+    widget._schedules[widget._index].notify = notify;
+    widget._schedules[widget._index].saturday = saturday;
+    widget._schedules[widget._index].sunday = sunday;
+    widget._schedules[widget._index].monday = monday;
+    widget._schedules[widget._index].thursday = thursday;
+    widget._schedules[widget._index].wednesday = wednesday;
+    widget._schedules[widget._index].tuesday = tuesday;
+    widget._schedules[widget._index].friday = friday;
 
     Provider.of<ScheduleController>(context,listen: false).update(widget._schedules[widget._index], widget._index);
     if(await SettingsController.isRunningForgroundService()){
@@ -89,17 +99,20 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
   }
 
   void checkSchedules() async {
-    // Navigator.pop(context);
-    // await ScheduleController.getSchedules();
-    Option _option = Option.decode(widget._schedules[widget._index].options);
-    this.options = Option.toMap(_option);
-    Day _days = Day.decode(widget._schedules[widget._index].days);
-    this.days = Day.toMap(_days);
-
+    this.name = new TextEditingController(text: widget._schedules[widget._index].name);
     this.start = widget._schedules[widget._index].start;
     this.end = widget._schedules[widget._index].end;
-    this.name = new TextEditingController(text: widget._schedules[widget._index].name);
-    // print(days['sat']);
+    this.silent = widget._schedules[widget._index].silent;
+    this.vibrate = widget._schedules[widget._index].vibrate;
+    this.airplane = widget._schedules[widget._index].airplane;
+    this.notify = widget._schedules[widget._index].notify;
+    this.saturday = widget._schedules[widget._index].saturday;
+    this.sunday = widget._schedules[widget._index].sunday;
+    this.monday = widget._schedules[widget._index].monday;
+    this.thursday = widget._schedules[widget._index].thursday;
+    this.wednesday = widget._schedules[widget._index].wednesday;
+    this.tuesday = widget._schedules[widget._index].tuesday;
+    this.friday = widget._schedules[widget._index].friday;
   }
 
   @override
@@ -112,6 +125,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         elevation: 0,
         title: Text('Edit Schedule'),
@@ -132,6 +146,8 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                   child: Column(
                     children: [
                       Card(
+                        elevation: 30,
+                        shadowColor: Colors.white,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                           child: TextField(
@@ -185,105 +201,105 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                days['sat'] = !days['sat'];
+                                saturday = !saturday;
                               });
                             },
                             child: Chip(
                               label: Text('s'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: days['sat'] ? Colors.white : null
+                                color: saturday ? Colors.white : null
                               ),
-                              backgroundColor: days['sat'] ? Colors.blue : null,
+                              backgroundColor: saturday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                days['sun'] = !days['sun'];
+                                sunday = !sunday;
                               });
                             },
                             child: Chip(
                               label: Text('S'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: days['sun'] ? Colors.white : null
+                                color: sunday ? Colors.white : null
                               ),
-                              backgroundColor: days['sun'] ? Colors.blue : null,
+                              backgroundColor: sunday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                days['mon'] = !days['mon'];
+                                monday = !monday;
                               });
                             },
                             child: Chip(
                               label: Text('m'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: days['mon'] ? Colors.white : null
+                                color: monday ? Colors.white : null
                               ),
-                              backgroundColor: days['mon'] ? Colors.blue : null,
+                              backgroundColor: monday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                days['thu'] = !days['thu'];
+                                thursday = !thursday;
                               });
                             },
                             child: Chip(
                               label: Text('t'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: days['thu'] ? Colors.white : null
+                                color: thursday ? Colors.white : null
                               ),
-                              backgroundColor: days['thu'] ? Colors.blue : null,
+                              backgroundColor: thursday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                days['wed'] = !days['wed'];
+                                wednesday = !wednesday;
                               });
                             },
                             child: Chip(
                               label: Text('w'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: days['wed'] ? Colors.white : null
+                                color: wednesday ? Colors.white : null
                               ),
-                              backgroundColor: days['wed'] ? Colors.blue : null,
+                              backgroundColor: wednesday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                days['tue'] = !days['tue'];
+                                tuesday = !tuesday;
                               });
                             },
                             child: Chip(
                               label: Text('t'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: days['tue'] ? Colors.white : null
+                                color: tuesday ? Colors.white : null
                               ),
-                              backgroundColor: days['tue'] ? Colors.blue : null,
+                              backgroundColor: tuesday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                days['fri'] = !days['fri'];
+                                friday = !friday;
                               });
                             },
                             child: Chip(
                               label: Text('f'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: days['fri'] ? Colors.white : null
+                                color: friday ? Colors.white : null
                               ),
-                              backgroundColor: days['fri'] ? Colors.blue : null,
+                              backgroundColor: friday ? Colors.blue : null,
                             ),
                           ),
                         ],
@@ -292,12 +308,12 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                         child: ListTile(
                           title: Text("Silent Mode"),
                           subtitle: Text("Phone will automatically silent."),
-                          trailing: Switch(
-                            value: options['silent'],
+                          trailing: CupertinoSwitch(
+                            value: silent,
                             activeColor: Colors.blue,
                             onChanged: (bool value) {
                               setState(() {
-                                options['silent'] = !options['silent'];
+                                silent = !silent;
                               });
                             },
                           ),
@@ -307,47 +323,47 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                         child: ListTile(
                           title: Text("Vibrate Mode"),
                           subtitle: Text("Phone will automatically vibrate."),
-                          trailing: Switch(
-                            value: options['vibrate'],
+                          trailing: CupertinoSwitch(
+                            value: vibrate,
                             activeColor: Colors.blue,
                             onChanged: (bool value) {
                               setState(() {
-                                options['vibrate'] = !options['vibrate'];
+                                vibrate = !vibrate;
                               });
                             },
                           ),
                         ),
                       ),
-                      Card(
-                        child: ListTile(
-                          title: Text("Airplane Mode"),
-                          subtitle: Text("Phone will automatically airplane."),
-                          trailing: Switch(
-                            value: options['airplane'],
-                            activeColor: Colors.blue,
-                            onChanged: (bool value) {
-                              setState(() {
-                                options['airplane'] = !options['airplane'];
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: Text("Notify Me"),
-                          subtitle: Text("Phone will automatically notify you."),
-                          trailing: Switch(
-                            value: options['notifyme'],
-                            activeColor: Colors.blue,
-                            onChanged: (bool value) {
-                              setState(() {
-                                options['notifyme'] = !options['notifyme'];
-                              });
-                            },
-                          ),
-                        ),
-                      ),
+                      // Card(
+                      //   child: ListTile(
+                      //     title: Text("Airplane Mode"),
+                      //     subtitle: Text("Phone will automatically airplane."),
+                      //     trailing: CupertinoSwitch(
+                      //       value: airplane,
+                      //       activeColor: Colors.blue,
+                      //       onChanged: (bool value) {
+                      //         setState(() {
+                      //           airplane = !airplane;
+                      //         });
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+                      // Card(
+                      //   child: ListTile(
+                      //     title: Text("Notify Me"),
+                      //     subtitle: Text("Phone will automatically notify you."),
+                      //     trailing: CupertinoSwitch(
+                      //       value: notify,
+                      //       activeColor: Colors.blue,
+                      //       onChanged: (bool value) {
+                      //         setState(() {
+                      //           notify = !notify;
+                      //         });
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
                     ]
                   ),
                 ),
@@ -372,20 +388,20 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                     ),
                     OutlinedButton (
                       onPressed: () {
-                        if(name != null && name != '') {
+                        if(name.text != null && name.text != '') {
                           saveData();
                         }
                       },
                       child: Text(
                         'Save', 
                         style: TextStyle(
-                          color: (name != null && name != '') ? Colors.blue : Colors.black12
+                          color: (name.text != null && name.text != '') ? Colors.blue : Colors.black12
                         ),
                       ),
-                      autofocus: (name != null && name != '') ? true : false,
+                      autofocus: (name.text != null && name.text != '') ? true : false,
                       style: OutlinedButton.styleFrom(
                         shape: StadiumBorder(),
-                        side: BorderSide(width: 2, color: (name != null && name != '') ? Colors.blue : Colors.black12),
+                        side: BorderSide(width: 2, color: (name.text != null && name.text != '') ? Colors.blue : Colors.black12),
                         padding: EdgeInsets.symmetric(horizontal:32, vertical: 16)
                       ),
                     ),

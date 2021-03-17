@@ -10,6 +10,7 @@ import 'package:sound_mode/sound_mode.dart';
 import 'package:sound_mode/utils/sound_profiles.dart';
 
 class SettingsController {
+  
   static TimeOfDay fromString(String time) {
     int hh = 0;
     if (time.endsWith('PM')) hh = 12;
@@ -21,7 +22,7 @@ class SettingsController {
   }
 
   static bool _timeBetween(String start, String end) {
-    print("start $start and end $end");
+    // print("start $start and end $end");
     TimeOfDay startTime = SettingsController.fromString(start);
     TimeOfDay endTime = SettingsController.fromString(end);
     // TimeOfDay currentTime = fromString("5:30 am");
@@ -39,7 +40,7 @@ class SettingsController {
     // double _hrDiffBefore = _timeDiffBefore.truncate() * 1.0;
     double _minuteIsBefore = (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
 
-    if(_minuteIsAfter >= 0 && _minuteIsBefore >= 0) return true;
+    if(_minuteIsAfter >= 0 && _minuteIsBefore >= 1) return true;
     else return false;
   }
 
@@ -47,7 +48,7 @@ class SettingsController {
     await FlutterForegroundServicePlugin.startForegroundService(
       notificationContent: NotificationContent(
         iconName: 'ic_launcher',
-        titleText: 'Title Text',
+        titleText: 'App is running on background. Do not stop.',
         color: Colors.red,
         priority: NotificationPriority.high,
       ),
@@ -107,15 +108,6 @@ class SettingsController {
     } catch (err) {
       ringerStatus = 'Failed to get device\'s ringer status.$err';
     }
-    // print("v$ringerStatus v");
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    // if (!mounted) return;
-
-    // setState(() {
-    //   _soundMode = ringerStatus;
-    // });
   }
 
   static Future<bool> getPermissionStatus() async {
@@ -128,49 +120,27 @@ class SettingsController {
       print(err);
       return false;
     }
-
-    // setState(() {
-    //   _permissionStatus =
-    //   permissionStatus ? "Permissions Enabled" : "Permissions not granted";
-    // });
   }
 
   static Future<void> setSilentMode() async {
-    String message;
-
     try {
-      message = await SoundMode.setSoundMode(Profiles.SILENT);
-
-      // setState(() {
-      //   _soundMode = message;
-      // });
+      await SoundMode.setSoundMode(Profiles.SILENT);
     } on PlatformException {
       print('Do Not Disturb access permissions required!');
     }
   }
 
   static Future<void> setNormalMode() async {
-    String message;
-
     try {
-      message = await SoundMode.setSoundMode(Profiles.NORMAL);
-      // setState(() {
-      //   _soundMode = message;
-      // });
+      await SoundMode.setSoundMode(Profiles.NORMAL);
     } on PlatformException {
       print('Do Not Disturb access permissions required!');
     }
   }
 
   static Future<void> setVibrateMode() async {
-    String message;
-
     try {
-      message = await SoundMode.setSoundMode(Profiles.VIBRATE);
-
-      // setState(() {
-      //   _soundMode = message;
-      // });
+      await SoundMode.setSoundMode(Profiles.VIBRATE);
     } on PlatformException {
       print('Do Not Disturb access permissions required!');
     }
@@ -179,6 +149,32 @@ class SettingsController {
   static Future<void> openDoNotDisturbSettings() async {
     await PermissionHandler.openDoNotDisturbSetting();
   }
+}
+
+Map<int,String> _dayNames = {
+  1:'monday',
+  2:'tuesday',
+  3:'wednesday',
+  4:'thursday',
+  5:'friday',
+  6:'saturday',
+  7:'sunday',
+};
+
+bool isToday(Schedule schedule) {
+  String todayName;
+
+  DateTime date = DateTime.now();
+  todayName = _dayNames[date.weekday];
+
+  if(schedule.saturday == true && todayName == 'saturday') return true;
+  else if(schedule.sunday == true && todayName == 'sunday') return true;
+  else if(schedule.monday == true && todayName == 'monday') return true;
+  else if(schedule.thursday == true && todayName == 'thursday') return true;
+  else if(schedule.wednesday == true && todayName == 'wednesday') return true;
+  else if(schedule.tuesday == true && todayName == 'tuesday') return true;
+  else if(schedule.friday == true && todayName == 'friday') return true;
+  else return false;
 }
 
 void periodicTaskFun() {
@@ -201,29 +197,28 @@ void periodicTaskFun() {
 
     List<Schedule> schedules = await ScheduleController.getSchedules();
 
-          SettingsController.getCurrentSoundMode();
-          // "Silent Mode"
-          // "Normal Mode"
-          // "Vibrate Mode"
+    // SettingsController.getCurrentSoundMode();
+    // "Silent Mode"
+    // "Normal Mode"
+    // "Vibrate Mode"
     if(schedules == null) return;
     else {
       // schedules.forEach((element) => print(element.name)); 
+      bool isPeaceTimeSilent = false;
+      bool isPeaceTimeVibrate = false;
+      
       schedules.forEach((schedule) {
+        print(schedule.toString());
         if(schedule.status == true && SettingsController._timeBetween(schedule.start, schedule.end))
         {
-          // timeDifference(schedule.start, schedule.end);
-          // print('Schedule ${schedule.start} status true');
-          SettingsController.setSilentMode();
-        } else {
-          SettingsController.setNormalMode();
-          // bool diff = Settings._timeBetween(schedule.start, schedule.end);
-          // if(diff) print('true');
-          // else print('false');
-          // isBefore(schedule.start);
-          // isAfter(schedule.start);
-          // print('Schedule ${schedule.start} status false');
+          if(schedule.vibrate == true && isToday(schedule)) isPeaceTimeVibrate = true;
+          else if(schedule.silent == true && isToday(schedule)) isPeaceTimeSilent = true;
         }
-      }); 
+      });
+
+      if(isPeaceTimeVibrate == true) SettingsController.setVibrateMode();
+      else if(isPeaceTimeSilent == true) SettingsController.setSilentMode();
+      else SettingsController.setNormalMode();
     }
   });
 }

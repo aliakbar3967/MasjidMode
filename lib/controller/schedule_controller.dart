@@ -26,17 +26,18 @@ class ScheduleController with ChangeNotifier {
   void toggleAllSelectedMode() {
     selectedMode = false;
     isAllSelectedMode = false;
-    schedules.forEach((element) => element.selected = false);
+    schedules.forEach((element) => element.isselected = false);
     notifyListeners();
   }
 
   void toggleScheduleSelected(index) {
-    schedules[index].selected = !schedules[index].selected;
+    schedules[index].isselected = !schedules[index].isselected;
     notifyListeners();
   }
 
   void toggleAllScheduleSelectedMode() {
-    schedules.forEach((element) => element.selected = !element.selected);
+    if(isAllSelectedMode) schedules.forEach((element) => element.isselected = false);
+    else schedules.forEach((element) => element.isselected = true);
     isAllSelectedMode = !isAllSelectedMode;
     notifyListeners();
   }
@@ -73,6 +74,23 @@ class ScheduleController with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeSelectedSchedules() async {
+    SettingsController.stopTask();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    schedules.removeWhere((element) => element.isselected == true);
+    if(schedules == null || schedules.length == 0) {
+      await prefs.setString('__schedules', Schedule.encode(schedules));
+    }
+    else {
+      String encodedSchedulesList = Schedule.encode(schedules);
+      await prefs.setString('__schedules', encodedSchedulesList);
+    }
+    isAllSelectedMode = false;
+    selectedMode = false;
+    SettingsController.startTask();
+    notifyListeners();
+  }
+
   void updateScheduleSelected(index) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
         
@@ -88,29 +106,29 @@ class ScheduleController with ChangeNotifier {
 
     Future<void> store(Schedule _schedule) async
     {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-          schedules.add(_schedule);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      schedules.add(_schedule);
 
-          String encodedSchedulesList = Schedule.encode(schedules);
-          await prefs.setString('__schedules', encodedSchedulesList);
+      String encodedSchedulesList = Schedule.encode(schedules);
+      await prefs.setString('__schedules', encodedSchedulesList);
 
-          schedules = Schedule.decode(encodedSchedulesList);
+      schedules = Schedule.decode(encodedSchedulesList);
       notifyListeners();
     }
 
     Future<void> update(schedule, index) async
     {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        
-        if(schedules != null)
-        {
-          schedules[index] = schedule;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      
+      if(schedules != null)
+      {
+        schedules[index] = schedule;
 
-          String encodedSchedulesList = Schedule.encode(schedules);
-          await prefs.setString('__schedules', encodedSchedulesList);
-          schedules = Schedule.decode(encodedSchedulesList);
-        }
-        notifyListeners();
+        String encodedSchedulesList = Schedule.encode(schedules);
+        await prefs.setString('__schedules', encodedSchedulesList);
+        schedules = Schedule.decode(encodedSchedulesList);
+      }
+      notifyListeners();
     }
 
     static Future<List<Schedule>> getSchedules() async
@@ -143,8 +161,19 @@ class ScheduleController with ChangeNotifier {
         String encodedSchedulesList = Schedule.encode(schedules);
         await prefs.setString('__schedules', encodedSchedulesList);
       }
-      // print('no data fount. data store failed.');
-      // print('Data remove done');
-      // print(results);
+    }
+
+    static String getDaysNames(Schedule schedule) {
+      String output = '';
+
+      if(schedule.saturday) output += 'sat, ';
+      if(schedule.sunday) output += 'sun, ';
+      if(schedule.monday) output += 'mon, ';
+      if(schedule.thursday) output += 'thu, ';
+      if(schedule.wednesday) output += 'wed, ';
+      if(schedule.tuesday) output += 'tue, ';
+      if(schedule.friday) output += 'fri';
+
+      return output;
     }
 }

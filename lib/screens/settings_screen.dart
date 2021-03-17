@@ -38,6 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text('Settings'),
         elevation: 0,
@@ -51,33 +52,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
     child: Column(
       children: [
         Card(
-          child: ListTile(
-            title: Text("Application"),
-            subtitle: Text("Auto silent will not working if it is off."),
-            trailing: Switch(
-              value: settings.isForgroundServiceRunning,
-              activeColor: Colors.blue,
-              onChanged: (bool value) async {
-                  settings.isForgroundServiceRunning
-                  ? await SettingsController.stopForgroundService()
-                  : await SettingsController.startForgroundServiceAndTask();
-                  setState(() {
-                    settings.isForgroundServiceRunning = !settings.isForgroundServiceRunning;
-                  });
-              },
+          borderOnForeground: false,
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2,vertical:8),
+            child: ListTile(
+              title: Text("Application"),
+              subtitle: Text("Auto silent will not working if it is off."),
+              trailing: CupertinoSwitch(
+                value: settings.isForgroundServiceRunning,
+                activeColor: Colors.blue,
+                onChanged: (bool value) async {
+                    settings.isForgroundServiceRunning
+                    ? await SettingsController.stopForgroundService()
+                    : await SettingsController.startForgroundServiceAndTask();
+                    setState(() {
+                      settings.isForgroundServiceRunning = !settings.isForgroundServiceRunning;
+                    });
+                },
+              ),
             ),
           ),
         ),
         Card(
+          borderOnForeground: false,
+          elevation: 3,
           child: GestureDetector(
             onTap: () => SettingsController.openDoNotDisturbSettings(),
-            child: ListTile(
-              title: Text("Do Not Disturb"),
-              subtitle: Text("Auto silent will not working if it is off."),
-              trailing: Switch(
-                value: settings.isDoNotDisturbPermissionStatus,
-                activeColor: Colors.blue,
-                onChanged: (bool value) {},
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2,vertical:8),
+              child: ListTile(
+                title: Text("Do Not Disturb"),
+                subtitle: Text("Auto silent will not working if it is off."),
+                trailing: CupertinoSwitch(
+                  value: settings.isDoNotDisturbPermissionStatus,
+                  activeColor: Colors.blue,
+                  onChanged: (bool value) {},
+                ),
               ),
             ),
           ),
