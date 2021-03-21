@@ -393,7 +393,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                         }
                       },
                       child: Text(
-                        'Save', 
+                        'Update', 
                         style: TextStyle(
                           color: (name.text != null && name.text != '') ? Colors.blue : Colors.black12
                         ),

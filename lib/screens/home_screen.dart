@@ -129,7 +129,7 @@ class HomeScreen extends StatelessWidget {
                         : Icon(Icons.check_box_outline_blank))
                         : CupertinoSwitch(
                           value: schedulesController.schedules[index].status, 
-                          onChanged: (bool value) => context.read<ScheduleController>().updateScheduleSelected(index),
+                          onChanged: (bool value) => context.read<ScheduleController>().toggleScheduleStatus(index),
                           activeColor: Colors.blue,
                         ),
                       ),

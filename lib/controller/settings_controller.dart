@@ -5,6 +5,7 @@ import 'package:peace_time/model/schedule.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sound_mode/permission_handler.dart';
 import 'package:sound_mode/sound_mode.dart';
 import 'package:sound_mode/utils/sound_profiles.dart';
@@ -21,28 +22,7 @@ class SettingsController {
     );
   }
 
-  static bool _timeBetween(String start, String end) {
-    // print("start $start and end $end");
-    TimeOfDay startTime = SettingsController.fromString(start);
-    TimeOfDay endTime = SettingsController.fromString(end);
-    // TimeOfDay currentTime = fromString("5:30 am");
-    TimeOfDay currentTime = TimeOfDay.now();
-
-    double _doubleCurrentTime = currentTime.hour.toDouble() + (currentTime.minute.toDouble() / 60);
-    double _doubleStartTime = startTime.hour.toDouble() + (startTime.minute.toDouble() / 60);
-    double _doubleEndTime = endTime.hour.toDouble() + (endTime.minute.toDouble() / 60);
-
-    double _timeDiffAfter = _doubleCurrentTime - _doubleStartTime;
-    double _timeDiffBefore = _doubleEndTime - _doubleCurrentTime;
-
-    // double _hrDiffAfter = _timeDiffAfter.truncate() * 1.0;
-    double _minuteIsAfter = (_timeDiffAfter - _timeDiffAfter.truncate()) * 60;
-    // double _hrDiffBefore = _timeDiffBefore.truncate() * 1.0;
-    double _minuteIsBefore = (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
-
-    if(_minuteIsAfter >= 0 && _minuteIsBefore >= 1) return true;
-    else return false;
-  }
+  
 
   static startForgroundService() async {
     await FlutterForegroundServicePlugin.startForegroundService(
@@ -81,14 +61,14 @@ class SettingsController {
     await FlutterForegroundServicePlugin.stopPeriodicTask();
   }
 
-  static startForgroundServiceAndTask() async {
+  static Future<void> startForgroundServiceAndTask() async {
     if(await SettingsController.isRunningForgroundService() == false) {
       await SettingsController.startForgroundService();
       await SettingsController.startTask();
     }
   }
 
-  static stopForgroundServiceAndTask() async {
+  static Future<void> stopForgroundServiceAndTask() async {
     if(await SettingsController.isRunningForgroundService()) {
       await SettingsController.stopTask();
       await SettingsController.stopForgroundService();
@@ -161,6 +141,31 @@ Map<int,String> _dayNames = {
   7:'sunday',
 };
 
+bool _timeBetween(String start, String end) {
+  // print("start $start and end $end");
+  TimeOfDay startTime = SettingsController.fromString(start);
+  TimeOfDay endTime = SettingsController.fromString(end);
+  // TimeOfDay currentTime = fromString("5:30 am");
+  TimeOfDay currentTime = TimeOfDay.now();
+
+  double _doubleCurrentTime = currentTime.hour.toDouble() + (currentTime.minute.toDouble() / 60);
+  double _doubleStartTime = startTime.hour.toDouble() + (startTime.minute.toDouble() / 60);
+  double _doubleEndTime = endTime.hour.toDouble() + (endTime.minute.toDouble() / 60);
+
+  double _timeDiffAfter = _doubleCurrentTime - _doubleStartTime;
+  double _timeDiffBefore = _doubleEndTime - _doubleCurrentTime;
+
+  // double _hrDiffAfter = _timeDiffAfter.truncate() * 1.0;
+  double _minuteIsAfter = (_timeDiffAfter - _timeDiffAfter.truncate()) * 60;
+  // double _hrDiffBefore = _timeDiffBefore.truncate() * 1.0;
+  // print("_minute");
+  // print(_minuteIsAfter.toString());
+  double _minuteIsBefore = (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
+  // print(_minuteIsBefore.toString());
+  if(_minuteIsAfter >= 0 && _minuteIsBefore >= 1) return true;
+  else return false;
+}
+
 bool isToday(Schedule schedule) {
   String todayName;
 
@@ -177,7 +182,7 @@ bool isToday(Schedule schedule) {
   else return false;
 }
 
-void periodicTaskFun() {
+Future<void> periodicTaskFun() async {
   FlutterForegroundServicePlugin.executeTask(() async {
     // this will refresh the notification content each time the task is fire
     // if you want to refresh the notification content too each time
@@ -194,31 +199,63 @@ void periodicTaskFun() {
 
     // print(DateTime.now());
     // print('=====');
-
-    List<Schedule> schedules = await ScheduleController.getSchedules();
-
-    // SettingsController.getCurrentSoundMode();
-    // "Silent Mode"
-    // "Normal Mode"
-    // "Vibrate Mode"
-    if(schedules == null) return;
-    else {
-      // schedules.forEach((element) => print(element.name)); 
-      bool isPeaceTimeSilent = false;
-      bool isPeaceTimeVibrate = false;
-      
-      schedules.forEach((schedule) {
-        print(schedule.toString());
-        if(schedule.status == true && SettingsController._timeBetween(schedule.start, schedule.end))
-        {
-          if(schedule.vibrate == true && isToday(schedule)) isPeaceTimeVibrate = true;
-          else if(schedule.silent == true && isToday(schedule)) isPeaceTimeSilent = true;
-        }
-      });
-
-      if(isPeaceTimeVibrate == true) SettingsController.setVibrateMode();
-      else if(isPeaceTimeSilent == true) SettingsController.setSilentMode();
-      else SettingsController.setNormalMode();
-    }
+    await soundModeChangeBySchedule();
+    
   });
+}
+
+Future<void> soundModeChangeBySchedule() async {
+  List<Schedule> schedules = await ScheduleController.getSchedules();
+
+  // SettingsController.getCurrentSoundMode();
+  // "Silent Mode"
+  // "Normal Mode"
+  // "Vibrate Mode"
+  if(schedules == null) return;
+  else {
+    // schedules.forEach((element) => print(element.name)); 
+    // bool isPeaceTimeSilent = false;
+    // bool isPeaceTimeVibrate = false;
+
+    final index = schedules.indexWhere((schedule) => (schedule.status == true && isToday(schedule) && _timeBetween(schedule.start, schedule.end)));
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    
+    if(index != -1) {
+      // schedules[index]
+      // await normalPeriod(true);
+      await prefs.setBool("__normal__period", true);
+      
+      if(schedules[index].vibrate == true) {
+        await SettingsController.setVibrateMode();
+      }
+      else if(schedules[index].silent == true) {
+        await SettingsController.setSilentMode();
+      }
+    } else {
+      bool __normalPeriod = prefs.getBool("__normal__period");
+      if(__normalPeriod == true) {
+        await prefs.setBool("__normal__period", false);
+        await SettingsController.setNormalMode();
+      }
+      // await setScheduleActiveMode(false);
+    }
+    
+    // schedules.forEach((schedule) {
+    //   // print(schedule.start.toString());
+    //   if(schedule.status == true && isToday(schedule) && _timeBetween(schedule.start, schedule.end))
+    //   {
+    //     if(schedule.vibrate == true) {
+    //       isPeaceTimeVibrate = true;
+    //     }
+    //     else if(schedule.silent == true) isPeaceTimeSilent = true;
+    //   }
+    // });
+
+    // if(isPeaceTimeVibrate == true) await SettingsController.setVibrateMode();
+    // else if(isPeaceTimeSilent == true) await SettingsController.setSilentMode();
+    // else {
+    //   await SettingsController.setNormalMode();
+    // }
+  }
 }

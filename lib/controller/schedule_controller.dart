@@ -15,7 +15,7 @@ class ScheduleController with ChangeNotifier {
 
   // String get name => schedule;
   ScheduleController() {
-    getScheduesData();
+    getSchedulesData();
   }
 
   void toggleSelectedMode() {
@@ -44,11 +44,11 @@ class ScheduleController with ChangeNotifier {
 
   void toggleIsloading() {
     isLoading = !isLoading;
-    getScheduesData();
+    getSchedulesData();
     notifyListeners();
   }
   
-  Future<void> getScheduesData() async {
+  Future<void> getSchedulesData() async {
     // SharedPreferences prefs;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     
@@ -91,7 +91,8 @@ class ScheduleController with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateScheduleSelected(index) async {
+  void toggleScheduleStatus(index) async {
+    await SettingsController.stopTask();
     SharedPreferences prefs = await SharedPreferences.getInstance();
         
     // String schedules = prefs.getString('__schedules');
@@ -101,6 +102,7 @@ class ScheduleController with ChangeNotifier {
       String encodedSchedulesList = Schedule.encode(schedules);
       await prefs.setString('__schedules', encodedSchedulesList);
     }
+    await SettingsController.startTask();
     notifyListeners();
   }
 
@@ -118,6 +120,7 @@ class ScheduleController with ChangeNotifier {
 
     Future<void> update(schedule, index) async
     {
+      // await SettingsController.stopTask();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       
       if(schedules != null)
@@ -128,6 +131,7 @@ class ScheduleController with ChangeNotifier {
         await prefs.setString('__schedules', encodedSchedulesList);
         schedules = Schedule.decode(encodedSchedulesList);
       }
+      // await SettingsController.startTask();
       notifyListeners();
     }
 

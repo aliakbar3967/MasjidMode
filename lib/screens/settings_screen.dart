@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service_plugin/flutter_foreground_service_plugin.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
@@ -15,6 +17,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   Settings settings = Settings(isForgroundServiceRunning:false, isDoNotDisturbPermissionStatus: false);
   bool isLoading = true;
+  bool isPending = false;
 
   Future<void> getSettingsData() async {
     // bool isForgroundServiceOn = await SettingsController.isRunningForgroundService();
@@ -47,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       body: isLoading 
-    ? Center(child: CircularProgressIndicator(),) 
+    ? Center(child: CupertinoActivityIndicator(),) 
     : SafeArea(
     child: Column(
       children: [
@@ -59,15 +62,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: ListTile(
               title: Text("Application"),
               subtitle: Text("Auto silent will not working if it is off."),
-              trailing: CupertinoSwitch(
+              trailing: isPending 
+              ? CupertinoActivityIndicator() 
+              : CupertinoSwitch(
                 value: settings.isForgroundServiceRunning,
                 activeColor: Colors.blue,
                 onChanged: (bool value) async {
-                    settings.isForgroundServiceRunning
-                    ? await SettingsController.stopForgroundService()
-                    : await SettingsController.startForgroundServiceAndTask();
+                  
                     setState(() {
-                      settings.isForgroundServiceRunning = !settings.isForgroundServiceRunning;
+                      isPending = true;
+                    });
+                    Timer(Duration(seconds: 5), () async {
+                      print("Yeah, this line is printed after 3 seconds");
+                      settings.isForgroundServiceRunning
+                      ? await SettingsController.stopForgroundService()
+                      : await SettingsController.startForgroundServiceAndTask();
+                      setState(() {
+                        settings.isForgroundServiceRunning = !settings.isForgroundServiceRunning;
+                        isPending = false;
+                      });
                     });
                 },
               ),
