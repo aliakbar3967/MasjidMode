@@ -32,6 +32,7 @@ dependencies:
   shared_preferences: ^2.0.4
   sound_mode: ^0.2.2
   provider: ^5.0.0
+  flutter_speed_dial: ^3.0.5
 
 dev_dependencies:
   flutter_test:

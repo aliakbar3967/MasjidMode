@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:peace_time/controller/settings_controller.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,6 +111,36 @@ class ScheduleController with ChangeNotifier {
     {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       schedules.add(_schedule);
+
+      String encodedSchedulesList = Schedule.encode(schedules);
+      await prefs.setString('__schedules', encodedSchedulesList);
+
+      schedules = Schedule.decode(encodedSchedulesList);
+      notifyListeners();
+    }
+    
+    Future<void> quick(int _min) async
+    {
+      Schedule schedule = Schedule(
+        name: "Quick $_min",
+        start: "12:00 am",
+        end: "12:30 am",
+        saturday: true,
+        sunday: true,
+        monday: true,
+        thursday: true,
+        tuesday: true,
+        wednesday: true,
+        friday: true,
+        silent: true,
+        airplane: false,
+        vibrate: false,
+        notify: false,
+        isselected: false,
+        status: true,
+      );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      schedules.add(schedule);
 
       String encodedSchedulesList = Schedule.encode(schedules);
       await prefs.setString('__schedules', encodedSchedulesList);

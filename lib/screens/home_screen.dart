@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
 import 'package:peace_time/screens/edit_schedule_screen.dart';
@@ -44,15 +45,61 @@ class HomeScreen extends StatelessWidget {
         // foregroundColor: Colors.black12,
         onPressed: () => context.read<ScheduleController>().removeSelectedSchedules(),
       )
-      : FloatingActionButton(
-        // elevation: 10.0,
-        focusElevation: 0.0,
-        child: Icon(Icons.add, size: 48.0,),
+      : SpeedDial(
+        // marginEnd: 18,
+        // marginBottom: 20,
+        icon: Icons.add,
+        // icon: Icons.menu,
+        activeIcon: Icons.close,
+        // buttonSize: 56.0,
+        visible: true,
+        closeManually: false,
+        renderOverlay: false,
+        curve: Curves.bounceIn,
+        overlayColor: Colors.white,
+        overlayOpacity: 0.8,
+        onOpen: () => print('OPENING DIAL'),
+        onClose: () => print('DIAL CLOSED'),
+        tooltip: 'Speed Dial',
+        heroTag: 'speed-dial-hero-tag',
         backgroundColor: Colors.blue,
-        // foregroundColor: Colors.black12,
-        onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),).then((response)=>null),
+        foregroundColor: Colors.white,
+        // elevation: 8.0,
+        shape: CircleBorder(),
+        gradientBoxShape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.blue[400], Colors.blue[700]],
+        ),
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.schedule),
+            backgroundColor: Colors.blue,
+            label: 'New Schedule',
+            labelStyle: TextStyle(fontSize: 18.0),
+            onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),).then((response)=>null),
+            onLongPress: () => print('New Schedule LONG PRESS'),
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.volume_off_sharp),
+            backgroundColor: Colors.blue,
+            label: '30m Quick Silent',
+            labelStyle: TextStyle(fontSize: 18.0),
+            onTap: () => context.read<ScheduleController>().quick(30),
+            onLongPress: () => print('SECOND CHILD LONG PRESS'),
+          ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // : FloatingActionButton(
+      //   // elevation: 10.0,
+      //   focusElevation: 0.0,
+      //   child: Icon(Icons.add, size: 48.0,),
+      //   backgroundColor: Colors.blue,
+      //   // foregroundColor: Colors.black12,
+      //   onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => CreateSchduleScreen()),).then((response)=>null),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: context.watch<ScheduleController>().isLoading
       ? Center(child: CupertinoActivityIndicator(),)
       : context.watch<ScheduleController>().schedules == null
