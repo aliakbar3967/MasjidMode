@@ -121,6 +121,7 @@ class ScheduleController with ChangeNotifier {
     
     Future<void> quick(int _min) async
     {
+      // TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 10)))
       Schedule schedule = Schedule(
         name: "Quick $_min",
         start: "12:00 am",
