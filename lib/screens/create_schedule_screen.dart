@@ -5,6 +5,7 @@ import 'package:peace_time/controller/settings_controller.dart';
 import 'package:peace_time/model/schedule.dart';
 import 'package:peace_time/widgets/checkbox.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
 
@@ -19,8 +20,8 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
   TimeOfDay picked;
 
   String name;
-  String start = "12:00 am";
-  String end = "12:00 am";
+  String start = DateFormat.jm().format(DateTime.now());
+  String end = DateFormat.jm().format(DateTime.now());
   bool silent = false;
   bool vibrate = false;
   bool airplane = false;

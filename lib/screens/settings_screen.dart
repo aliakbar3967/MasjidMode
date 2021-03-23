@@ -73,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       isPending = true;
                     });
                     Timer(Duration(seconds: 5), () async {
-                      print("Yeah, this line is printed after 3 seconds");
+                      // print("Yeah, this line is printed after 3 seconds");
                       settings.isForgroundServiceRunning
                       ? await SettingsController.stopForgroundService()
                       : await SettingsController.startForgroundServiceAndTask();

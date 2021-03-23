@@ -22,8 +22,6 @@ class SettingsController {
     );
   }
 
-  
-
   static startForgroundService() async {
     await FlutterForegroundServicePlugin.startForegroundService(
       notificationContent: NotificationContent(

@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/settings_controller.dart';
@@ -13,9 +13,20 @@ class ScheduleController with ChangeNotifier {
   bool selectedMode = false;
   bool isAllSelectedMode = false;
   bool isLoading = true;
+  bool isDoNotDisturbPermissionStatus;
+
+  Future<void> doNotDisturbPermissionStatus() async {
+    // bool isForgroundServiceOn = await SettingsController.isRunningForgroundService();
+    // print(await SettingsController.isRunningForgroundService());
+    // bool isForgroundServiceRunning = await FlutterForegroundServicePlugin.isForegroundServiceRunning();
+    // bool isForgroundServiceRunning = await SettingsController.isRunningForgroundService();
+    isDoNotDisturbPermissionStatus = await SettingsController.getPermissionStatus();
+    notifyListeners();
+  }
 
   // String get name => schedule;
   ScheduleController() {
+    doNotDisturbPermissionStatus();
     getSchedulesData();
   }
 
@@ -119,13 +130,15 @@ class ScheduleController with ChangeNotifier {
       notifyListeners();
     }
     
-    Future<void> quick(int _min) async
-    {
-      // TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 10)))
+    Future<void> quick(int _min) async {
+      
+      DateTime start = DateTime.now();
+      DateTime end = DateTime.now().add(Duration(minutes: 30));
+
       Schedule schedule = Schedule(
         name: "Quick $_min",
-        start: "12:00 am",
-        end: "12:30 am",
+        start: DateFormat.jm().format(start),
+        end: DateFormat.jm().format(end),
         saturday: true,
         sunday: true,
         monday: true,
