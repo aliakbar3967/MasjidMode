@@ -72,7 +72,7 @@ class ScheduleController with ChangeNotifier {
   }
 
   Future<void> removeSchedule(index) async {
-    SettingsController.stopTask();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     schedules.removeAt(index);
     if(schedules == null || schedules.length == 0) {
@@ -82,12 +82,16 @@ class ScheduleController with ChangeNotifier {
       String encodedSchedulesList = Schedule.encode(schedules);
       await prefs.setString('__schedules', encodedSchedulesList);
     }
-    SettingsController.startTask();
+    final bool serviceStatus = await SettingsController.isRunningForgroundService();
+    if(serviceStatus) {
+      await SettingsController.stopTask();
+      await SettingsController.startTask();
+    }
     notifyListeners();
   }
 
   Future<void> removeSelectedSchedules() async {
-    SettingsController.stopTask();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     schedules.removeWhere((element) => element.isselected == true);
     if(schedules == null || schedules.length == 0) {
@@ -99,12 +103,16 @@ class ScheduleController with ChangeNotifier {
     }
     isAllSelectedMode = false;
     selectedMode = false;
-    SettingsController.startTask();
+    final bool serviceStatus = await SettingsController.isRunningForgroundService();
+    if(serviceStatus) {
+      await SettingsController.stopTask();
+      await SettingsController.startTask();
+    }
     notifyListeners();
   }
 
   void toggleScheduleStatus(index) async {
-    await SettingsController.stopTask();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
         
     // String schedules = prefs.getString('__schedules');
@@ -114,7 +122,12 @@ class ScheduleController with ChangeNotifier {
       String encodedSchedulesList = Schedule.encode(schedules);
       await prefs.setString('__schedules', encodedSchedulesList);
     }
-    await SettingsController.startTask();
+
+    final bool serviceStatus = await SettingsController.isRunningForgroundService();
+    if(serviceStatus) {
+      await SettingsController.stopTask();
+      await SettingsController.startTask();
+    }
     notifyListeners();
   }
 
@@ -165,7 +178,6 @@ class ScheduleController with ChangeNotifier {
 
     Future<void> update(schedule, index) async
     {
-      // await SettingsController.stopTask();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       
       if(schedules != null)
@@ -176,7 +188,7 @@ class ScheduleController with ChangeNotifier {
         await prefs.setString('__schedules', encodedSchedulesList);
         schedules = Schedule.decode(encodedSchedulesList);
       }
-      // await SettingsController.startTask();
+
       notifyListeners();
     }
 
