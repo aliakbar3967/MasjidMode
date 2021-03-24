@@ -26,8 +26,8 @@ class SettingsController {
     await FlutterForegroundServicePlugin.startForegroundService(
       notificationContent: NotificationContent(
         iconName: 'ic_launcher',
-        titleText: 'App is running on background. Do not stop.',
-        color: Colors.red,
+        titleText: 'App is running on background.',
+        color: Colors.blue,
         priority: NotificationPriority.high,
       ),
       notificationChannelContent: NotificationChannelContent(
