@@ -173,6 +173,13 @@ class ScheduleController with ChangeNotifier {
       await prefs.setString('__schedules', encodedSchedulesList);
 
       schedules = Schedule.decode(encodedSchedulesList);
+	  
+		final bool serviceStatus = await SettingsController.isRunningForgroundService();
+		if(serviceStatus) {
+		  await SettingsController.stopTask();
+		  await SettingsController.startTask();
+		}
+	
       notifyListeners();
     }
 
