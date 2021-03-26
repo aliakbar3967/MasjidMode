@@ -2,11 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/controller/settings_controller.dart';
-import 'package:peace_time/model/day.dart';
-import 'package:peace_time/model/options.dart';
 import 'package:peace_time/model/schedule.dart';
-import 'package:peace_time/widgets/checkbox.dart';
-import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
@@ -246,15 +242,15 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                thursday = !thursday;
+                                tuesday = !tuesday;
                               });
                             },
                             child: Chip(
                               label: Text('t'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: thursday ? Colors.white : null
+                                color: tuesday ? Colors.white : null
                               ),
-                              backgroundColor: thursday ? Colors.blue : null,
+                              backgroundColor: tuesday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(
@@ -276,15 +272,15 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
                             onTap: () {
                               // print(days['sat']);
                               setState(() {
-                                tuesday = !tuesday;
+                                thursday = !thursday;
                               });
                             },
                             child: Chip(
                               label: Text('t'.toUpperCase()),
                               labelStyle: TextStyle(
-                                color: tuesday ? Colors.white : null
+                                color: thursday ? Colors.white : null
                               ),
-                              backgroundColor: tuesday ? Colors.blue : null,
+                              backgroundColor: thursday ? Colors.blue : null,
                             ),
                           ),
                           GestureDetector(

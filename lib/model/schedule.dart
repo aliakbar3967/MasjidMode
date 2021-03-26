@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:peace_time/model/day.dart';
 
 class Schedule {
     String name;

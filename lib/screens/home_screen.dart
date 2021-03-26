@@ -10,7 +10,7 @@ import 'package:peace_time/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key key}) : super(key: key);
+  // const HomeScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.read<ScheduleController>().toggleAllSelectedMode(),
         ) : null,
-        title: context.watch<ScheduleController>().selectedMode ? Text('Select All') : Text("Peace Time - Auto Silent scheduler"),
+        title: context.watch<ScheduleController>().selectedMode ? Text('Select All') : Text("Silent Scheduls"),
         actions: [
           context.watch<ScheduleController>().selectedMode
           ? IconButton(

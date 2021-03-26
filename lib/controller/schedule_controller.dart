@@ -14,7 +14,17 @@ class ScheduleController with ChangeNotifier {
   bool isAllSelectedMode = false;
   bool isLoading = true;
   bool isDoNotDisturbPermissionStatus;
+  bool isIntroductionDone = false;
 
+
+  // String get name => schedule;
+  ScheduleController() {
+    // SettingsController.startForgroundServiceAndTask();
+    // getIntroduction();
+    doNotDisturbPermissionStatus();
+    getSchedulesData();
+  }
+  
   Future<void> doNotDisturbPermissionStatus() async {
     // bool isForgroundServiceOn = await SettingsController.isRunningForgroundService();
     // print(await SettingsController.isRunningForgroundService());
@@ -24,10 +34,38 @@ class ScheduleController with ChangeNotifier {
     notifyListeners();
   }
 
-  // String get name => schedule;
-  ScheduleController() {
-    doNotDisturbPermissionStatus();
-    getSchedulesData();
+  Future<void> setIntroductionDone({bool value}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('__intro', value);
+    isIntroductionDone = value;
+    notifyListeners();
+  }
+
+  Future<void> toggleIntroductionDone() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('__intro', !isIntroductionDone);
+    isIntroductionDone = !isIntroductionDone;
+    notifyListeners();
+  }
+
+  // Future<void> getIntroduction() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  //   bool output = prefs.getBool('__intro');
+  //   if(output == true)
+  //   {
+  //     isIntroductionDone = true;
+  //   }
+  //   notifyListeners();
+  // }
+
+  static Future<bool> getIntroductionScreenStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    bool output = prefs.getBool('__intro');
+    return output;
   }
 
   void toggleSelectedMode() {
@@ -64,8 +102,113 @@ class ScheduleController with ChangeNotifier {
     // SharedPreferences prefs;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     
-    String schedulesFromPrefs = prefs.getString('__schedules');
+    bool setdefaultdata = prefs.getBool('__default_schedule');
+    if(setdefaultdata == null) {
+      Schedule fajr = Schedule(
+        name: 'Fajr',
+        start: '4:40 am',
+        end: '5:20 am',
+        silent: true,
+        vibrate: false,
+        airplane: false,
+        notify: false,
+        saturday: true,
+        sunday: true,
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        status: true,
+        isselected: false,
+      );
+      Schedule dhuhr = Schedule(
+        name: 'Dhuhr',
+        start: '1:00 pm',
+        end: '1:40 pm',
+        silent: true,
+        vibrate: false,
+        airplane: false,
+        notify: false,
+        saturday: true,
+        sunday: true,
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        status: true,
+        isselected: false,
+      );
+      Schedule asr = Schedule(
+        name: 'Asr',
+        start: '4:30 pm',
+        end: '5:10 pm',
+        silent: true,
+        vibrate: false,
+        airplane: false,
+        notify: false,
+        saturday: true,
+        sunday: true,
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        status: true,
+        isselected: false,
+      );
+      Schedule maghrib = Schedule(
+        name: 'Maghrib',
+        start: '6:20 pm',
+        end: '7:00 pm',
+        silent: true,
+        vibrate: false,
+        airplane: false,
+        notify: false,
+        saturday: true,
+        sunday: true,
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        status: true,
+        isselected: false,
+      );
+      Schedule isa = Schedule(
+        name: 'Isha',
+        start: '7:50 pm',
+        end: '8:30 pm',
+        silent: true,
+        vibrate: false,
+        airplane: false,
+        notify: false,
+        saturday: true,
+        sunday: true,
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+        status: true,
+        isselected: false,
+      );
+      schedules.add(fajr);
+      schedules.add(dhuhr);
+      schedules.add(asr);
+      schedules.add(maghrib);
+      schedules.add(isa);
 
+      String encodedSchedulesList = Schedule.encode(schedules);
+      await prefs.setString('__schedules', encodedSchedulesList);
+
+      schedules = Schedule.decode(encodedSchedulesList);
+
+      await prefs.setBool('__default_schedule', true);
+    }
+
+    String schedulesFromPrefs = prefs.getString('__schedules');
     if(schedulesFromPrefs != null) schedules = Schedule.decode(schedulesFromPrefs);
     isLoading = false;
     notifyListeners();

@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_foreground_service_plugin/flutter_foreground_service_plugin.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/controller/settings_controller.dart';
-import 'package:peace_time/model/schedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:peace_time/model/settings.dart';
+import 'package:provider/provider.dart';
 
 
 class SettingsScreen extends StatefulWidget {
@@ -101,6 +100,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   value: settings.isDoNotDisturbPermissionStatus,
                   activeColor: Colors.blue,
                   onChanged: (bool value) {},
+                ),
+              ),
+            ),
+          ),
+        ),
+        Card(
+          borderOnForeground: false,
+          elevation: 3,
+          child: GestureDetector(
+            onTap: () => SettingsController.openDoNotDisturbSettings(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2,vertical:8),
+              child: ListTile(
+                title: Text("Show Introduction Screen"),
+                subtitle: Text("Get back app introduction screen."),
+                trailing: CupertinoSwitch(
+                  value: context.watch<ScheduleController>().isIntroductionDone,
+                  activeColor: Colors.blue,
+                  onChanged: (bool value) => context.read<ScheduleController>().toggleIntroductionDone(),
                 ),
               ),
             ),
