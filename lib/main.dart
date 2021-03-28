@@ -89,7 +89,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/logo.png', width: 350.0),
+      child: Image.asset('assets/app_icon.png', width: 350.0),
       alignment: Alignment.bottomCenter,
     );
   }
@@ -109,14 +109,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       key: introKey,
       pages: [
         PageViewModel(
-          title: "Welcome to Peace Time",
-          body: "An Auto Silent Scheduler",
+          title: "Welcome",
+          body: "Keep your phone silent when you are busy and stay safe from embarrassing moments.",
           image: _buildImage('img1'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Settings things up",
-          body: "Please allow do not disturb mode.",
+          title: "Only Permission",
+          body: "Please allow do not disturb mode. Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
           image: _buildImage('img2'),
           footer: OutlinedButton (
             onPressed: () async => await SettingsController.openDoNotDisturbSettings(),

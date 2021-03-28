@@ -27,7 +27,7 @@ class SettingsController {
       notificationContent: NotificationContent(
         iconName: 'ic_launcher',
         titleText: 'App is running on background.',
-        color: Colors.green,
+        color: Colors.blue,
         priority: NotificationPriority.high,
       ),
       notificationChannelContent: NotificationChannelContent(

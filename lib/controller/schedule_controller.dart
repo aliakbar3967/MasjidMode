@@ -106,8 +106,8 @@ class ScheduleController with ChangeNotifier {
     if(setdefaultdata == null) {
       Schedule fajr = Schedule(
         name: 'Fajr',
-        start: '4:40 am',
-        end: '5:20 am',
+        start: '4:40 AM',
+        end: '5:20 AM',
         silent: true,
         vibrate: false,
         airplane: false,
@@ -124,8 +124,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule dhuhr = Schedule(
         name: 'Dhuhr',
-        start: '1:00 pm',
-        end: '1:40 pm',
+        start: '1:00 PM',
+        end: '1:40 PM',
         silent: true,
         vibrate: false,
         airplane: false,
@@ -142,8 +142,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule asr = Schedule(
         name: 'Asr',
-        start: '4:30 pm',
-        end: '5:10 pm',
+        start: '4:30 PM',
+        end: '5:10 PM',
         silent: true,
         vibrate: false,
         airplane: false,
@@ -160,8 +160,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule maghrib = Schedule(
         name: 'Maghrib',
-        start: '6:20 pm',
-        end: '7:00 pm',
+        start: '6:20 PM',
+        end: '7:00 PM',
         silent: true,
         vibrate: false,
         airplane: false,
@@ -178,8 +178,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule isa = Schedule(
         name: 'Isha',
-        start: '7:50 pm',
-        end: '8:30 pm',
+        start: '7:50 PM',
+        end: '8:30 PM',
         silent: true,
         vibrate: false,
         airplane: false,
@@ -292,7 +292,7 @@ class ScheduleController with ChangeNotifier {
       DateTime end = DateTime.now().add(Duration(minutes: 30));
 
       Schedule schedule = Schedule(
-        name: "Quick $_min",
+        name: "Quick $_min"+"m",
         start: DateFormat.jm().format(start),
         end: DateFormat.jm().format(end),
         saturday: true,
