@@ -50,17 +50,6 @@ class ScheduleController with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> getIntroduction() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  //   bool output = prefs.getBool('__intro');
-  //   if(output == true)
-  //   {
-  //     isIntroductionDone = true;
-  //   }
-  //   notifyListeners();
-  // }
-
   static Future<bool> getIntroductionScreenStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -97,17 +86,24 @@ class ScheduleController with ChangeNotifier {
     getSchedulesData();
     notifyListeners();
   }
+
+  TimeOfDay stringToTimeOfDay(String tod) {
+    final format = DateFormat.jm(); //"6:00 AM"
+    return TimeOfDay.fromDateTime(format.parse(tod));
+  }
   
   Future<void> getSchedulesData() async {
     // SharedPreferences prefs;
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final format = DateFormat.jm();
     
     bool setdefaultdata = prefs.getBool('__default_schedule');
     if(setdefaultdata == null) {
       Schedule fajr = Schedule(
         name: 'Fajr',
-        start: '4:40 AM',
-        end: '5:20 AM',
+        start: DateFormat.jm().format(format.parse('4:40 AM')),
+        end: DateFormat.jm().format(format.parse('5:20 AM')),
         silent: true,
         vibrate: false,
         airplane: false,
@@ -124,8 +120,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule dhuhr = Schedule(
         name: 'Dhuhr',
-        start: '1:00 PM',
-        end: '1:40 PM',
+        start: DateFormat.jm().format(format.parse('1:00 PM')),
+        end: DateFormat.jm().format(format.parse('1:40 PM')),
         silent: true,
         vibrate: false,
         airplane: false,
@@ -142,8 +138,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule asr = Schedule(
         name: 'Asr',
-        start: '4:30 PM',
-        end: '5:10 PM',
+        start: DateFormat.jm().format(format.parse('4:30 PM')),
+        end: DateFormat.jm().format(format.parse('5:10 PM')),
         silent: true,
         vibrate: false,
         airplane: false,
@@ -160,8 +156,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule maghrib = Schedule(
         name: 'Maghrib',
-        start: '6:20 PM',
-        end: '7:00 PM',
+        start: DateFormat.jm().format(format.parse('6:20 PM')),
+        end: DateFormat.jm().format(format.parse('7:00 PM')),
         silent: true,
         vibrate: false,
         airplane: false,
@@ -178,8 +174,8 @@ class ScheduleController with ChangeNotifier {
       );
       Schedule isa = Schedule(
         name: 'Isha',
-        start: '7:50 PM',
-        end: '8:30 PM',
+        start: DateFormat.jm().format(format.parse('7:50 PM')),
+        end: DateFormat.jm().format(format.parse('8:30 PM')),
         silent: true,
         vibrate: false,
         airplane: false,
@@ -298,9 +294,9 @@ class ScheduleController with ChangeNotifier {
         saturday: true,
         sunday: true,
         monday: true,
-        thursday: true,
         tuesday: true,
         wednesday: true,
+        thursday: true,
         friday: true,
         silent: true,
         airplane: false,
@@ -380,9 +376,9 @@ class ScheduleController with ChangeNotifier {
       if(schedule.saturday) output += 'sat, ';
       if(schedule.sunday) output += 'sun, ';
       if(schedule.monday) output += 'mon, ';
-      if(schedule.thursday) output += 'thu, ';
-      if(schedule.wednesday) output += 'wed, ';
       if(schedule.tuesday) output += 'tue, ';
+      if(schedule.wednesday) output += 'wed, ';
+      if(schedule.thursday) output += 'thu, ';
       if(schedule.friday) output += 'fri';
 
       return output;

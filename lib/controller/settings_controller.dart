@@ -27,7 +27,7 @@ class SettingsController {
       notificationContent: NotificationContent(
         iconName: 'ic_launcher',
         titleText: 'App is running on background.',
-        color: Colors.blue,
+        color: Colors.green,
         priority: NotificationPriority.high,
       ),
       notificationChannelContent: NotificationChannelContent(
@@ -51,7 +51,7 @@ class SettingsController {
   static startTask() async {
     await FlutterForegroundServicePlugin.startPeriodicTask(
       periodicTaskFun: periodicTaskFun,
-      period: const Duration(seconds: 15),
+      period: const Duration(seconds: 29),
     );
   }
 
@@ -173,9 +173,9 @@ bool isToday(Schedule schedule) {
   if(schedule.saturday == true && todayName == 'saturday') return true;
   else if(schedule.sunday == true && todayName == 'sunday') return true;
   else if(schedule.monday == true && todayName == 'monday') return true;
-  else if(schedule.thursday == true && todayName == 'thursday') return true;
-  else if(schedule.wednesday == true && todayName == 'wednesday') return true;
   else if(schedule.tuesday == true && todayName == 'tuesday') return true;
+  else if(schedule.wednesday == true && todayName == 'wednesday') return true;
+  else if(schedule.thursday == true && todayName == 'thursday') return true;
   else if(schedule.friday == true && todayName == 'friday') return true;
   else return false;
 }
@@ -185,18 +185,20 @@ Future<void> periodicTaskFun() async {
     // this will refresh the notification content each time the task is fire
     // if you want to refresh the notification content too each time
     // so don't set a low period duretion because android isn't handling it very well
-    // await FlutterForegroundServicePlugin.refreshForegroundServiceContent(
-    //   notificationContent: NotificationContent(
-    //     iconName: 'ic_launcher',
-    //     titleText: 'Title Text',
-    //     bodyText: '${DateTime.now()}',
-    //     subText: 'subText',
-    //     color: Colors.red,
-    //   ),
-    // );
+    await FlutterForegroundServicePlugin.refreshForegroundServiceContent(
+      notificationContent: NotificationContent(
+        // iconName: 'ic_launcher',
+        // titleText: 'Title Text',
+        // bodyText: '${DateTime.now()}',
+        // subText: 'subText',
+        // color: Colors.red,
+        iconName: 'ic_launcher',
+        titleText: 'App is running on background.',
+        color: Colors.green,
+      ),
+    );
 
     // print(DateTime.now());
-    // print('=====');
     await soundModeChangeBySchedule();
     
   });
@@ -211,17 +213,11 @@ Future<void> soundModeChangeBySchedule() async {
   // "Vibrate Mode"
   if(schedules == null) return;
   else {
-    // schedules.forEach((element) => print(element.name)); 
-    // bool isPeaceTimeSilent = false;
-    // bool isPeaceTimeVibrate = false;
-
     final index = schedules.indexWhere((schedule) => (schedule.status == true && isToday(schedule) && _timeBetween(schedule.start, schedule.end)));
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     
     if(index != -1) {
-      // schedules[index]
-      // await normalPeriod(true);
       await prefs.setBool("__normal__period", true);
       
       if(schedules[index].vibrate == true) {
@@ -236,24 +232,6 @@ Future<void> soundModeChangeBySchedule() async {
         await prefs.setBool("__normal__period", false);
         await SettingsController.setNormalMode();
       }
-      // await setScheduleActiveMode(false);
     }
-    
-    // schedules.forEach((schedule) {
-    //   // print(schedule.start.toString());
-    //   if(schedule.status == true && isToday(schedule) && _timeBetween(schedule.start, schedule.end))
-    //   {
-    //     if(schedule.vibrate == true) {
-    //       isPeaceTimeVibrate = true;
-    //     }
-    //     else if(schedule.silent == true) isPeaceTimeSilent = true;
-    //   }
-    // });
-
-    // if(isPeaceTimeVibrate == true) await SettingsController.setVibrateMode();
-    // else if(isPeaceTimeSilent == true) await SettingsController.setSilentMode();
-    // else {
-    //   await SettingsController.setNormalMode();
-    // }
   }
 }

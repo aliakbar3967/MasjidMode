@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.read<ScheduleController>().toggleAllSelectedMode(),
         ) : null,
-        title: context.watch<ScheduleController>().selectedMode ? Text('Select All') : Text("Silent Scheduls"),
+        title: context.watch<ScheduleController>().selectedMode ? Text('Select All') : Text("Peace Time"),
         actions: [
           context.watch<ScheduleController>().selectedMode
           ? IconButton(

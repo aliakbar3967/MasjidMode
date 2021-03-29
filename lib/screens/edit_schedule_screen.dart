@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/controller/settings_controller.dart';
 import 'package:peace_time/model/schedule.dart';
@@ -36,8 +37,13 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
   bool friday = false;
   bool status = false;
 
+  TimeOfDay stringToTimeOfDay(String tod) {
+    final format = DateFormat.jm(); //"6:00 AM"
+    return TimeOfDay.fromDateTime(format.parse(tod));
+  }
+
   Future<Null> selectStartTime(BuildContext context) async {
-    picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    picked = await showTimePicker(context: context, initialTime: stringToTimeOfDay(start));
 
     if(picked != null)
     {
@@ -48,7 +54,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
-    picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    picked = await showTimePicker(context: context, initialTime: stringToTimeOfDay(end));
     
     if(picked != null)
     {
@@ -124,7 +130,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         elevation: 0,
-        title: Text('Edit Schedule'),
+        title: Text('Update'),
       ),
       body: SafeArea(
         bottom: false,

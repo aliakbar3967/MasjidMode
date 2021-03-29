@@ -33,6 +33,11 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
   bool friday = false;
   bool status = false;
 
+  TimeOfDay stringToTimeOfDay(String tod) {
+    final format = DateFormat.jm(); //"6:00 AM"
+    return TimeOfDay.fromDateTime(format.parse(tod));
+  }
+
   Future<Null> selectStartTime(BuildContext context) async {
     picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
 
@@ -45,7 +50,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
-    picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    picked = await showTimePicker(context: context, initialTime: stringToTimeOfDay(start));
     
     if(picked != null)
     {
@@ -66,9 +71,6 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
   }
 
   Future<void> saveData() async {
-    // TimeOfDay test = TimeOfDay.now();
-    // String dd = test.toString();
-    // print(dd);
 
     Schedule schedule = Schedule(
       name: name,
@@ -116,7 +118,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         elevation: 0,
-        title: Text('New Schedule'),
+        title: Text('Create New'),
       ),
       body: SafeArea(
         bottom: false,
