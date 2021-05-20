@@ -6,15 +6,24 @@ import 'package:peace_time/controller/schedule_controller.dart';
 import 'package:peace_time/controller/settings_controller.dart';
 import 'package:peace_time/screens/create_schedule_screen.dart';
 import 'package:peace_time/screens/edit_schedule_screen.dart';
+import 'package:peace_time/screens/help.dart';
 import 'package:peace_time/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   // const HomeScreen({Key key}) : super(key: key);
 
   @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  @override
   Widget build(BuildContext context) {
-    
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -24,16 +33,181 @@ class HomeScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.read<ScheduleController>().toggleAllSelectedMode(),
         ) : null,
-        title: context.watch<ScheduleController>().selectedMode ? Text('Select All') : Text("Peace Time"),
+        title: context.watch<ScheduleController>().selectedMode ? Text('Select All') : Text("Peace Time - Schedules"),
         actions: [
           context.watch<ScheduleController>().selectedMode
           ? IconButton(
             icon: context.watch<ScheduleController>().isAllSelectedMode ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
             onPressed: () => context.read<ScheduleController>().toggleAllScheduleSelectedMode(),
           )
-          : IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => SettingsScreen()),).then((response)=>null)
+          : Padding(
+            padding: EdgeInsets.only(right: 10.0),
+            child: PopupMenuButton(
+              tooltip: 'Menu',
+              child: Icon(
+                Icons.more_vert,
+                size: 28.0,
+                color: Colors.white,
+              ),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => SettingsScreen()),).then((response)=>null),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.settings,
+                          color: Colors.black54,
+                          size: 22.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+                          child: Text(
+                            "Settings",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () => Share.share("Peace Time - A Silent Scheduler App. Please visit https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time and download this awesome app.", subject: 'Peace Time - A Silent Scheduler App.'),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.share,
+                          color: Colors.black54,
+                          size: 22.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+                          child: Text(
+                            "Share",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () async => await canLaunch("https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time") ? await launch("https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time") : throw 'Could not launch',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.black54,
+                          size: 22.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+                          child: Text(
+                            "Rate this app",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () async => await canLaunch("https://fivepeacetime.blogspot.com/p/privacy-policy.html") ? await launch("https://fivepeacetime.blogspot.com/p/privacy-policy.html") : throw 'Could not launch',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.privacy_tip,
+                          color: Colors.black54,
+                          size: 22.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+                          child: Text(
+                            "Privacy policy",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(context,CupertinoPageRoute(builder: (context) => HelpScreen()),).then((response)=>null),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.help,
+                          color: Colors.black54,
+                          size: 22.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+                          child: Text(
+                            "Help",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: GestureDetector(
+                    onTap: () async => await canLaunch("http://play.google.com/store/apps/dev?id=6422209637535930890") ? await launch("http://play.google.com/store/apps/dev?id=6422209637535930890") : throw 'Could not launch',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.apps,
+                          color: Colors.black54,
+                          size: 22.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                          ),
+                          child: Text(
+                            "More apps",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -111,33 +285,59 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             child: ScheduleList(),
           ),
+          // SizedBox(height: 45),
         ],
       )
       : Column(
         children: [
           Expanded(
-            flex: 1,
+            flex: 2,
             child: GestureDetector(
               onTap: () => SettingsController.openDoNotDisturbSettings(),
               child: Card(
-                elevation: 0,
-                color: Colors.red[200],
-                child: ListTile(
-                  minVerticalPadding: 12,
-                  title: Text("Permission Required"),
-                  subtitle: Text("App need \"Do Not Disturb\" Mode Permission. Otherwise your phone volume mode can't be changed. This permission is responsible for changing sound / volume mode."),
-                  trailing: IconButton(
-                    icon: Icon(Icons.refresh),
-                    onPressed: () => context.read<ScheduleController>().doNotDisturbPermissionStatus(),
-                  )
+                elevation: 10,
+                color: Colors.red[100],
+                child: Column(
+                  children: [
+                    ListTile(
+                      minVerticalPadding: 12,
+                      title: Row(
+                        children: [
+                          Icon(Icons.warning_amber_rounded,color: Colors.red,),
+                          Text("Permission Required"),
+                        ],
+                      ),
+                      subtitle: Text("App need \"Do Not Disturb\" Mode Permission. Otherwise your phone volume mode can't be changed. This permission is responsible for changing sound / volume mode."),
+                      // trailing: IconButton(
+                      //   icon: Icon(Icons.refresh),
+                      //   onPressed: () => context.read<ScheduleController>().doNotDisturbPermissionStatus(),
+                      // ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        TextButton(
+                          child: const Text('REFRESH'),
+                          onPressed: () => context.read<ScheduleController>().doNotDisturbPermissionStatus(),
+                        ),
+                        const SizedBox(width: 8),
+                        TextButton(
+                          child: const Text('OPEN'),
+                          onPressed: () => SettingsController.openDoNotDisturbSettings(),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
           Expanded(
-            flex: 4,
+            flex: 6,
             child: ScheduleList(),
           ),
+          // SizedBox(height: 45),
         ],
       ),
     );

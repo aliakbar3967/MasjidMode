@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,20 +75,22 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) async {
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(builder: (_) => HomeScreen()),
-    // );
-    Provider.of<ScheduleController>(context,listen: false).setIntroductionDone(value: false);
-    if(await SettingsController.isRunningForgroundService() == false)
+    if(await SettingsController.getPermissionStatus() == false)
     {
-      await SettingsController.startForgroundServiceAndTask();
+      await SettingsController.openDoNotDisturbSettings();
+    } else {
+      Provider.of<ScheduleController>(context,listen: false).setIntroductionDone(value: false);
+      if(await SettingsController.isRunningForgroundService() == false)
+      {
+        await SettingsController.startForgroundServiceAndTask();
+      }
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SplashScreen()));
     }
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SplashScreen()));
   }
 
   Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/app_icon.png', width: 350.0),
+      child: Image.asset('assets/circle.png', width: 350.0),
       alignment: Alignment.bottomCenter,
     );
   }
@@ -110,13 +111,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       pages: [
         PageViewModel(
           title: "Welcome",
-          body: "Keep your phone silent when you are busy and stay safe from embarrassing moments.",
+          body: "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
           image: _buildImage('img1'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Only Permission",
-          body: "Please allow do not disturb mode. Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
+          body: "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
           image: _buildImage('img2'),
           footer: OutlinedButton (
             onPressed: () async => await SettingsController.openDoNotDisturbSettings(),
@@ -143,7 +144,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       nextFlex: 0,
       skip: const Text('Skip'),
       next: const Icon(Icons.arrow_forward),
-      done: const Text('Go', style: TextStyle(fontWeight: FontWeight.w600)),
+      done: const Text('Start', style: TextStyle(fontWeight: FontWeight.w600)),
       dotsDecorator: const DotsDecorator(
         size: Size(10.0, 10.0),
         color: Color(0xFFBDBDBD),

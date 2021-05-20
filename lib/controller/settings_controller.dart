@@ -27,8 +27,8 @@ class SettingsController {
       notificationContent: NotificationContent(
         iconName: 'ic_launcher',
         titleText: 'App is running on background.',
-        color: Colors.green,
-        priority: NotificationPriority.high,
+        color: Colors.blue,
+        priority: NotificationPriority.low,
       ),
       notificationChannelContent: NotificationChannelContent(
         id: 'some_id',
@@ -140,9 +140,9 @@ Map<int,String> _dayNames = {
 };
 
 bool _timeBetween(String start, String end) {
-  // print("start $start and end $end");
   TimeOfDay startTime = SettingsController.fromString(start);
   TimeOfDay endTime = SettingsController.fromString(end);
+  // print("start $startTime and end $endTime");
   // TimeOfDay currentTime = fromString("5:30 am");
   TimeOfDay currentTime = TimeOfDay.now();
 
@@ -157,8 +157,10 @@ bool _timeBetween(String start, String end) {
   double _minuteIsAfter = (_timeDiffAfter - _timeDiffAfter.truncate()) * 60;
   // double _hrDiffBefore = _timeDiffBefore.truncate() * 1.0;
   // print("_minute");
+  // print("After");
   // print(_minuteIsAfter.toString());
   double _minuteIsBefore = (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
+  // print("Before");
   // print(_minuteIsBefore.toString());
   if(_minuteIsAfter >= 0 && _minuteIsBefore >= 1) return true;
   else return false;
@@ -213,7 +215,7 @@ Future<void> soundModeChangeBySchedule() async {
   // "Vibrate Mode"
   if(schedules == null) return;
   else {
-    final index = schedules.indexWhere((schedule) => (schedule.status == true && isToday(schedule) && _timeBetween(schedule.start, schedule.end)));
+    final index = schedules.indexWhere((schedule) => (schedule.status == true && isToday(schedule) == true && _timeBetween(schedule.start, schedule.end)) == true);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     

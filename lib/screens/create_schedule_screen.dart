@@ -118,7 +118,7 @@ class _CreateSchduleScreenState extends State<CreateSchduleScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         elevation: 0,
-        title: Text('Create New'),
+        title: Text('New Schedule'),
       ),
       body: SafeArea(
         bottom: false,

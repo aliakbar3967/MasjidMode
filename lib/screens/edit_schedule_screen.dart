@@ -130,7 +130,7 @@ class _EditSchduleScreenState extends State<EditSchduleScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         elevation: 0,
-        title: Text('Update'),
+        title: Text('Edit Schedule'),
       ),
       body: SafeArea(
         bottom: false,
