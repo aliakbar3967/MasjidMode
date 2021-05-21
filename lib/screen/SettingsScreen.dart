@@ -141,6 +141,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     ),
+                    Card(
+                      // color: Colors.grey[900],
+                      borderOnForeground: false,
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 8),
+                        child: ListTile(
+                          title: Text(
+                            "Dark Mode",
+                            // style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          trailing: CupertinoSwitch(
+                            value: Provider.of<SettingsProvider>(context)
+                                .settings
+                                .darkMode,
+                            activeColor: Colors.blue,
+                            // trackColor: Colors.black,
+                            onChanged: (bool value) =>
+                                Provider.of<SettingsProvider>(context,
+                                        listen: false)
+                                    .toggleDarkMode(),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

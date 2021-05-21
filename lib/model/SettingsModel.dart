@@ -4,9 +4,11 @@ class Settings {
   bool forgroundServiceStatus = false;
   bool isDoNotDisturbPermissionStatus = false;
   bool introductionScreenStatus = false;
+  bool darkMode = false;
 
   Settings(
       {this.forgroundServiceStatus,
       this.isDoNotDisturbPermissionStatus,
-      this.introductionScreenStatus});
+      this.introductionScreenStatus,
+      this.darkMode});
 }

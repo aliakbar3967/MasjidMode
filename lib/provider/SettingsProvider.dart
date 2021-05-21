@@ -12,7 +12,8 @@ class SettingsProvider with ChangeNotifier {
   Settings settings = Settings(
       forgroundServiceStatus: false,
       isDoNotDisturbPermissionStatus: false,
-      introductionScreenStatus: false);
+      introductionScreenStatus: false,
+      darkMode: false);
 
   SettingsProvider() {
     // code..
@@ -27,6 +28,9 @@ class SettingsProvider with ChangeNotifier {
     settings.introductionScreenStatus =
         await DBController.getIntroductionScreenStatus();
 
+    // settings.darkMode = false;
+    settings.darkMode = await DBController.getDarkModeStatus();
+
     if (settings.introductionScreenStatus == null) {
       settings.introductionScreenStatus = false;
     }
@@ -37,6 +41,12 @@ class SettingsProvider with ChangeNotifier {
 
   Future<void> refresh() async {
     initialize();
+    notifyListeners();
+  }
+
+  Future<void> toggleDarkMode() async {
+    await DBController.toggleDarkModeStatus(!settings.darkMode);
+    settings.darkMode = await DBController.getDarkModeStatus();
     notifyListeners();
   }
 

@@ -46,7 +46,9 @@ class App extends StatelessWidget {
       //   backgroundColor: Colors.grey.shade900,
       //   cardColor: Colors.grey[850],
       // ),
-      themeMode: ThemeMode.system,
+      themeMode: Provider.of<SettingsProvider>(context).settings.darkMode
+          ? ThemeMode.dark
+          : ThemeMode.system,
       debugShowCheckedModeBanner: false,
       // home: NavigationScreen(),
       home: SplashScreen(),
