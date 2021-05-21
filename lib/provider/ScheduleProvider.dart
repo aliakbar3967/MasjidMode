@@ -2,6 +2,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/DBController.dart';
+import 'package:peace_time/controller/ScheduleController.dart';
+import 'package:peace_time/job/ForgroundService.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 
 class ScheduleProvider with ChangeNotifier {
@@ -16,9 +18,9 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Future<void> initialize() async {
-    final format = DateFormat.jm();
+    // final format = DateFormat.jm();
 
-    bool setdefaultdata = await DBController.getDefaultSchedulesStatus();
+    // bool setdefaultdata = await DBController.getDefaultSchedulesStatus();
     // if (setdefaultdata == null) {
     //   Schedule fajr = Schedule(
     //     name: 'Fajr',
@@ -133,14 +135,14 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Future<void> toggleScheduleStatus(index) async {
-    schedules[index].status = !schedules[index].status;
     if (schedules != null) {
+      schedules[index].status = !schedules[index].status;
       String encodedSchedulesList = Schedule.encode(schedules);
       await DBController.setSchedules(encodedSchedulesList);
-    }
 
-    // await ForgroundService.refresh();
-    notifyListeners();
+      await ForgroundService.refresh();
+      notifyListeners();
+    }
   }
 
   Future<void> add(Schedule _schedule) async {
@@ -158,9 +160,11 @@ class ScheduleProvider with ChangeNotifier {
       schedules[index] = schedule;
       String encodedSchedulesList = Schedule.encode(schedules);
       await DBController.setSchedules(encodedSchedulesList);
+
+      await ForgroundService.refresh();
       schedules = Schedule.decode(encodedSchedulesList);
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> remove(index) async {
@@ -172,7 +176,7 @@ class ScheduleProvider with ChangeNotifier {
       await DBController.setSchedules(encodedSchedulesList);
     }
 
-    // await ForgroundService.refresh();
+    await ForgroundService.refresh();
     notifyListeners();
   }
 
@@ -201,6 +205,7 @@ class ScheduleProvider with ChangeNotifier {
     isAllSelectedMode = false;
     selectedMode = false;
 
+    await ForgroundService.refresh();
     notifyListeners();
   }
 
@@ -236,9 +241,10 @@ class ScheduleProvider with ChangeNotifier {
     String encodedSchedulesList = Schedule.encode(schedules);
     await DBController.setSchedules(encodedSchedulesList);
 
-    schedules = Schedule.decode(encodedSchedulesList);
+    // this line should place before set provider schedules list, otherwise app will crash
+    await ForgroundService.refresh();
 
-    // await ForgroundService.refresh();
+    schedules = Schedule.decode(encodedSchedulesList);
 
     notifyListeners();
   }

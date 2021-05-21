@@ -30,7 +30,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
 
   Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/circle.png', width: 350.0),
+      child: Image.asset(assetName, width: 350.0),
       alignment: Alignment.bottomCenter,
     );
   }
@@ -62,27 +62,31 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
           title: "Welcome",
           body:
               "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
-          image: _buildImage('img1'),
+          image: _buildImage('assets/circle.png'),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "30m Quick Silent",
+          body: "One tap to silent your app from now to next 30 minutes.",
+          image: _buildImage('assets/30mquicksilent.png'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Only Permission",
           body:
               "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
-          image: _buildImage('img2'),
+          image: _buildImage('assets/donotdisturb.png'),
           footer: OutlinedButton(
             onPressed: () async =>
                 await SettingsController.openDoNotDisturbSettings(),
             child: Text(
               'Open Settings',
-              style: TextStyle(
-                  // color: Colors.blue
-                  ),
+              style: TextStyle(color: Colors.black),
             ),
             autofocus: true,
             style: OutlinedButton.styleFrom(
                 shape: StadiumBorder(),
-                side: BorderSide(width: 2, color: Colors.blue),
+                side: BorderSide(width: 2, color: Colors.black),
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 10)),
           ),
           decoration: pageDecoration,

@@ -17,13 +17,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print("run=====");
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
@@ -86,10 +79,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Stream.periodic(const Duration(seconds: 1)),
                               builder: (context, snapshot) {
                                 return Center(
-                                  child: Text(
-                                    DateFormat('hh:mm a')
-                                        .format(DateTime.now()),
-                                    style: TextStyle(fontSize: 48),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        DateFormat('hh:mm a')
+                                            .format(DateTime.now())
+                                            .split(" ")[0],
+                                        style: TextStyle(fontSize: 58),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          DateFormat('hh:mm a')
+                                              .format(DateTime.now())
+                                              .split(" ")[1]
+                                              .toLowerCase(),
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 );
                               },

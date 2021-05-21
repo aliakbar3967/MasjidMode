@@ -7,7 +7,7 @@ import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 
 class ForgroundService {
-  static Future<void> refresh() async {
+  static refresh() async {
     final bool serviceStatus = await isRunningForgroundService();
     if (serviceStatus) {
       await stopTask();
@@ -45,7 +45,7 @@ class ForgroundService {
   static startTask() async {
     await FlutterForegroundServicePlugin.startPeriodicTask(
       periodicTaskFun: periodicTaskFun,
-      period: const Duration(seconds: 29),
+      period: const Duration(seconds: 10),
     );
   }
 
@@ -95,32 +95,40 @@ Future<void> soundModeChangeBySchedule() async {
   List<Schedule> schedules = await ScheduleController.getSchedules();
 
   // print("job running on background");
+  // print(schedules);
+  // print(Helper.isTimeBetween('12:00 PM', '12:47 PM'));
 
   // SettingsController.getCurrentSoundMode();
   // "Silent Mode"
   // "Normal Mode"
   // "Vibrate Mode"
-  if (schedules == null)
+  if (schedules == null) {
     return;
-  else {
+  } else {
     final index = schedules.indexWhere((schedule) =>
         (schedule.status == true &&
             Helper.isToday(schedule) == true &&
             Helper.isTimeBetween(schedule.start, schedule.end)) ==
         true);
+    // print(index);
+    // print(Helper.isToday(schedules[0]));
+    // print(schedules[1].start);
+    // print(schedules[1].status);
 
+    // String currentSoundMode = await SettingsController.getCurrentSoundMode();
     if (index != -1) {
+      // if (currentSoundMode == 'Normal Mode') {
       await DBController.setNormalPeriod(true);
-
       if (schedules[index].vibrate == true) {
         await SettingsController.setVibrateMode();
       } else if (schedules[index].silent == true) {
         await SettingsController.setSilentMode();
       }
+      // }
     } else {
       bool __normalPeriod = await DBController.getNormalPeriod();
       if (__normalPeriod == true) {
-        await DBController.setNormalPeriod(true);
+        await DBController.setNormalPeriod(false);
         await SettingsController.setNormalMode();
       }
     }

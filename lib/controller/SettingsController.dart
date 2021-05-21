@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -7,8 +6,7 @@ import 'package:sound_mode/sound_mode.dart';
 import 'package:sound_mode/utils/sound_profiles.dart';
 
 class SettingsController {
-
-  static Future<void> getCurrentSoundMode() async {
+  static Future<String> getCurrentSoundMode() async {
     String ringerStatus;
     try {
       ringerStatus = await SoundMode.ringerModeStatus;
@@ -21,6 +19,7 @@ class SettingsController {
     } catch (err) {
       ringerStatus = 'Failed to get device\'s ringer status.$err';
     }
+    return ringerStatus;
   }
 
   static Future<bool> getPermissionStatus() async {

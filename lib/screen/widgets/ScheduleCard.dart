@@ -72,7 +72,7 @@ class ScheduleCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    schedule.name,
+                    schedule.name.toUpperCase(),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -104,12 +104,16 @@ class ScheduleCard extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
-                            Text(
-                              schedule.start.split(" ")[1].toLowerCase(),
-                              style: TextStyle(
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                schedule.start.split(" ")[1].toLowerCase(),
+                                style: TextStyle(
                                   // color: Colors.grey[400],
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300),
+                                  fontSize: 14,
+                                  // fontWeight: FontWeight.w300,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -133,12 +137,16 @@ class ScheduleCard extends StatelessWidget {
                                   fontSize: 32,
                                   fontWeight: FontWeight.w300),
                             ),
-                            Text(
-                              schedule.end.split(" ")[1].toLowerCase(),
-                              style: TextStyle(
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                schedule.end.split(" ")[1].toLowerCase(),
+                                style: TextStyle(
                                   // color: Colors.grey[400],
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300),
+                                  fontSize: 14,
+                                  // fontWeight: FontWeight.w300,
+                                ),
+                              ),
                             ),
                           ],
                         ),

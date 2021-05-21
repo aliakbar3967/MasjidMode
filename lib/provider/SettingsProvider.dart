@@ -46,13 +46,13 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> toggleForgroundServiceStatus() async {
-    Timer(Duration(seconds: 2), () async {
+    Timer(Duration(seconds: 1), () async {
       settings.forgroundServiceStatus
           ? await ForgroundService.stopForgroundService()
           : await ForgroundService.startForgroundServiceAndTask();
       settings.forgroundServiceStatus =
           await ForgroundService.isRunningForgroundService();
-      isPending = false;
+      // isPending = false;
       notifyListeners();
     });
   }

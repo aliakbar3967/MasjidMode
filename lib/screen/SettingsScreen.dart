@@ -54,26 +54,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             "Auto silent will not work, if it is off.",
                             // style: TextStyle(color: Colors.grey[700]),
                           ),
-                          trailing: Provider.of<SettingsProvider>(context,
+                          trailing:
+                              // Provider.of<SettingsProvider>(context,
+                              // listen: false)
+                              // .isPending
+                              // ? CupertinoActivityIndicator()
+                              // :
+                              CupertinoSwitch(
+                            value: Provider.of<SettingsProvider>(context,
+                                    listen: false)
+                                .settings
+                                .forgroundServiceStatus,
+                            activeColor: Colors.blue,
+                            // trackColor: Colors.black,
+                            onChanged: (bool value) async {
+                              // await Provider.of<SettingsProvider>(context,
+                              //         listen: false)
+                              //     .isPendingValue(true);
+                              await Provider.of<SettingsProvider>(context,
                                       listen: false)
-                                  .isPending
-                              ? CupertinoActivityIndicator()
-                              : CupertinoSwitch(
-                                  value: Provider.of<SettingsProvider>(context,
-                                          listen: false)
-                                      .settings
-                                      .forgroundServiceStatus,
-                                  activeColor: Colors.blue,
-                                  // trackColor: Colors.black,
-                                  onChanged: (bool value) async {
-                                    await Provider.of<SettingsProvider>(context,
-                                            listen: false)
-                                        .isPendingValue(true);
-                                    await Provider.of<SettingsProvider>(context,
-                                            listen: false)
-                                        .toggleForgroundServiceStatus();
-                                  },
-                                ),
+                                  .toggleForgroundServiceStatus();
+                            },
+                          ),
                         ),
                       ),
                     ),

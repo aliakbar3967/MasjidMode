@@ -40,10 +40,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: CupertinoActivityIndicator(
-        radius: 20.0,
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Center(
+        child: CupertinoActivityIndicator(
+          radius: 20.0,
+        ),
       ),
-    ));
+    );
   }
 }

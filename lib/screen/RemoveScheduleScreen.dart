@@ -14,16 +14,18 @@ class RemoveScheduleScreen extends StatelessWidget {
         title: Text("Selected"),
         actions: [
           IconButton(
-              onPressed: () =>
-                  Provider.of<ScheduleProvider>(context, listen: false),
-              padding: EdgeInsets.only(right: 24.0),
-              icon: Provider.of<ScheduleProvider>(context).isAllSelectedMode
-                  ? Icon(
-                      Icons.check_circle,
-                      color: Theme.of(context).iconTheme.color,
-                    )
-                  : Icon(Icons.radio_button_off_rounded,
-                      color: Theme.of(context).iconTheme.color))
+            onPressed: () =>
+                Provider.of<ScheduleProvider>(context, listen: false)
+                    .toggleAllScheduleSelection(),
+            padding: EdgeInsets.only(right: 24.0),
+            icon: Provider.of<ScheduleProvider>(context).isAllSelectedMode
+                ? Icon(
+                    Icons.check_circle,
+                    color: Theme.of(context).iconTheme.color,
+                  )
+                : Icon(Icons.radio_button_off_rounded,
+                    color: Theme.of(context).iconTheme.color),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -107,7 +109,8 @@ class ScheduleList extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                scheduleProvider.schedules[index].name,
+                                scheduleProvider.schedules[index].name
+                                    .toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -146,15 +149,19 @@ class ScheduleList extends StatelessWidget {
                                             fontWeight: FontWeight.w300,
                                           ),
                                         ),
-                                        Text(
-                                          scheduleProvider
-                                              .schedules[index].start
-                                              .split(" ")[1]
-                                              .toLowerCase(),
-                                          style: TextStyle(
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            scheduleProvider
+                                                .schedules[index].start
+                                                .split(" ")[1]
+                                                .toLowerCase(),
+                                            style: TextStyle(
                                               // color: Colors.grey[400],
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w300),
+                                              fontSize: 14,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -180,14 +187,19 @@ class ScheduleList extends StatelessWidget {
                                               fontSize: 32,
                                               fontWeight: FontWeight.w300),
                                         ),
-                                        Text(
-                                          scheduleProvider.schedules[index].end
-                                              .split(" ")[1]
-                                              .toLowerCase(),
-                                          style: TextStyle(
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            scheduleProvider
+                                                .schedules[index].end
+                                                .split(" ")[1]
+                                                .toLowerCase(),
+                                            style: TextStyle(
                                               // color: Colors.grey[400],
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w300),
+                                              fontSize: 14,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),

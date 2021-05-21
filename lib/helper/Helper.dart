@@ -9,24 +9,13 @@ class Helper {
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
-  static TimeOfDay fromString(String time) {
-    int hh = 0;
-    if (time.endsWith('PM')) hh = 12;
-    time = time.split(' ')[0];
-    return TimeOfDay(
-      hour: hh +
-          int.parse(time.split(":")[0]) %
-              24, // in case of a bad time format entered manually by the user
-      minute: int.parse(time.split(":")[1]) % 60,
-    );
-  }
-
   static bool isTimeBetween(String start, String end) {
-    TimeOfDay startTime = Helper.fromString(start);
-    TimeOfDay endTime = Helper.fromString(end);
+    TimeOfDay startTime = Helper.stringToTimeOfDay(start);
+    TimeOfDay endTime = Helper.stringToTimeOfDay(end);
     // print("start $startTime and end $endTime");
-    // TimeOfDay currentTime = fromString("5:30 am");
+    // TimeOfDay currentTime = fromString("12:40 PM");
     TimeOfDay currentTime = TimeOfDay.now();
+    // print(currentTime);
 
     double _doubleCurrentTime =
         currentTime.hour.toDouble() + (currentTime.minute.toDouble() / 60);
