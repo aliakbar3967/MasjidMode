@@ -14,10 +14,6 @@ class DBController {
 
   static Future<bool> getDarkModeStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // return prefs.getBool(Constant.SP_DARKMODE);
-    print("fff");
-    // print(prefs.getBool(Constant.SP_DARKMODE));
-    print(prefs.containsKey(Constant.SP_DARKMODE));
     bool value = prefs.containsKey(Constant.SP_DARKMODE);
     if (value == null || value == false) {
       await toggleDarkModeStatus(false);

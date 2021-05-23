@@ -27,8 +27,6 @@ class SettingsProvider with ChangeNotifier {
         await ForgroundService.isRunningForgroundService();
     settings.introductionScreenStatus =
         await DBController.getIntroductionScreenStatus();
-
-    // settings.darkMode = false;
     settings.darkMode = await DBController.getDarkModeStatus();
 
     if (settings.introductionScreenStatus == null) {
@@ -46,6 +44,11 @@ class SettingsProvider with ChangeNotifier {
 
   Future<void> toggleDarkMode() async {
     await DBController.toggleDarkModeStatus(!settings.darkMode);
+    settings.darkMode = await DBController.getDarkModeStatus();
+    notifyListeners();
+  }
+
+  Future<bool> darkModeStatus() async {
     settings.darkMode = await DBController.getDarkModeStatus();
     notifyListeners();
   }

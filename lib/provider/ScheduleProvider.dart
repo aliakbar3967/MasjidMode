@@ -11,6 +11,7 @@ class ScheduleProvider with ChangeNotifier {
   bool selectedMode = false;
   bool isLoading = true;
   bool isAllSelectedMode = false;
+  int count = 0;
 
   // String get name => schedule;
   ScheduleProvider() {
@@ -182,6 +183,7 @@ class ScheduleProvider with ChangeNotifier {
 
   Future<void> toggleScheduleSelection(index) async {
     schedules[index].isSelected = !schedules[index].isSelected;
+    selectedScheduleItems();
     notifyListeners();
   }
 
@@ -191,6 +193,17 @@ class ScheduleProvider with ChangeNotifier {
     else
       schedules.forEach((element) => element.isSelected = true);
     isAllSelectedMode = !isAllSelectedMode;
+    selectedScheduleItems();
+    notifyListeners();
+  }
+
+  Future<void> selectedScheduleItems() async {
+    count = 0;
+    schedules.forEach((element) {
+      if (element.isSelected == true) {
+        count++;
+      }
+    });
     notifyListeners();
   }
 

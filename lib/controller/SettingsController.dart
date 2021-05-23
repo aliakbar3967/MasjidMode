@@ -26,10 +26,10 @@ class SettingsController {
     bool permissionStatus = false;
     try {
       permissionStatus = await PermissionHandler.permissionsGranted;
-      print(permissionStatus);
+      // print(permissionStatus);
       return permissionStatus;
     } catch (err) {
-      print(err);
+      // print(err);
       return false;
     }
   }

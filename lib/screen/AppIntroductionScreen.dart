@@ -31,7 +31,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
   Widget _buildImage(String assetName) {
     return Align(
       child: Image.asset(assetName, width: 350.0),
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.center,
     );
   }
 
@@ -57,41 +57,6 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
       key: introKey,
       globalBackgroundColor: Colors.blue,
       color: Colors.black,
-      pages: [
-        PageViewModel(
-          title: "Welcome",
-          body:
-              "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
-          image: _buildImage('assets/circle.png'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: "30m Quick Silent",
-          body: "One tap to silent your app from now to next 30 minutes.",
-          image: _buildImage('assets/30mquicksilent.png'),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: "Only Permission",
-          body:
-              "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
-          image: _buildImage('assets/donotdisturb.png'),
-          footer: OutlinedButton(
-            onPressed: () async =>
-                await SettingsController.openDoNotDisturbSettings(),
-            child: Text(
-              'Open Settings',
-              style: TextStyle(color: Colors.black),
-            ),
-            autofocus: true,
-            style: OutlinedButton.styleFrom(
-                shape: StadiumBorder(),
-                side: BorderSide(width: 2, color: Colors.black),
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 10)),
-          ),
-          decoration: pageDecoration,
-        ),
-      ],
       onDone: () => _onIntroEnd(context),
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
       showSkipButton: true,
@@ -109,6 +74,41 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
       ),
+      pages: [
+        PageViewModel(
+          title: "Welcome",
+          body:
+              "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
+          image: _buildImage('assets/circle.png'),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "30m Quick Silent",
+          body: "One tap to silent your phone from now to next 30 minutes.",
+          image: _buildImage('assets/30mquicksilent.png'),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "Only Permission",
+          body:
+              "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
+          image: _buildImage('assets/donotdisturb.png'),
+          footer: OutlinedButton(
+            onPressed: () async =>
+                await SettingsController.openDoNotDisturbSettings(),
+            child: Text(
+              'Open Settings',
+              style: TextStyle(color: Colors.white),
+            ),
+            autofocus: true,
+            style: OutlinedButton.styleFrom(
+                shape: StadiumBorder(),
+                side: BorderSide(width: 2, color: Colors.white70),
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 10)),
+          ),
+          decoration: pageDecoration,
+        ),
+      ],
     );
     return introductionScreen;
   }

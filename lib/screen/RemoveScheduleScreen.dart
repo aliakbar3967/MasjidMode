@@ -10,8 +10,13 @@ class RemoveScheduleScreen extends StatelessWidget {
     return Scaffold(
       // backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_outlined),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         // backgroundColor: Colors.grey[900],
-        title: Text("Selected"),
+        title: Text(
+            "${Provider.of<ScheduleProvider>(context, listen: false).count} items selected"),
         actions: [
           IconButton(
             onPressed: () =>

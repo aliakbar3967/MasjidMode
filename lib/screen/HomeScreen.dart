@@ -54,13 +54,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                 ),
                 actions: [
-                  IconButton(
-                      icon: Icon(Icons.help_outline_rounded),
-                      onPressed: () => Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => HelpScreen()),
-                          ).then((response) => null)),
+                  // IconButton(
+                  //     icon: Icon(Icons.help_outline_rounded),
+                  //     onPressed: () => Navigator.push(
+                  //           context,
+                  //           CupertinoPageRoute(
+                  //               builder: (context) => HelpScreen()),
+                  //         ).then((response) => null)),
                   dropDownMenus(),
                 ],
                 flexibleSpace: FlexibleSpaceBar(

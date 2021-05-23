@@ -74,6 +74,10 @@ class _CreateScreenState extends State<CreateScreen> {
       // backgroundColor: Colors.grey[200],
       appBar: AppBar(
         // elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_outlined),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           "Create New Schedule".toUpperCase(),
         ),

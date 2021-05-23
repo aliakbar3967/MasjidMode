@@ -15,12 +15,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       // backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_outlined),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           'Settings',
           // style: TextStyle(color: Colors.grey[400]),
         ),
         // backgroundColor: Theme.of(context).cardColor,
-        elevation: 0,
+        // elevation: 0,
         actions: [
           IconButton(
               onPressed: () =>

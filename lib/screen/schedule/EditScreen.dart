@@ -99,10 +99,10 @@ class _EditScreenState extends State<EditScreen> {
       // backgroundColor: Colors.grey[900],
       appBar: AppBar(
         // elevation: 0,
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back_ios_outlined),
-        //   onPressed: () => Navigator.of(context).pop(),
-        // ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_outlined),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           "Edit Schedule".toUpperCase(),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
+import 'package:peace_time/provider/SettingsProvider.dart';
 import 'package:peace_time/screen/AppInfoScreen.dart';
 import 'package:peace_time/screen/schedule/CreateScreen.dart';
 import 'package:provider/provider.dart';
@@ -213,9 +214,9 @@ Widget dropDownMenus() {
         PopupMenuItem(
           child: GestureDetector(
             onTap: () async => await canLaunch(
-                    "http://play.google.com/store/apps/dev?id=6422209637535930890")
+                    "https://play.google.com/store/apps/developer?id=Peace+Time")
                 ? await launch(
-                    "http://play.google.com/store/apps/dev?id=6422209637535930890")
+                    "https://play.google.com/store/apps/developer?id=Peace+Time")
                 : throw 'Could not launch',
             child: Row(
               children: [
@@ -257,7 +258,7 @@ Widget speedDialFloatingAction(BuildContext context) {
     closeManually: false,
     renderOverlay: false,
     curve: Curves.bounceIn,
-    // overlayColor: Colors.black,
+    overlayColor: Theme.of(context).primaryColor,
     overlayOpacity: 0.8,
     onOpen: () => print('OPENING DIAL'),
     onClose: () => print('DIAL CLOSED'),
@@ -277,11 +278,11 @@ Widget speedDialFloatingAction(BuildContext context) {
       SpeedDialChild(
         child: Icon(Icons.schedule),
         // backgroundColor: Colors.blue,
+        // labelBackgroundColor: Colors.blue,
         // foregroundColor: Colors.white,
-        // labelBackgroundColor: Colors.white,
         label: 'New Schedule',
         // elevation: 0.3,
-        labelStyle: TextStyle(fontSize: 18.0),
+        labelStyle: TextStyle(fontSize: 18.0, color: Colors.black),
         onTap: () => Navigator.push(
           context,
           CupertinoPageRoute(builder: (context) => CreateScreen()),
@@ -291,10 +292,10 @@ Widget speedDialFloatingAction(BuildContext context) {
       SpeedDialChild(
         child: Icon(Icons.volume_off_sharp),
         // backgroundColor: Colors.blue,
-        // labelBackgroundColor: Colors.white,
+        // labelBackgroundColor: Colors.blue,
         // foregroundColor: Colors.white,
         label: '30m Quick Silent',
-        labelStyle: TextStyle(fontSize: 18.0),
+        labelStyle: TextStyle(fontSize: 18.0, color: Colors.black),
         onTap: () =>
             Provider.of<ScheduleProvider>(context, listen: false).quick(30),
         onLongPress: () => print('SECOND CHILD LONG PRESS'),

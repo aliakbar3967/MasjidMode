@@ -37,7 +37,7 @@ class Helper {
         (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
     // print("Before");
     // print(_minuteIsBefore.toString());
-    if (_minuteIsAfter >= 0 && _minuteIsBefore >= 1)
+    if (_minuteIsAfter >= 0 && _minuteIsBefore >= 0)
       return true;
     else
       return false;

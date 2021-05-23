@@ -45,7 +45,7 @@ class ForgroundService {
   static startTask() async {
     await FlutterForegroundServicePlugin.startPeriodicTask(
       periodicTaskFun: periodicTaskFun,
-      period: const Duration(seconds: 10),
+      period: const Duration(seconds: 15),
     );
   }
 
