@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
+import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/provider/SettingsProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +12,54 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  showAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Restore Confirmation'),
+          content: Text(
+              "Are you sure want to restore your all data? All data of your app will be removed permanently."),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                "NO",
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                //Put your code here which you want to execute on No button click.
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(
+                "YES",
+                style: TextStyle(color: Colors.green),
+              ),
+              onPressed: () async {
+                Provider.of<ScheduleProvider>(context, listen: false)
+                    .restoreDB();
+                Provider.of<SettingsProvider>(context, listen: false).refresh();
+                final snackBar = SnackBar(
+                  content: Text('App restored successfylly'),
+                  action: SnackBarAction(
+                    label: 'Done',
+                    onPressed: () {
+                      // Some code to undo the change.
+                    },
+                  ),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                //Put your code here which you want to execute on Yes button click.
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,6 +218,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         listen: false)
                                     .toggleDarkMode(),
                           ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      // color: Colors.redAccent,
+                      borderOnForeground: false,
+                      elevation: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 8),
+                        child: ListTile(
+                          title: Center(
+                            child: Text(
+                              "Restore App",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                          onTap: () => showAlert(context),
                         ),
                       ),
                     ),

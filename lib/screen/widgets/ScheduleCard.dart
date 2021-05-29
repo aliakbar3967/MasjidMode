@@ -90,68 +90,7 @@ class ScheduleCard extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 7,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              schedule.start.split(" ")[0],
-                              style: TextStyle(
-                                // color: Colors.grey[400],
-                                fontSize: 32,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(
-                                schedule.start.split(" ")[1].toLowerCase(),
-                                style: TextStyle(
-                                  // color: Colors.grey[400],
-                                  fontSize: 14,
-                                  // fontWeight: FontWeight.w300,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "-",
-                              style: TextStyle(
-                                  // color: Colors.grey[700],
-                                  fontSize: 32),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              schedule.end.split(" ")[0],
-                              style: TextStyle(
-                                  // color: Colors.grey[400],
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(
-                                schedule.end.split(" ")[1].toLowerCase(),
-                                style: TextStyle(
-                                  // color: Colors.grey[400],
-                                  fontSize: 14,
-                                  // fontWeight: FontWeight.w300,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    child: timeView(schedule, context),
                   ),
                   Expanded(
                     flex: 3,

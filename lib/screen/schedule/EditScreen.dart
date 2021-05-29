@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
@@ -19,41 +20,107 @@ class _EditScreenState extends State<EditScreen> {
   TimeOfDay picked;
   TextEditingController name;
 
+  bool is24HoursFormat = false;
+
   Map<String, bool> errors = {'name': false};
 
   Future<Null> selectStartTime(BuildContext context) async {
-    picked = await showTimePicker(
-        context: context,
-        initialTime: Helper.stringToTimeOfDay(schedule.start));
+    // picked = await showTimePicker(
+    //     context: context,
+    //     initialTime: Helper.fromStringToTimeOfDay(schedule.start));
 
-    if (picked != null) {
-      setState(() {
-        schedule.start = picked.format(context);
-      });
+    // if (picked != null) {
+    //   setState(() {
+    //     schedule.start = picked.format(context);
+    //   });
+    // }
+
+    // bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    // print(is24HoursFormat);
+    // print("is24HoursFormat");
+    if (is24HoursFormat) {
+      picked = await showTimePicker(
+          context: context,
+          initialTime: Helper.fromStringToTimeOfDay(schedule.start));
+      if (picked != null) {
+        // print('true 24');
+        // print(picked.format(context));
+        setState(() {
+          schedule.start = picked.format(context);
+          // print(schedule.start);
+        });
+      }
+    } else {
+      // print(TimeOfDay.now());
+      final s = schedule.start;
+      TimeOfDay time = TimeOfDay(
+          hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
+      // print(time);
+      picked = await showTimePicker(context: context, initialTime: time);
+      if (picked != null) {
+        // print('false 12');
+        // print(picked.format(context));
+        setState(() {
+          DateTime date = DateFormat.jm().parse(picked.format(context));
+          // print(DateFormat("HH:mm").format(date));
+          schedule.start = DateFormat("HH:mm").format(date);
+          // schedule.end = picked.format(context);
+          // print(schedule.start);
+          // print(Helper.stringToTimeOfDay(schedule.end));
+          // TimeOfDay _currentTime = Helper.stringToTimeOfDay(schedule.end);
+          // print("Current Time: ${_currentTime.format(context)}");
+        });
+      }
     }
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
-    picked = await showTimePicker(
-        context: context, initialTime: Helper.stringToTimeOfDay(schedule.end));
+    // picked = await showTimePicker(
+    //     context: context,
+    //     initialTime: Helper.fromStringToTimeOfDay(schedule.end));
 
-    if (picked != null) {
-      setState(() {
-        schedule.end = picked.format(context);
-      });
+    // if (picked != null) {
+    //   setState(() {
+    //     schedule.end = picked.format(context);
+    //   });
+    // }
+    // bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    // print(is24HoursFormat);
+    // print("is24HoursFormat");
+    if (is24HoursFormat) {
+      picked = await showTimePicker(
+          context: context,
+          initialTime: Helper.fromStringToTimeOfDay(schedule.end));
+      if (picked != null) {
+        // print('true 24');
+        // print(picked.format(context));
+        setState(() {
+          schedule.end = picked.format(context);
+          // print(schedule.end);
+        });
+      }
+    } else {
+      // print(TimeOfDay.now());
+      final s = schedule.end;
+      TimeOfDay time = TimeOfDay(
+          hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
+      // print(time);
+      picked = await showTimePicker(context: context, initialTime: time);
+      if (picked != null) {
+        // print('false 12');
+        // print(picked.format(context));
+        setState(() {
+          DateTime date = DateFormat.jm().parse(picked.format(context));
+          // print(DateFormat("HH:mm").format(date));
+          schedule.end = DateFormat("HH:mm").format(date);
+          // schedule.end = picked.format(context);
+          // print(schedule.end);
+          // print(Helper.stringToTimeOfDay(schedule.end));
+          // TimeOfDay _currentTime = Helper.stringToTimeOfDay(schedule.end);
+          // print("Current Time: ${_currentTime.format(context)}");
+        });
+      }
     }
-  }
-
-  TimeOfDay fromString(String time) {
-    int hh = 0;
-    if (time.endsWith('PM')) hh = 12;
-    time = time.split(' ')[0];
-    return TimeOfDay(
-      hour: hh +
-          int.parse(time.split(":")[0]) %
-              24, // in case of a bad time format entered manually by the user
-      minute: int.parse(time.split(":")[1]) % 60,
-    );
   }
 
   void saveData() async {
@@ -82,6 +149,7 @@ class _EditScreenState extends State<EditScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
     // name = TextEditingController();
     // name.addListener(() {
     //   setState(() {
@@ -161,7 +229,14 @@ class _EditScreenState extends State<EditScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              schedule.start.toString(),
+                              schedule.start == ''
+                                  ? ''
+                                  : is24HoursFormat
+                                      ? Helper.fromStringToTimeOfDay(
+                                              schedule.start)
+                                          .format(context)
+                                          .toString()
+                                      : schedule.start.toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),
@@ -190,7 +265,14 @@ class _EditScreenState extends State<EditScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              schedule.end.toString(),
+                              schedule.end == ''
+                                  ? ''
+                                  : is24HoursFormat
+                                      ? Helper.fromStringToTimeOfDay(
+                                              schedule.end)
+                                          .format(context)
+                                          .toString()
+                                      : schedule.end.toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),

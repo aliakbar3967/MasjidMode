@@ -10,7 +10,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void navigating() async {
+  Future<void> navigating() async {
     final bool out = await DBController.getIntroductionScreenStatus();
     if (out == false) {
       setState(() {
@@ -25,9 +25,14 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  Future<void> initialize() async {
+    await DBController.reset();
+    await navigating();
+  }
+
   @override
   void initState() {
-    navigating();
+    initialize();
     super.initState();
   }
 

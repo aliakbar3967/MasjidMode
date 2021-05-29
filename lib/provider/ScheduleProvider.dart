@@ -228,13 +228,22 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Future<void> quick(int _min) async {
-    DateTime start = DateTime.now();
-    DateTime end = DateTime.now().add(Duration(minutes: 30));
+    // DateTime start = DateTime.now();
+    // DateTime end = DateTime.now().add(Duration(minutes: 30));
 
+    // print(DateFormat.jm().format(start));
+    DateTime start =
+        DateFormat.jm().parse(DateFormat.jm().format(DateTime.now()));
+    DateTime end = DateFormat.jm().parse(
+        DateFormat.jm().format(DateTime.now().add(Duration(minutes: 30))));
+    // print(DateFormat("HH:mm").format(date));
+    // final dd = DateFormat("HH:mm").format(date);
+    // print("start $start and end $end");
+    // return;
     Schedule schedule = Schedule(
       name: "Quick $_min" + "m",
-      start: DateFormat.jm().format(start),
-      end: DateFormat.jm().format(end),
+      start: DateFormat("HH:mm").format(start),
+      end: DateFormat("HH:mm").format(end),
       saturday: true,
       sunday: true,
       monday: true,
@@ -259,6 +268,13 @@ class ScheduleProvider with ChangeNotifier {
 
     schedules = Schedule.decode(encodedSchedulesList);
 
+    notifyListeners();
+  }
+
+  Future<void> restoreDB() async {
+    await DBController.restore();
+    schedules = List<Schedule>.empty(growable: true);
+    await ForgroundService.refresh();
     notifyListeners();
   }
 }

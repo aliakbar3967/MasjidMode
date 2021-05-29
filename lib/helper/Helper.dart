@@ -4,14 +4,34 @@ import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/constant.dart';
 
 class Helper {
+  static TimeOfDay fromStringToTimeOfDay(String time) {
+    int hh = 0;
+    if (time.endsWith('PM')) hh = 12;
+    time = time.split(' ')[0];
+    return TimeOfDay(
+      hour: hh +
+          int.parse(time.split(":")[0]) %
+              24, // in case of a bad time format entered manually by the user
+      minute: int.parse(time.split(":")[1]) % 60,
+    );
+  }
+
   static TimeOfDay stringToTimeOfDay(String tod) {
     final format = DateFormat.jm(); //"6:00 AM"
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
+  static TimeOfDay from24StringToTimeOfDay(String tod) {
+    TimeOfDay _currentTime = Helper.stringToTimeOfDay(tod);
+    // _currentTime.format(context)
+    final format = DateFormat.jm(); //"6:00 AM"
+    return TimeOfDay.fromDateTime(format.parse(tod));
+  }
+
   static bool isTimeBetween(String start, String end) {
-    TimeOfDay startTime = Helper.stringToTimeOfDay(start);
-    TimeOfDay endTime = Helper.stringToTimeOfDay(end);
+    // print("start $start and end $end");
+    TimeOfDay startTime = Helper.fromStringToTimeOfDay(start);
+    TimeOfDay endTime = Helper.fromStringToTimeOfDay(end);
     // print("start $startTime and end $endTime");
     // TimeOfDay currentTime = fromString("12:40 PM");
     TimeOfDay currentTime = TimeOfDay.now();

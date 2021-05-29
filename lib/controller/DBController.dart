@@ -53,8 +53,28 @@ class DBController {
     return prefs.getBool(Constant.SP_NORMAL_PERIOD);
   }
 
-  static Future<void> setNormalPeriod(bool bool) async {
+  static Future<void> setNormalPeriod(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(Constant.SP_NORMAL_PERIOD, bool);
+    await prefs.setBool(Constant.SP_NORMAL_PERIOD, value);
+  }
+
+  static Future<void> reset() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final reset = prefs.getBool(Constant.SP_RESET);
+    if (reset == null || reset == false) {
+      // await prefs.clear();
+      await prefs.remove(Constant.SP_SCHEDULES);
+      // await prefs.setString(Constant.SP_SCHEDULES, '');
+      await prefs.setBool(Constant.SP_RESET, true);
+    } else {
+      await prefs.setBool(Constant.SP_RESET, true);
+    }
+  }
+
+  static Future<void> restore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final reset = prefs.getBool(Constant.SP_RESET);
+    await prefs.clear();
+    await prefs.setBool(Constant.SP_RESET, true);
   }
 }

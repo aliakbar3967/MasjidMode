@@ -12,12 +12,13 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
+  bool is24HoursFormat = false;
   TimeOfDay time;
   TimeOfDay picked;
   Schedule schedule = Schedule(
       name: "",
-      start: DateFormat.jm().format(DateTime.now()),
-      end: DateFormat.jm().format(DateTime.now()),
+      start: '00:00',
+      end: '00:00',
       silent: false,
       vibrate: false,
       airplane: false,
@@ -33,25 +34,77 @@ class _CreateScreenState extends State<CreateScreen> {
       isSelected: false);
 
   Future<Null> selectStartTime(BuildContext context) async {
-    picked =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
-
-    if (picked != null) {
-      setState(() {
-        schedule.start = picked.format(context);
-      });
+    bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    // print(is24HoursFormat);
+    // print("is24HoursFormat");
+    if (is24HoursFormat) {
+      picked =
+          await showTimePicker(context: context, initialTime: TimeOfDay.now());
+      if (picked != null) {
+        // print('true 24');
+        // print(picked.format(context));
+        setState(() {
+          schedule.start = picked.format(context);
+          // print(schedule.start);
+        });
+      }
+    } else {
+      // print(TimeOfDay.now());
+      picked =
+          await showTimePicker(context: context, initialTime: TimeOfDay.now());
+      if (picked != null) {
+        // print('false 12');
+        // print(picked.format(context));
+        setState(() {
+          DateTime date = DateFormat.jm().parse(picked.format(context));
+          // print(DateFormat("HH:mm").format(date));
+          schedule.start = DateFormat("HH:mm").format(date);
+          // schedule.end = picked.format(context);
+          // print(schedule.start);
+          // print(Helper.stringToTimeOfDay(schedule.end));
+          // TimeOfDay _currentTime = Helper.stringToTimeOfDay(schedule.end);
+          // print("Current Time: ${_currentTime.format(context)}");
+        });
+      }
     }
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
-    picked = await showTimePicker(
-        context: context,
-        initialTime: Helper.stringToTimeOfDay(schedule.start));
-
-    if (picked != null) {
-      setState(() {
-        schedule.end = picked.format(context);
-      });
+    bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    // print(is24HoursFormat);
+    // print("is24HoursFormat");
+    if (is24HoursFormat) {
+      picked =
+          await showTimePicker(context: context, initialTime: TimeOfDay.now());
+      if (picked != null) {
+        // print('true 24');
+        // print(picked.format(context));
+        setState(() {
+          schedule.end = picked.format(context);
+          // print(schedule.end);
+        });
+      }
+    } else {
+      // print(TimeOfDay.now());
+      final s = schedule.start;
+      TimeOfDay time = TimeOfDay(
+          hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
+      // print(time);
+      picked = await showTimePicker(context: context, initialTime: time);
+      if (picked != null) {
+        // print('false 12');
+        // print(picked.format(context));
+        setState(() {
+          DateTime date = DateFormat.jm().parse(picked.format(context));
+          // print(DateFormat("HH:mm").format(date));
+          schedule.end = DateFormat("HH:mm").format(date);
+          // schedule.end = picked.format(context);
+          // print(schedule.end);
+          // print(Helper.stringToTimeOfDay(schedule.end));
+          // TimeOfDay _currentTime = Helper.stringToTimeOfDay(schedule.end);
+          // print("Current Time: ${_currentTime.format(context)}");
+        });
+      }
     }
   }
 
@@ -64,6 +117,12 @@ class _CreateScreenState extends State<CreateScreen> {
     Navigator.pop(context, true);
     // String encoded = Schedule.encode([hold]);
     // print(encoded);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
   }
 
   @override
@@ -131,7 +190,14 @@ class _CreateScreenState extends State<CreateScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              schedule.start,
+                              schedule.start == ''
+                                  ? ''
+                                  : is24HoursFormat
+                                      ? Helper.fromStringToTimeOfDay(
+                                              schedule.start)
+                                          .format(context)
+                                          .toString()
+                                      : schedule.start.toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),
@@ -160,7 +226,14 @@ class _CreateScreenState extends State<CreateScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              schedule.end,
+                              schedule.end == ''
+                                  ? ''
+                                  : is24HoursFormat
+                                      ? Helper.fromStringToTimeOfDay(
+                                              schedule.end)
+                                          .format(context)
+                                          .toString()
+                                      : schedule.end.toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),

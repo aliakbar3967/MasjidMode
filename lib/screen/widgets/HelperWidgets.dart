@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/provider/SettingsProvider.dart';
 import 'package:peace_time/screen/AppInfoScreen.dart';
@@ -302,4 +303,157 @@ Widget speedDialFloatingAction(BuildContext context) {
       ),
     ],
   );
+}
+
+Widget timeView(schedule, BuildContext context) {
+  bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+  if (is24HoursFormat) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              schedule.start,
+              // schedule.start.split(" ")[0],
+              style: TextStyle(
+                // color: Colors.grey[400],
+                fontSize: 32,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 4),
+            //   child: Text(
+            //     schedule.start,
+            //     // schedule.start.split(" ")[1].toLowerCase(),
+            //     style: TextStyle(
+            //       // color: Colors.grey[400],
+            //       fontSize: 14,
+            //       // fontWeight: FontWeight.w300,
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              "-",
+              style: TextStyle(
+                  // color: Colors.grey[700],
+                  fontSize: 32),
+            ),
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              schedule.end,
+              // schedule.end.split(" ")[0],
+              style: TextStyle(
+                  // color: Colors.grey[400],
+                  fontSize: 32,
+                  fontWeight: FontWeight.w300),
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 4),
+            //   child: Text(
+            //     schedule.end.split(" ")[1].toLowerCase(),
+            //     style: TextStyle(
+            //       // color: Colors.grey[400],
+            //       fontSize: 14,
+            //       // fontWeight: FontWeight.w300,
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
+      ],
+    );
+  } else {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              // Helper.fromStringToTimeOfDay(schedule.start)
+              //     .format(context)
+              //     .toString(),
+              Helper.fromStringToTimeOfDay(schedule.start)
+                  .format(context)
+                  .toString()
+                  .split(" ")[0],
+              style: TextStyle(
+                // color: Colors.grey[400],
+                fontSize: 32,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                // schedule.start,
+                Helper.fromStringToTimeOfDay(schedule.start)
+                    .format(context)
+                    .toString()
+                    .split(" ")[1]
+                    .toLowerCase(),
+                style: TextStyle(
+                  // color: Colors.grey[400],
+                  fontSize: 14,
+                  // fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              "-",
+              style: TextStyle(
+                  // color: Colors.grey[700],
+                  fontSize: 32),
+            ),
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              // schedule.end,
+              Helper.fromStringToTimeOfDay(schedule.end)
+                  .format(context)
+                  .toString()
+                  .split(" ")[0],
+              style: TextStyle(
+                  // color: Colors.grey[400],
+                  fontSize: 32,
+                  fontWeight: FontWeight.w300),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                Helper.fromStringToTimeOfDay(schedule.end)
+                    .format(context)
+                    .toString()
+                    .split(" ")[1]
+                    .toLowerCase(),
+                style: TextStyle(
+                  // color: Colors.grey[400],
+                  fontSize: 14,
+                  // fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

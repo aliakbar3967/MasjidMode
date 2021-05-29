@@ -79,7 +79,7 @@ class AppInfoScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Version: 4.0.0",
+                          "Version: 5.0.0",
                           style: TextStyle(
                               // fontWeight: FontWeight.w700,
                               color: Theme.of(context).disabledColor),

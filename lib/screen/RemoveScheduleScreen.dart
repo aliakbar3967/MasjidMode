@@ -136,80 +136,8 @@ class ScheduleList extends StatelessWidget {
                             children: [
                               Expanded(
                                 flex: 7,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          scheduleProvider
-                                              .schedules[index].start
-                                              .split(" ")[0],
-                                          style: TextStyle(
-                                            // color: Colors.grey[400],
-                                            fontSize: 32,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 4),
-                                          child: Text(
-                                            scheduleProvider
-                                                .schedules[index].start
-                                                .split(" ")[1]
-                                                .toLowerCase(),
-                                            style: TextStyle(
-                                              // color: Colors.grey[400],
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "-",
-                                          style: TextStyle(
-                                              // color: Colors.grey[700],
-                                              fontSize: 32),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          scheduleProvider.schedules[index].end
-                                              .split(" ")[0],
-                                          style: TextStyle(
-                                              // color: Colors.grey[400],
-                                              fontSize: 32,
-                                              fontWeight: FontWeight.w300),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 4),
-                                          child: Text(
-                                            scheduleProvider
-                                                .schedules[index].end
-                                                .split(" ")[1]
-                                                .toLowerCase(),
-                                            style: TextStyle(
-                                              // color: Colors.grey[400],
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                child: timeView(
+                                    scheduleProvider.schedules[index], context),
                               ),
                               Expanded(
                                 flex: 3,
