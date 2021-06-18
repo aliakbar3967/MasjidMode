@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:peace_time/NavigationScreen.dart';
 import 'package:peace_time/controller/DBController.dart';
@@ -28,9 +29,9 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
     }
   }
 
-  Widget _buildImage(String assetName) {
+  Widget _buildImage({String assetName, double width = 300.0}) {
     return Align(
-      child: Image.asset(assetName, width: 350.0),
+      child: Image.asset(assetName, width: width),
       alignment: Alignment.center,
     );
   }
@@ -79,20 +80,21 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
           title: "Welcome",
           body:
               "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
-          image: _buildImage('assets/circle.png'),
+          image: _buildImage(assetName: 'assets/circle.png'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "30m Quick Silent",
           body: "One tap to silent your phone from now to next 30 minutes.",
-          image: _buildImage('assets/30mquicksilent.png'),
+          image:
+              _buildImage(assetName: 'assets/30mquicksilent.png', width: 275.0),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Only Permission",
           body:
               "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
-          image: _buildImage('assets/donotdisturb.png'),
+          image: _buildImage(assetName: 'assets/donotdisturb.png'),
           footer: OutlinedButton(
             onPressed: () async =>
                 await SettingsController.openDoNotDisturbSettings(),
@@ -110,6 +112,16 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
         ),
       ],
     );
+
+    // to hide only bottom bar:
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+
+    // to hide only status bar:
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+
+    // to hide both:
+    // SystemChrome.setEnabledSystemUIOverlays([]);
+
     return introductionScreen;
   }
 }

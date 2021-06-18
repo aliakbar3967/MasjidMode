@@ -68,24 +68,27 @@ class ForgroundService {
   }
 }
 
+Future<void> refreshForegroundServiceNotification(
+    {String message = 'App is running...'}) async {
+  await FlutterForegroundServicePlugin.refreshForegroundServiceContent(
+    notificationContent: NotificationContent(
+      // iconName: 'ic_launcher',
+      // titleText: 'Title Text',
+      // bodyText: '${DateTime.now()}',
+      // subText: 'subText',
+      // color: Colors.red,
+      iconName: 'ic_launcher',
+      titleText: message,
+      color: Colors.green,
+    ),
+  );
+}
+
 Future<void> periodicTaskFun() async {
   FlutterForegroundServicePlugin.executeTask(() async {
     // this will refresh the notification content each time the task is fire
     // if you want to refresh the notification content too each time
     // so don't set a low period duretion because android isn't handling it very well
-    await FlutterForegroundServicePlugin.refreshForegroundServiceContent(
-      notificationContent: NotificationContent(
-        // iconName: 'ic_launcher',
-        // titleText: 'Title Text',
-        // bodyText: '${DateTime.now()}',
-        // subText: 'subText',
-        // color: Colors.red,
-        iconName: 'ic_launcher',
-        titleText: 'App is running on background.',
-        color: Colors.green,
-      ),
-    );
-
     // print(DateTime.now());
     await soundModeChangeBySchedule();
   });
@@ -105,38 +108,30 @@ Future<void> soundModeChangeBySchedule() async {
   if (schedules == null) {
     return;
   } else {
-    // schedules.forEach((element) {
-    //   print("=========ddd============");
-    //   String s = "19:11";
-    //   TimeOfDay _startTime = TimeOfDay(
-    //       hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
-    //   print(_startTime);
-    //   print("==========ddd===========");
-    //   // print("start ${element.start} and end ${element.end}");
-    // });
     final index = schedules.indexWhere((schedule) =>
         (schedule.status == true &&
             Helper.isToday(schedule) == true &&
             Helper.isTimeBetween(schedule.start, schedule.end)) ==
         true);
-    // print(index);
-    // print(Helper.isToday(schedules[0]));
-    // print(schedules[1].start);
-    // print(schedules[1].status);
 
-    // String currentSoundMode = await SettingsController.getCurrentSoundMode();
-    if (index != -1) {
-      // if (currentSoundMode == 'Normal Mode') {
-      await DBController.setNormalPeriod(true);
-      if (schedules[index].vibrate == true) {
-        await SettingsController.setVibrateMode();
-      } else if (schedules[index].silent == true) {
-        await SettingsController.setSilentMode();
+    if (index != -1 && index >= 0) {
+      String currentSoundMode = await SettingsController.getCurrentSoundMode();
+      if (currentSoundMode == 'Normal Mode') {
+        await refreshForegroundServiceNotification(
+            message:
+                '"${schedules[index].name.toString().toUpperCase()}" is active (${schedules[index].start.toString()} - ${schedules[index].end.toString()})');
+        await DBController.setNormalPeriod(true);
+        if (schedules[index].vibrate == true) {
+          await SettingsController.setVibrateMode();
+        } else if (schedules[index].silent == true) {
+          await SettingsController.setSilentMode();
+        }
       }
-      // }
     } else {
       bool __normalPeriod = await DBController.getNormalPeriod();
       if (__normalPeriod == true) {
+        await refreshForegroundServiceNotification(
+            message: 'No schedule is active now');
         await DBController.setNormalPeriod(false);
         await SettingsController.setNormalMode();
       }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/DBController.dart';
@@ -58,6 +60,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 1), () async {
+      Provider.of<SettingsProvider>(context, listen: false).refresh();
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

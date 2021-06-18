@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,22 +21,22 @@ class _CreateScreenState extends State<CreateScreen> {
       name: "",
       start: '00:00',
       end: '00:00',
-      silent: false,
+      silent: true,
       vibrate: false,
       airplane: false,
       notify: false,
-      saturday: false,
-      sunday: false,
-      monday: false,
-      tuesday: false,
-      wednesday: false,
-      thursday: false,
-      friday: false,
+      saturday: true,
+      sunday: true,
+      monday: true,
+      tuesday: true,
+      wednesday: true,
+      thursday: true,
+      friday: true,
       status: false,
       isSelected: false);
 
   Future<Null> selectStartTime(BuildContext context) async {
-    bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    // bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
     // print(is24HoursFormat);
     // print("is24HoursFormat");
     if (is24HoursFormat) {
@@ -122,7 +124,15 @@ class _CreateScreenState extends State<CreateScreen> {
   @override
   void initState() {
     super.initState();
-    is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    Timer(Duration(seconds: 1), () async {
+      is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -175,7 +185,7 @@ class _CreateScreenState extends State<CreateScreen> {
                             // style: TextStyle(color: Colors.grey[400]),
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Give a name..',
+                              hintText: 'Name...',
                               // hintStyle: TextStyle(color: Colors.grey[800])
                             ),
                           ),
@@ -193,11 +203,11 @@ class _CreateScreenState extends State<CreateScreen> {
                               schedule.start == ''
                                   ? ''
                                   : is24HoursFormat
-                                      ? Helper.fromStringToTimeOfDay(
+                                      ? schedule.start.toString()
+                                      : Helper.fromStringToTimeOfDay(
                                               schedule.start)
                                           .format(context)
-                                          .toString()
-                                      : schedule.start.toString(),
+                                          .toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),
@@ -229,11 +239,11 @@ class _CreateScreenState extends State<CreateScreen> {
                               schedule.end == ''
                                   ? ''
                                   : is24HoursFormat
-                                      ? Helper.fromStringToTimeOfDay(
+                                      ? schedule.end.toString()
+                                      : Helper.fromStringToTimeOfDay(
                                               schedule.end)
                                           .format(context)
-                                          .toString()
-                                      : schedule.end.toString(),
+                                          .toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),
@@ -270,12 +280,16 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                               child: Chip(
                                 label: Text('s'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.saturday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.saturday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.saturday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -287,12 +301,16 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                               child: Chip(
                                 label: Text('S'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.sunday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.sunday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.sunday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -304,12 +322,16 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                               child: Chip(
                                 label: Text('m'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.monday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.monday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.monday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -321,12 +343,16 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                               child: Chip(
                                 label: Text('t'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.tuesday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.tuesday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.tuesday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -338,12 +364,16 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                               child: Chip(
                                 label: Text('w'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.wednesday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.wednesday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.wednesday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -355,12 +385,16 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                               child: Chip(
                                 label: Text('t'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.thursday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.thursday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.thursday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -372,12 +406,16 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                               child: Chip(
                                 label: Text('f'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.friday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.friday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.friday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                           ],
@@ -485,7 +523,38 @@ class _CreateScreenState extends State<CreateScreen> {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          if (schedule.name != null && schedule.name != '') {
+                          if (schedule.name == null || schedule.name == '') {
+                            final snackBar = SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                'Oops! Schedule name required.',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              action: SnackBarAction(
+                                textColor: Colors.white,
+                                label: 'OK',
+                                onPressed: () {},
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          } else if (!Helper.isTimeAfterThisEndTime(
+                              schedule.start, schedule.end)) {
+                            final snackBar = SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                'Oops! Schedule end time must be after than schedule start time.',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              action: SnackBarAction(
+                                textColor: Colors.white,
+                                label: 'OK',
+                                onPressed: () {},
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          } else {
                             saveData();
                           }
                         },
@@ -496,23 +565,14 @@ class _CreateScreenState extends State<CreateScreen> {
                         //           ? Colors.blue
                         //           : Colors.black12),
                         // ),
-                        child: Icon(Icons.done,
-                            color:
-                                (schedule.name != null && schedule.name != '')
-                                    ? Colors.blue
-                                    : Colors.black12),
+                        child: Icon(Icons.done, color: Colors.blue),
                         autofocus:
                             (schedule.name != null && schedule.name != '')
                                 ? true
                                 : false,
                         style: OutlinedButton.styleFrom(
                             shape: StadiumBorder(),
-                            side: BorderSide(
-                                width: 2,
-                                color: (schedule.name != null &&
-                                        schedule.name != '')
-                                    ? Colors.blue
-                                    : Colors.black12),
+                            side: BorderSide(width: 2, color: Colors.blue),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 32, vertical: 16)),
                       ),

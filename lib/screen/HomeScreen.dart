@@ -9,6 +9,7 @@ import 'package:peace_time/screen/HelpScreen.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:peace_time/screen/widgets/ScheduleCard.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,6 +19,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    // to hide only bottom bar:
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+
+    // to hide only status bar:
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+
+    // to hide both:
+    // SystemChrome.setEnabledSystemUIOverlays([]);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).primaryColor,
@@ -54,13 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                 ),
                 actions: [
-                  // IconButton(
-                  //     icon: Icon(Icons.help_outline_rounded),
-                  //     onPressed: () => Navigator.push(
-                  //           context,
-                  //           CupertinoPageRoute(
-                  //               builder: (context) => HelpScreen()),
-                  //         ).then((response) => null)),
+                  IconButton(
+                      icon: Icon(Icons.share),
+                      onPressed: () => Share.share(
+                          "Peace Time - A Silent Scheduler App. Please visit https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time and download this awesome app.",
+                          subject: 'Peace Time - A Silent Scheduler App.')),
                   dropDownMenus(),
                 ],
                 flexibleSpace: FlexibleSpaceBar(

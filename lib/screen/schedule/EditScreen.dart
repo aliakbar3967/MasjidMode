@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -149,15 +151,17 @@ class _EditScreenState extends State<EditScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
-    // name = TextEditingController();
-    // name.addListener(() {
-    //   setState(() {
-    //     print(name.text);
-    //   });
-    // });
+    Timer(Duration(seconds: 1), () async {
+      is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+    });
     getScheduleDetails();
     // print(name.text.toString());
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -232,11 +236,11 @@ class _EditScreenState extends State<EditScreen> {
                               schedule.start == ''
                                   ? ''
                                   : is24HoursFormat
-                                      ? Helper.fromStringToTimeOfDay(
+                                      ? schedule.start.toString()
+                                      : Helper.fromStringToTimeOfDay(
                                               schedule.start)
                                           .format(context)
-                                          .toString()
-                                      : schedule.start.toString(),
+                                          .toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),
@@ -268,11 +272,11 @@ class _EditScreenState extends State<EditScreen> {
                               schedule.end == ''
                                   ? ''
                                   : is24HoursFormat
-                                      ? Helper.fromStringToTimeOfDay(
+                                      ? schedule.end.toString()
+                                      : Helper.fromStringToTimeOfDay(
                                               schedule.end)
                                           .format(context)
-                                          .toString()
-                                      : schedule.end.toString(),
+                                          .toString(),
                               style: TextStyle(
                                   // color: Colors.grey[400],
                                   ),
@@ -309,12 +313,16 @@ class _EditScreenState extends State<EditScreen> {
                               },
                               child: Chip(
                                 label: Text('s'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.saturday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.saturday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.saturday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -326,12 +334,16 @@ class _EditScreenState extends State<EditScreen> {
                               },
                               child: Chip(
                                 label: Text('S'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.sunday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.sunday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.sunday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -343,12 +355,16 @@ class _EditScreenState extends State<EditScreen> {
                               },
                               child: Chip(
                                 label: Text('m'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.monday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.monday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.monday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -360,12 +376,16 @@ class _EditScreenState extends State<EditScreen> {
                               },
                               child: Chip(
                                 label: Text('t'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.tuesday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.tuesday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.tuesday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -377,12 +397,16 @@ class _EditScreenState extends State<EditScreen> {
                               },
                               child: Chip(
                                 label: Text('w'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.wednesday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.wednesday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.wednesday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -394,12 +418,16 @@ class _EditScreenState extends State<EditScreen> {
                               },
                               child: Chip(
                                 label: Text('t'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.thursday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.thursday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.thursday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                             GestureDetector(
@@ -411,12 +439,16 @@ class _EditScreenState extends State<EditScreen> {
                               },
                               child: Chip(
                                 label: Text('f'.toUpperCase()),
-                                labelStyle: TextStyle(color: Colors.white),
-                                backgroundColor: schedule.friday
-                                    ? Colors.blue
-                                    : Colors.grey[400],
+                                labelStyle: TextStyle(
+                                    color: schedule.friday
+                                        ? Colors.blue
+                                        : Colors.grey[400]),
+                                backgroundColor: Colors.white,
                                 shape: CircleBorder(
-                                    side: BorderSide(color: Colors.grey[400])),
+                                    side: BorderSide(
+                                        color: schedule.friday
+                                            ? Colors.blue
+                                            : Colors.grey[400])),
                               ),
                             ),
                           ],
@@ -522,12 +554,39 @@ class _EditScreenState extends State<EditScreen> {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          if (schedule.name != null && schedule.name != '') {
-                            saveData();
+                          if (schedule.name == null || schedule.name == '') {
+                            final snackBar = SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                'Oops! Schedule name required.',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              action: SnackBarAction(
+                                textColor: Colors.white,
+                                label: 'OK',
+                                onPressed: () {},
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          } else if (!Helper.isTimeAfterThisEndTime(
+                              schedule.start, schedule.end)) {
+                            final snackBar = SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                'Oops! Schedule end time must be after than schedule start time.',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              action: SnackBarAction(
+                                textColor: Colors.white,
+                                label: 'OK',
+                                onPressed: () {},
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           } else {
-                            setState(() {
-                              errors['name'] = true;
-                            });
+                            saveData();
                           }
                         },
                         // child: Text(
@@ -537,23 +596,14 @@ class _EditScreenState extends State<EditScreen> {
                         //           ? Colors.blue
                         //           : Colors.black12),
                         // ),
-                        child: Icon(Icons.done,
-                            color:
-                                (schedule.name != null && schedule.name != '')
-                                    ? Colors.blue
-                                    : Colors.black12),
+                        child: Icon(Icons.done, color: Colors.blue),
                         autofocus:
                             (schedule.name != null && schedule.name != '')
                                 ? true
                                 : false,
                         style: OutlinedButton.styleFrom(
                             shape: StadiumBorder(),
-                            side: BorderSide(
-                                width: 2,
-                                color: (schedule.name != null &&
-                                        schedule.name != '')
-                                    ? Colors.blue
-                                    : Colors.black12),
+                            side: BorderSide(width: 2, color: Colors.blue),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 32, vertical: 16)),
                       ),

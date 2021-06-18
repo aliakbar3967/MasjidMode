@@ -63,6 +63,41 @@ class Helper {
       return false;
   }
 
+  static bool isTimeAfterThisEndTime(String start, String end) {
+    // print("start $start and end $end");
+    TimeOfDay startTime = Helper.fromStringToTimeOfDay(start);
+    TimeOfDay endTime = Helper.fromStringToTimeOfDay(end);
+    // print("start $startTime and end $endTime");
+    // TimeOfDay currentTime = fromString("12:40 PM");
+    TimeOfDay currentTime = TimeOfDay.now();
+    // print(currentTime);
+
+    double _doubleCurrentTime =
+        currentTime.hour.toDouble() + (currentTime.minute.toDouble() / 60);
+    double _doubleStartTime =
+        startTime.hour.toDouble() + (startTime.minute.toDouble() / 60);
+    double _doubleEndTime =
+        endTime.hour.toDouble() + (endTime.minute.toDouble() / 60);
+
+    double _timeDiffAfter = _doubleEndTime - _doubleStartTime;
+    // double _timeDiffBefore = _doubleEndTime - _doubleCurrentTime;
+
+    // double _hrDiffAfter = _timeDiffAfter.truncate() * 1.0;
+    double _minuteIsAfter = (_timeDiffAfter - _timeDiffAfter.truncate()) * 60;
+    // double _hrDiffBefore = _timeDiffBefore.truncate() * 1.0;
+    // print("_minute");
+    // print("After");
+    // print(_minuteIsAfter.toString());
+    // double _minuteIsBefore = (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
+    // print("Before");
+    // print(_minuteIsBefore.toString());
+    print(_minuteIsAfter);
+    if (_minuteIsAfter > 0)
+      return true;
+    else
+      return false;
+  }
+
   static bool isToday(Schedule schedule) {
     String todayName;
 
