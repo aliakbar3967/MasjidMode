@@ -45,7 +45,7 @@ class ForgroundService {
   static startTask() async {
     await FlutterForegroundServicePlugin.startPeriodicTask(
       periodicTaskFun: periodicTaskFun,
-      period: const Duration(seconds: 29),
+      period: const Duration(seconds: 20),
     );
   }
 
@@ -108,6 +108,8 @@ Future<void> soundModeChangeBySchedule() async {
   if (schedules == null) {
     return;
   } else {
+    // await ForgroundService.refresh();
+
     final index = schedules.indexWhere((schedule) =>
         (schedule.status == true &&
             Helper.isToday(schedule) == true &&

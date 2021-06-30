@@ -57,7 +57,7 @@ class ScheduleCard extends StatelessWidget {
               children: [
                 dayChip("SAT", schedule.saturday, context),
                 dayChip("SUN", schedule.sunday, context),
-                dayChip("SUN", schedule.monday, context),
+                dayChip("MON", schedule.monday, context),
                 dayChip("TUE", schedule.tuesday, context),
                 dayChip("WED", schedule.wednesday, context),
                 dayChip("THU", schedule.thursday, context),

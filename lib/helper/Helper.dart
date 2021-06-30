@@ -28,74 +28,30 @@ class Helper {
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
-  static bool isTimeBetween(String start, String end) {
-    // print("start $start and end $end");
-    TimeOfDay startTime = Helper.fromStringToTimeOfDay(start);
-    TimeOfDay endTime = Helper.fromStringToTimeOfDay(end);
-    // print("start $startTime and end $endTime");
-    // TimeOfDay currentTime = fromString("12:40 PM");
-    TimeOfDay currentTime = TimeOfDay.now();
-    // print(currentTime);
+  static bool isTimeBetween(String startTime, String endTime) {
+    DateFormat dateFormat = new DateFormat.Hm();
+    DateTime now = dateFormat.parse(DateFormat.Hm().format(DateTime.now()));
+    DateTime start = dateFormat.parse(startTime).subtract(Duration(minutes: 1));
+    DateTime end = dateFormat.parse(endTime);
 
-    double _doubleCurrentTime =
-        currentTime.hour.toDouble() + (currentTime.minute.toDouble() / 60);
-    double _doubleStartTime =
-        startTime.hour.toDouble() + (startTime.minute.toDouble() / 60);
-    double _doubleEndTime =
-        endTime.hour.toDouble() + (endTime.minute.toDouble() / 60);
-
-    double _timeDiffAfter = _doubleCurrentTime - _doubleStartTime;
-    double _timeDiffBefore = _doubleEndTime - _doubleCurrentTime;
-
-    // double _hrDiffAfter = _timeDiffAfter.truncate() * 1.0;
-    double _minuteIsAfter = (_timeDiffAfter - _timeDiffAfter.truncate()) * 60;
-    // double _hrDiffBefore = _timeDiffBefore.truncate() * 1.0;
-    // print("_minute");
-    // print("After");
-    // print(_minuteIsAfter.toString());
-    double _minuteIsBefore =
-        (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
-    // print("Before");
-    // print(_minuteIsBefore.toString());
-    if (_minuteIsAfter >= 0 && _minuteIsBefore >= 0)
+    if (now.isAfter(start) && now.isBefore(end)) {
+      // print('between true');
       return true;
-    else
+    } else {
       return false;
+    }
   }
 
-  static bool isTimeAfterThisEndTime(String start, String end) {
-    // print("start $start and end $end");
-    TimeOfDay startTime = Helper.fromStringToTimeOfDay(start);
-    TimeOfDay endTime = Helper.fromStringToTimeOfDay(end);
-    // print("start $startTime and end $endTime");
-    // TimeOfDay currentTime = fromString("12:40 PM");
-    TimeOfDay currentTime = TimeOfDay.now();
-    // print(currentTime);
+  static bool isTimeAfterThisEndTime(String startTime, String endTime) {
+    DateFormat dateFormat = new DateFormat.Hm();
+    DateTime start = dateFormat.parse(startTime);
+    DateTime end = dateFormat.parse(endTime);
 
-    double _doubleCurrentTime =
-        currentTime.hour.toDouble() + (currentTime.minute.toDouble() / 60);
-    double _doubleStartTime =
-        startTime.hour.toDouble() + (startTime.minute.toDouble() / 60);
-    double _doubleEndTime =
-        endTime.hour.toDouble() + (endTime.minute.toDouble() / 60);
-
-    double _timeDiffAfter = _doubleEndTime - _doubleStartTime;
-    // double _timeDiffBefore = _doubleEndTime - _doubleCurrentTime;
-
-    // double _hrDiffAfter = _timeDiffAfter.truncate() * 1.0;
-    double _minuteIsAfter = (_timeDiffAfter - _timeDiffAfter.truncate()) * 60;
-    // double _hrDiffBefore = _timeDiffBefore.truncate() * 1.0;
-    // print("_minute");
-    // print("After");
-    // print(_minuteIsAfter.toString());
-    // double _minuteIsBefore = (_timeDiffBefore - _timeDiffBefore.truncate()) * 60;
-    // print("Before");
-    // print(_minuteIsBefore.toString());
-    print(_minuteIsAfter);
-    if (_minuteIsAfter > 0)
+    if (end.isAfter(start)) {
       return true;
-    else
+    } else {
       return false;
+    }
   }
 
   static bool isToday(Schedule schedule) {

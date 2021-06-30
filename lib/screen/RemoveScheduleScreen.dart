@@ -85,7 +85,7 @@ class ScheduleList extends StatelessWidget {
                                 scheduleProvider.schedules[index].sunday,
                                 context),
                             dayChip(
-                                "SUN",
+                                "MON",
                                 scheduleProvider.schedules[index].monday,
                                 context),
                             dayChip(

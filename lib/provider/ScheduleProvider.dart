@@ -223,7 +223,9 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Future<void> setIsAllSelectedMode(bool bool) async {
+    schedules.forEach((element) => element.isSelected = false);
     isAllSelectedMode = bool;
+    selectedScheduleItems();
     notifyListeners();
   }
 
