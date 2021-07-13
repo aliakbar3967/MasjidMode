@@ -47,63 +47,53 @@ class ScheduleCard extends StatelessWidget {
           ).then((response) =>
               Provider.of<ScheduleProvider>(context, listen: false)
                   .setIsAllSelectedMode(false)),
-          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          // horizontalTitleGap: 16,
-          subtitle: Container(
-            // color: Colors.grey[850],
-            padding: EdgeInsets.only(top: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                dayChip("SAT", schedule.saturday, context),
-                dayChip("SUN", schedule.sunday, context),
-                dayChip("MON", schedule.monday, context),
-                dayChip("TUE", schedule.tuesday, context),
-                dayChip("WED", schedule.wednesday, context),
-                dayChip("THU", schedule.thursday, context),
-                dayChip("FRI", schedule.friday, context),
-              ],
-            ),
-          ),
-          // leading: Text("Name Of"),
+          contentPadding: EdgeInsets.fromLTRB(16, 12, 16, 8),
           title: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    schedule.name.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).textTheme.headline1.color,
-                    ),
+                  Text(schedule.name),
+                  Row(
+                    children: [
+                      dayChip("S", schedule.saturday, context),
+                      dayChip("S", schedule.sunday, context),
+                      dayChip("M", schedule.monday, context),
+                      dayChip("T", schedule.tuesday, context),
+                      dayChip("W", schedule.wednesday, context),
+                      dayChip("T", schedule.thursday, context),
+                      dayChip("F", schedule.friday, context),
+                    ],
                   )
                 ],
               ),
-              SizedBox(
-                height: 4,
-              ),
+              // SizedBox(
+              //   height: 4,
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 7,
-                    child: timeView(schedule, context),
+                    flex: 8,
+                    child: scheduleCardTimeText(schedule, context),
                   ),
                   Expanded(
-                    flex: 3,
+                    flex: 2,
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: CupertinoSwitch(
-                        value: schedule.status,
-                        onChanged: (bool value) =>
-                            Provider.of<ScheduleProvider>(context,
-                                    listen: false)
-                                .toggleScheduleStatus(index),
-                        activeColor: Colors.blue,
-                        // trackColor: Colors.black,
+                      child: Transform.scale(
+                        alignment: Alignment.centerRight,
+                        scale: 0.8,
+                        child: CupertinoSwitch(
+                          value: schedule.status,
+                          onChanged: (bool value) =>
+                              Provider.of<ScheduleProvider>(context,
+                                      listen: false)
+                                  .toggleScheduleStatus(index),
+                          activeColor: Colors.blue,
+                          // trackColor: Colors.black,
+                        ),
                       ),
                     ),
                   ),

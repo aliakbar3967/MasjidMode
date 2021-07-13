@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
-import 'package:peace_time/screen/HelpScreen.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:peace_time/screen/widgets/ScheduleCard.dart';
 import 'package:provider/provider.dart';
@@ -92,20 +91,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        DateFormat('hh:mm a')
-                                            .format(DateTime.now())
-                                            .split(" ")[0],
-                                        style: TextStyle(fontSize: 58),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: Text(
-                                          DateFormat('hh:mm a')
-                                              .format(DateTime.now())
-                                              .split(" ")[1]
-                                              .toLowerCase(),
-                                          style: TextStyle(fontSize: 16),
-                                        ),
+                                        MediaQuery.of(context)
+                                                .alwaysUse24HourFormat
+                                            ? DateFormat.Hm()
+                                                .format(DateTime.now())
+                                            : DateFormat.jm()
+                                                .format(DateTime.now()),
+                                        style: TextStyle(
+                                            fontSize: 0.15 *
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                            fontWeight: FontWeight.w300),
                                       ),
                                     ],
                                   ),

@@ -1,25 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:intl/intl.dart';
 import 'package:peace_time/helper/Helper.dart';
+import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
-import 'package:peace_time/provider/SettingsProvider.dart';
 import 'package:peace_time/screen/AppInfoScreen.dart';
 import 'package:peace_time/screen/schedule/CreateScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../HelpScreen.dart';
-import '../SettingsScreen.dart';
+import 'package:peace_time/screen/HelpScreen.dart';
+import 'package:peace_time/screen/SettingsScreen.dart';
 
 Widget dayChip(name, isActive, BuildContext context) {
-  return Text(
-    name,
-    style: TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      color: isActive ? Colors.blue : Theme.of(context).disabledColor,
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4),
+    child: Text(
+      name,
+      style: TextStyle(
+        fontSize: 0.03 * MediaQuery.of(context).size.width,
+        color:
+            isActive ? Colors.blue : Theme.of(context).chipTheme.disabledColor,
+      ),
     ),
   );
 }
@@ -305,155 +309,81 @@ Widget speedDialFloatingAction(BuildContext context) {
   );
 }
 
-Widget timeView(schedule, BuildContext context) {
+Widget timeView(Schedule schedule, BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            DateFormat.Hm().format(DateTime.parse(schedule.start)).toString(),
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ],
+      ),
+      Row(
+        children: [
+          Text(
+            "~",
+            style: TextStyle(fontSize: 32),
+          ),
+        ],
+      ),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            DateFormat.Hm().format(DateTime.parse(schedule.end)).toString(),
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget dayChipButton(String name, bool status, BuildContext context) {
+  return Chip(
+    label: Text(name.toUpperCase()),
+    backgroundColor:
+        status ? Colors.blue : Theme.of(context).chipTheme.selectedColor,
+  );
+}
+
+Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
   bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+
+  String startTime = '';
+  String endTime = '';
   if (is24HoursFormat) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              schedule.start,
-              // schedule.start.split(" ")[0],
-              style: TextStyle(
-                // color: Colors.grey[400],
-                fontSize: 32,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 4),
-            //   child: Text(
-            //     schedule.start,
-            //     // schedule.start.split(" ")[1].toLowerCase(),
-            //     style: TextStyle(
-            //       // color: Colors.grey[400],
-            //       fontSize: 14,
-            //       // fontWeight: FontWeight.w300,
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-        Row(
-          children: [
-            Text(
-              "-",
-              style: TextStyle(
-                  // color: Colors.grey[700],
-                  fontSize: 32),
-            ),
-          ],
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              schedule.end,
-              // schedule.end.split(" ")[0],
-              style: TextStyle(
-                  // color: Colors.grey[400],
-                  fontSize: 32,
-                  fontWeight: FontWeight.w300),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 4),
-            //   child: Text(
-            //     schedule.end.split(" ")[1].toLowerCase(),
-            //     style: TextStyle(
-            //       // color: Colors.grey[400],
-            //       fontSize: 14,
-            //       // fontWeight: FontWeight.w300,
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-      ],
-    );
+    startTime = DateFormat.Hm().format(DateTime.parse(schedule.start));
+    endTime = Helper.isNextDay(schedule.start, schedule.end)
+        ? DateFormat.Hm().format(DateTime.parse(schedule.end)) + ', next day'
+        : DateFormat.Hm().format(DateTime.parse(schedule.end));
   } else {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              // Helper.fromStringToTimeOfDay(schedule.start)
-              //     .format(context)
-              //     .toString(),
-              Helper.fromStringToTimeOfDay(schedule.start)
-                  .format(context)
-                  .toString()
-                  .split(" ")[0],
-              style: TextStyle(
-                // color: Colors.grey[400],
-                fontSize: 32,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                // schedule.start,
-                Helper.fromStringToTimeOfDay(schedule.start)
-                    .format(context)
-                    .toString()
-                    .split(" ")[1]
-                    .toLowerCase(),
-                style: TextStyle(
-                  // color: Colors.grey[400],
-                  fontSize: 14,
-                  // fontWeight: FontWeight.w300,
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Text(
-              "-",
-              style: TextStyle(
-                  // color: Colors.grey[700],
-                  fontSize: 32),
-            ),
-          ],
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              // schedule.end,
-              Helper.fromStringToTimeOfDay(schedule.end)
-                  .format(context)
-                  .toString()
-                  .split(" ")[0],
-              style: TextStyle(
-                  // color: Colors.grey[400],
-                  fontSize: 32,
-                  fontWeight: FontWeight.w300),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                Helper.fromStringToTimeOfDay(schedule.end)
-                    .format(context)
-                    .toString()
-                    .split(" ")[1]
-                    .toLowerCase(),
-                style: TextStyle(
-                  // color: Colors.grey[400],
-                  fontSize: 14,
-                  // fontWeight: FontWeight.w300,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
+    startTime = DateFormat.jm().format(DateTime.parse(schedule.start));
+    endTime = Helper.isNextDay(schedule.start, schedule.end)
+        ? DateFormat.jm().format(DateTime.parse(schedule.end)) + ', next day'
+        : DateFormat.jm().format(DateTime.parse(schedule.end));
   }
+  return Text(
+    (startTime + " ~ " + endTime).toLowerCase().toString(),
+    style: TextStyle(
+        fontSize: 0.04 * MediaQuery.of(context).size.width, color: Colors.blue),
+  );
+}
+
+Widget timeText(String timeString, BuildContext context) {
+  bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
+  String time = '';
+  if (is24HoursFormat) {
+    time = DateFormat.Hm().format(DateTime.parse(timeString));
+  } else {
+    time = DateFormat.jm().format(DateTime.parse(timeString));
+  }
+  return Text(time.toLowerCase().toString());
 }

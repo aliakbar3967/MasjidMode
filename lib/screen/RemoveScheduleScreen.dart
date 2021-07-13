@@ -67,76 +67,58 @@ class ScheduleList extends StatelessWidget {
                       onTap: () => context
                           .read<ScheduleProvider>()
                           .toggleScheduleSelection(index),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      // horizontalTitleGap: 16,
-                      subtitle: Container(
-                        // color: Colors.grey[850],
-                        padding: EdgeInsets.only(top: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            dayChip(
-                                "SAT",
-                                scheduleProvider.schedules[index].saturday,
-                                context),
-                            dayChip(
-                                "SUN",
-                                scheduleProvider.schedules[index].sunday,
-                                context),
-                            dayChip(
-                                "MON",
-                                scheduleProvider.schedules[index].monday,
-                                context),
-                            dayChip(
-                                "TUE",
-                                scheduleProvider.schedules[index].tuesday,
-                                context),
-                            dayChip(
-                                "WED",
-                                scheduleProvider.schedules[index].wednesday,
-                                context),
-                            dayChip(
-                                "THU",
-                                scheduleProvider.schedules[index].thursday,
-                                context),
-                            dayChip(
-                                "FRI",
-                                scheduleProvider.schedules[index].friday,
-                                context),
-                          ],
-                        ),
-                      ),
-                      // leading: Text("Name Of"),
+                      contentPadding: EdgeInsets.fromLTRB(16, 12, 16, 8),
                       title: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                scheduleProvider.schedules[index].name
-                                    .toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      .color,
-                                ),
+                              Text(scheduleProvider.schedules[index].name),
+                              Row(
+                                children: [
+                                  dayChip(
+                                      "S",
+                                      scheduleProvider
+                                          .schedules[index].saturday,
+                                      context),
+                                  dayChip(
+                                      "S",
+                                      scheduleProvider.schedules[index].sunday,
+                                      context),
+                                  dayChip(
+                                      "M",
+                                      scheduleProvider.schedules[index].monday,
+                                      context),
+                                  dayChip(
+                                      "T",
+                                      scheduleProvider.schedules[index].tuesday,
+                                      context),
+                                  dayChip(
+                                      "W",
+                                      scheduleProvider
+                                          .schedules[index].wednesday,
+                                      context),
+                                  dayChip(
+                                      "T",
+                                      scheduleProvider
+                                          .schedules[index].thursday,
+                                      context),
+                                  dayChip(
+                                      "F",
+                                      scheduleProvider.schedules[index].friday,
+                                      context),
+                                ],
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
+                          SizedBox(height: 4),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
                                 flex: 7,
-                                child: timeView(
+                                child: scheduleCardTimeText(
                                     scheduleProvider.schedules[index], context),
                               ),
                               Expanded(

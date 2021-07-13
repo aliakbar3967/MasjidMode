@@ -113,25 +113,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       // color: Colors.grey[900],
                       borderOnForeground: false,
                       elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 8),
-                        child: ListTile(
-                          title: Text(
-                            "Application",
-                            // style: TextStyle(color: Colors.grey[400]),
-                          ),
-                          subtitle: Text(
-                            "Auto silent will not work, if it is off.",
-                            // style: TextStyle(color: Colors.grey[700]),
-                          ),
-                          trailing:
-                              // Provider.of<SettingsProvider>(context,
-                              // listen: false)
-                              // .isPending
-                              // ? CupertinoActivityIndicator()
-                              // :
-                              CupertinoSwitch(
+                      child: ListTile(
+                        title: Text(
+                          "Application",
+                          // style: TextStyle(color: Colors.grey[400]),
+                        ),
+                        subtitle: Text(
+                          "Auto silent will not work, if it is off.",
+                          // style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        trailing:
+                            // Provider.of<SettingsProvider>(context,
+                            // listen: false)
+                            // .isPending
+                            // ? CupertinoActivityIndicator()
+                            // :
+                            Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: CupertinoSwitch(
                             value: Provider.of<SettingsProvider>(context,
                                     listen: false)
                                 .settings
@@ -157,19 +157,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: GestureDetector(
                         onTap: () =>
                             SettingsController.openDoNotDisturbSettings(),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 2, vertical: 8),
-                          child: ListTile(
-                            title: Text(
-                              "Do Not Disturb",
-                              // style: TextStyle(color: Colors.grey[400]),
-                            ),
-                            subtitle: Text(
-                              "Auto silent will not work, if it is off.",
-                              // style: TextStyle(color: Colors.grey[700]),
-                            ),
-                            trailing: CupertinoSwitch(
+                        child: ListTile(
+                          title: Text(
+                            "Do Not Disturb",
+                            // style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          subtitle: Text(
+                            "Auto silent will not work, if it is off.",
+                            // style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          trailing: Transform.scale(
+                            scale: 0.8,
+                            alignment: Alignment.centerRight,
+                            child: CupertinoSwitch(
                               value: Provider.of<SettingsProvider>(context)
                                   .settings
                                   .isDoNotDisturbPermissionStatus,
@@ -185,19 +185,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       // color: Colors.grey[900],
                       borderOnForeground: false,
                       elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 8),
-                        child: ListTile(
-                          title: Text(
-                            "Show Introduction Screen",
-                            // style: TextStyle(color: Colors.grey[400]),
-                          ),
-                          subtitle: Text(
-                            "Get back app introduction screen.",
-                            // style: TextStyle(color: Colors.grey[700]),
-                          ),
-                          trailing: CupertinoSwitch(
+                      child: ListTile(
+                        title: Text(
+                          "Show Introduction Screen",
+                          // style: TextStyle(color: Colors.grey[400]),
+                        ),
+                        subtitle: Text(
+                          "Get back app introduction screen.",
+                          // style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        trailing: Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: CupertinoSwitch(
                             value: Provider.of<SettingsProvider>(context,
                                     listen: false)
                                 .settings
@@ -216,15 +216,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       // color: Colors.grey[900],
                       borderOnForeground: false,
                       elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 8),
-                        child: ListTile(
-                          title: Text(
-                            "Dark Mode",
-                            // style: TextStyle(color: Colors.grey[400]),
-                          ),
-                          trailing: CupertinoSwitch(
+                      child: ListTile(
+                        title: Text(
+                          "Dark Mode",
+                          // style: TextStyle(color: Colors.grey[400]),
+                        ),
+                        trailing: Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: CupertinoSwitch(
                             value: Provider.of<SettingsProvider>(context)
                                 .settings
                                 .darkMode,
@@ -242,18 +242,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       // color: Colors.redAccent,
                       borderOnForeground: false,
                       elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 8),
-                        child: ListTile(
-                          title: Center(
-                            child: Text(
-                              "Restore App",
-                              style: TextStyle(color: Colors.red),
-                            ),
+                      child: ListTile(
+                        title: Center(
+                          child: Text(
+                            "Restore App",
+                            style: TextStyle(color: Colors.red),
                           ),
-                          onTap: () => showAlert(context),
                         ),
+                        onTap: () => showAlert(context),
                       ),
                     ),
                   ],

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
+import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:provider/provider.dart';
 
 class EditScreen extends StatefulWidget {
@@ -27,99 +28,36 @@ class _EditScreenState extends State<EditScreen> {
   Map<String, bool> errors = {'name': false};
 
   Future<Null> selectStartTime(BuildContext context) async {
-    // picked = await showTimePicker(
-    //     context: context,
-    //     initialTime: Helper.fromStringToTimeOfDay(schedule.start));
-
-    // if (picked != null) {
-    //   setState(() {
-    //     schedule.start = picked.format(context);
-    //   });
-    // }
-
-    // bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
-    // print(is24HoursFormat);
-    // print("is24HoursFormat");
-    if (is24HoursFormat) {
-      picked = await showTimePicker(
-          context: context,
-          initialTime: Helper.fromStringToTimeOfDay(schedule.start));
-      if (picked != null) {
-        // print('true 24');
-        // print(picked.format(context));
-        setState(() {
-          schedule.start = picked.format(context);
-          // print(schedule.start);
-        });
-      }
-    } else {
-      // print(TimeOfDay.now());
-      final s = schedule.start;
-      TimeOfDay time = TimeOfDay(
-          hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
-      // print(time);
-      picked = await showTimePicker(context: context, initialTime: time);
-      if (picked != null) {
-        // print('false 12');
-        // print(picked.format(context));
-        setState(() {
-          DateTime date = DateFormat.jm().parse(picked.format(context));
-          // print(DateFormat("HH:mm").format(date));
-          schedule.start = DateFormat("HH:mm").format(date);
-          // schedule.end = picked.format(context);
-          // print(schedule.start);
-          // print(Helper.stringToTimeOfDay(schedule.end));
-          // TimeOfDay _currentTime = Helper.stringToTimeOfDay(schedule.end);
-          // print("Current Time: ${_currentTime.format(context)}");
-        });
-      }
+    final picked = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.start)));
+    if (picked != null) {
+      setState(() {
+        schedule.start =
+            DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
+        schedule.end =
+            DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
+      });
     }
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
-    // picked = await showTimePicker(
-    //     context: context,
-    //     initialTime: Helper.fromStringToTimeOfDay(schedule.end));
-
-    // if (picked != null) {
-    //   setState(() {
-    //     schedule.end = picked.format(context);
-    //   });
-    // }
-    // bool is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
-    // print(is24HoursFormat);
-    // print("is24HoursFormat");
-    if (is24HoursFormat) {
-      picked = await showTimePicker(
-          context: context,
-          initialTime: Helper.fromStringToTimeOfDay(schedule.end));
-      if (picked != null) {
-        // print('true 24');
-        // print(picked.format(context));
+    final picked = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.end)));
+    if (picked != null) {
+      // final now = new DateTime.now();
+      schedule.end =
+          DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
+      if (Helper.isEndTimeBeforeStartTime(schedule.start, schedule.end)) {
         setState(() {
-          schedule.end = picked.format(context);
-          // print(schedule.end);
+          schedule.end =
+              DateTime(2021, 04, 12 + 1, picked.hour, picked.minute).toString();
         });
-      }
-    } else {
-      // print(TimeOfDay.now());
-      final s = schedule.end;
-      TimeOfDay time = TimeOfDay(
-          hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
-      // print(time);
-      picked = await showTimePicker(context: context, initialTime: time);
-      if (picked != null) {
-        // print('false 12');
-        // print(picked.format(context));
+      } else {
         setState(() {
-          DateTime date = DateFormat.jm().parse(picked.format(context));
-          // print(DateFormat("HH:mm").format(date));
-          schedule.end = DateFormat("HH:mm").format(date);
-          // schedule.end = picked.format(context);
-          // print(schedule.end);
-          // print(Helper.stringToTimeOfDay(schedule.end));
-          // TimeOfDay _currentTime = Helper.stringToTimeOfDay(schedule.end);
-          // print("Current Time: ${_currentTime.format(context)}");
+          schedule.end =
+              DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
         });
       }
     }
@@ -130,13 +68,7 @@ class _EditScreenState extends State<EditScreen> {
 
     Provider.of<ScheduleProvider>(context, listen: false)
         .update(schedule, widget.index);
-    // if (await SettingsController.isRunningForgroundService()) {
-    //   await SettingsController.stopTask();
-    //   await SettingsController.startTask();
-    // }
     Navigator.pop(context, true);
-    // String encoded = Schedule.encode([schedule]);
-    // print(encoded);
   }
 
   void getScheduleDetails() async {
@@ -155,7 +87,6 @@ class _EditScreenState extends State<EditScreen> {
       is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
     });
     getScheduleDetails();
-    // print(name.text.toString());
   }
 
   @override
@@ -167,10 +98,7 @@ class _EditScreenState extends State<EditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black,
-      // backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        // elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined),
           onPressed: () => Navigator.of(context).pop(),
@@ -180,11 +108,7 @@ class _EditScreenState extends State<EditScreen> {
         ),
       ),
       body: SafeArea(
-        // bottom: false,
         child: Container(
-          // padding: EdgeInsets.only(left: 15, right: 15),
-          // height: double.infinity,
-          // width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -197,9 +121,7 @@ class _EditScreenState extends State<EditScreen> {
                     child: Column(children: [
                       SizedBox(height: 10.0),
                       Card(
-                        // color: Colors.grey[900],
                         elevation: 30,
-                        // shadowColor: Colors.grey[900],
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
@@ -209,51 +131,28 @@ class _EditScreenState extends State<EditScreen> {
                               setState(() {
                                 schedule.name = value;
                               });
-                              // print(name);
                             },
-                            // style: TextStyle(color: Colors.grey[400]),
                             decoration: InputDecoration(
-                              // fillColor: Colors.grey[400],
-                              // focusColor: Colors.grey[400],
-                              // hoverColor: Colors.grey[400],
-                              // filled: true,
                               border: InputBorder.none,
                               hintText: 'Give a name..',
-                              // hintStyle: TextStyle(color: Colors.grey[800])
                             ),
                           ),
                         ),
                       ),
                       SizedBox(height: 8 * 5.0),
                       Card(
-                        // color: Colors.grey[900],
                         child: GestureDetector(
                           onTap: () {
                             selectStartTime(context);
                           },
                           child: ListTile(
                             title: Text(
-                              schedule.start == ''
-                                  ? ''
-                                  : is24HoursFormat
-                                      ? schedule.start.toString()
-                                      : Helper.fromStringToTimeOfDay(
-                                              schedule.start)
-                                          .format(context)
-                                          .toString(),
-                              style: TextStyle(
-                                  // color: Colors.grey[400],
-                                  ),
+                              Helper.timeText(schedule.start, context),
+                              style: TextStyle(color: Colors.blue),
                             ),
-                            subtitle: Text(
-                              "Start Time",
-                              // style: TextStyle(color: Colors.grey[700]),
-                            ),
+                            subtitle: Text("Start Time"),
                             trailing: IconButton(
-                              icon: Icon(
-                                Icons.alarm_add,
-                                // color: Colors.grey[400],
-                              ),
+                              icon: Icon(Icons.alarm_add),
                               onPressed: () {
                                 selectStartTime(context);
                               },
@@ -262,34 +161,21 @@ class _EditScreenState extends State<EditScreen> {
                         ),
                       ),
                       Card(
-                        // color: Colors.grey[900],
                         child: GestureDetector(
                           onTap: () {
                             selectEndTime(context);
                           },
                           child: ListTile(
                             title: Text(
-                              schedule.end == ''
-                                  ? ''
-                                  : is24HoursFormat
-                                      ? schedule.end.toString()
-                                      : Helper.fromStringToTimeOfDay(
-                                              schedule.end)
-                                          .format(context)
-                                          .toString(),
-                              style: TextStyle(
-                                  // color: Colors.grey[400],
-                                  ),
+                              Helper.isNextDay(schedule.start, schedule.end)
+                                  ? Helper.timeText(schedule.end, context) +
+                                      ', next day'
+                                  : Helper.timeText(schedule.end, context),
+                              style: TextStyle(color: Colors.blue),
                             ),
-                            subtitle: Text(
-                              "End Time",
-                              // style: TextStyle(color: Colors.grey[700]),
-                            ),
+                            subtitle: Text("End Time"),
                             trailing: IconButton(
-                              icon: Icon(
-                                Icons.alarm_add,
-                                // color: Colors.grey[400],
-                              ),
+                              icon: Icon(Icons.alarm_add),
                               onPressed: () {
                                 selectEndTime(context);
                               },
@@ -299,204 +185,115 @@ class _EditScreenState extends State<EditScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Row(
-                          // spacing: 10.0,
-                          // runSpacing: 10.0,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Wrap(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          direction: Axis.horizontal,
+                          // alignment: WrapAlignment.spaceBetween,
+                          // runAlignment: WrapAlignment.spaceBetween,
+                          // crossAxisAlignment: WrapCrossAlignment.start,
                           children: [
                             GestureDetector(
                               onTap: () {
-                                // print(days['sat']);
                                 setState(() {
                                   schedule.saturday = !schedule.saturday;
                                 });
                               },
-                              child: Chip(
-                                label: Text('s'.toUpperCase()),
-                                labelStyle: TextStyle(
-                                    color: schedule.saturday
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                backgroundColor: Colors.white,
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: schedule.saturday
-                                            ? Colors.blue
-                                            : Colors.grey[400])),
-                              ),
+                              child: dayChipButton(
+                                  's', schedule.saturday, context),
                             ),
                             GestureDetector(
                               onTap: () {
-                                // print(days['sat']);
                                 setState(() {
                                   schedule.sunday = !schedule.sunday;
                                 });
                               },
-                              child: Chip(
-                                label: Text('S'.toUpperCase()),
-                                labelStyle: TextStyle(
-                                    color: schedule.sunday
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                backgroundColor: Colors.white,
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: schedule.sunday
-                                            ? Colors.blue
-                                            : Colors.grey[400])),
-                              ),
+                              child:
+                                  dayChipButton('s', schedule.sunday, context),
                             ),
                             GestureDetector(
-                              onTap: () {
-                                // print(days['sat']);
-                                setState(() {
-                                  schedule.monday = !schedule.monday;
-                                });
-                              },
-                              child: Chip(
-                                label: Text('m'.toUpperCase()),
-                                labelStyle: TextStyle(
-                                    color: schedule.monday
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                backgroundColor: Colors.white,
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: schedule.monday
-                                            ? Colors.blue
-                                            : Colors.grey[400])),
-                              ),
-                            ),
+                                onTap: () {
+                                  setState(() {
+                                    schedule.monday = !schedule.monday;
+                                  });
+                                },
+                                child: dayChipButton(
+                                    'm', schedule.monday, context)),
                             GestureDetector(
                               onTap: () {
-                                // print(days['sat']);
                                 setState(() {
                                   schedule.tuesday = !schedule.tuesday;
                                 });
                               },
-                              child: Chip(
-                                label: Text('t'.toUpperCase()),
-                                labelStyle: TextStyle(
-                                    color: schedule.tuesday
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                backgroundColor: Colors.white,
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: schedule.tuesday
-                                            ? Colors.blue
-                                            : Colors.grey[400])),
-                              ),
+                              child:
+                                  dayChipButton('t', schedule.tuesday, context),
                             ),
                             GestureDetector(
                               onTap: () {
-                                // print(days['sat']);
                                 setState(() {
                                   schedule.wednesday = !schedule.wednesday;
                                 });
                               },
-                              child: Chip(
-                                label: Text('w'.toUpperCase()),
-                                labelStyle: TextStyle(
-                                    color: schedule.wednesday
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                backgroundColor: Colors.white,
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: schedule.wednesday
-                                            ? Colors.blue
-                                            : Colors.grey[400])),
-                              ),
+                              child: dayChipButton(
+                                  'w', schedule.wednesday, context),
                             ),
                             GestureDetector(
                               onTap: () {
-                                // print(days['sat']);
                                 setState(() {
                                   schedule.thursday = !schedule.thursday;
                                 });
                               },
-                              child: Chip(
-                                label: Text('t'.toUpperCase()),
-                                labelStyle: TextStyle(
-                                    color: schedule.thursday
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                backgroundColor: Colors.white,
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: schedule.thursday
-                                            ? Colors.blue
-                                            : Colors.grey[400])),
-                              ),
+                              child: dayChipButton(
+                                  't', schedule.thursday, context),
                             ),
                             GestureDetector(
                               onTap: () {
-                                // print(days['sat']);
                                 setState(() {
                                   schedule.friday = !schedule.friday;
                                 });
                               },
-                              child: Chip(
-                                label: Text('f'.toUpperCase()),
-                                labelStyle: TextStyle(
-                                    color: schedule.friday
-                                        ? Colors.blue
-                                        : Colors.grey[400]),
-                                backgroundColor: Colors.white,
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: schedule.friday
-                                            ? Colors.blue
-                                            : Colors.grey[400])),
-                              ),
+                              child:
+                                  dayChipButton('f', schedule.friday, context),
                             ),
                           ],
                         ),
                       ),
                       Card(
-                        // color: Colors.grey[900],
                         child: ListTile(
-                          title: Text(
-                            "Silent Mode",
-                            // style: TextStyle(color: Colors.grey[400])
-                          ),
-                          subtitle: Text(
-                            "Phone will automatically silent.",
-                            // style: TextStyle(color: Colors.grey[700])
-                          ),
-                          trailing: CupertinoSwitch(
-                            value: schedule.silent,
-                            activeColor: Colors.blue,
-                            // trackColor: Colors.black,
-                            onChanged: (bool value) {
-                              setState(() {
-                                schedule.silent = !schedule.silent;
-                              });
-                            },
+                          title: Text("Silent Mode"),
+                          subtitle: Text("Phone will automatically silent."),
+                          trailing: Transform.scale(
+                            scale: 0.8,
+                            alignment: Alignment.centerRight,
+                            child: CupertinoSwitch(
+                              value: schedule.silent,
+                              activeColor: Colors.blue,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  schedule.silent = !schedule.silent;
+                                  schedule.vibrate = !schedule.vibrate;
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
                       Card(
-                        // color: Colors.grey[900],
                         child: ListTile(
-                          title: Text(
-                            "Vibrate Mode",
-                            // style: TextStyle(color: Colors.grey[400])
-                          ),
-                          subtitle: Text(
-                            "Phone will automatically vibrate.",
-                            // style: TextStyle(color: Colors.grey[700])
-                          ),
-                          trailing: CupertinoSwitch(
-                            value: schedule.vibrate,
-                            activeColor: Colors.blue,
-                            // trackColor: Colors.black,
-                            onChanged: (bool value) {
-                              setState(() {
-                                schedule.vibrate = !schedule.vibrate;
-                              });
-                            },
+                          title: Text("Vibrate Mode"),
+                          subtitle: Text("Phone will automatically vibrate."),
+                          trailing: Transform.scale(
+                            scale: 0.8,
+                            alignment: Alignment.centerRight,
+                            child: CupertinoSwitch(
+                              value: schedule.vibrate,
+                              activeColor: Colors.blue,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  schedule.silent = !schedule.silent;
+                                  schedule.vibrate = !schedule.vibrate;
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -569,12 +366,11 @@ class _EditScreenState extends State<EditScreen> {
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
-                          } else if (!Helper.isTimeAfterThisEndTime(
-                              schedule.start, schedule.end)) {
+                          } else if (schedule.name.length > 10) {
                             final snackBar = SnackBar(
                               backgroundColor: Colors.red,
                               content: Text(
-                                'Oops! Schedule end time must be after than schedule start time.',
+                                'Oops! Schedule name should be less than 10 characters',
                                 style: TextStyle(color: Colors.black),
                               ),
                               action: SnackBarAction(
@@ -589,13 +385,6 @@ class _EditScreenState extends State<EditScreen> {
                             saveData();
                           }
                         },
-                        // child: Text(
-                        //   'Save',
-                        //   style: TextStyle(
-                        //       color: (name != null && name != '')
-                        //           ? Colors.blue
-                        //           : Colors.black12),
-                        // ),
                         child: Icon(Icons.done, color: Colors.blue),
                         autofocus:
                             (schedule.name != null && schedule.name != '')

@@ -14,5 +14,5 @@ class Constant {
   static const String SP_NORMAL_PERIOD = "__normal__period";
   static const String SP_INTRODUCTION = "__intro";
   static const String SP_DARKMODE = "__dark_mode";
-  static const String SP_RESET = "__reset";
+  static const String SP_RESET = "__reset_v8";
 }

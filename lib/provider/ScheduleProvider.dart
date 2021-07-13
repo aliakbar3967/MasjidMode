@@ -229,23 +229,14 @@ class ScheduleProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> quick(int _min) async {
-    // DateTime start = DateTime.now();
-    // DateTime end = DateTime.now().add(Duration(minutes: 30));
-
-    // print(DateFormat.jm().format(start));
-    DateTime start =
-        DateFormat.jm().parse(DateFormat.jm().format(DateTime.now()));
-    DateTime end = DateFormat.jm().parse(
-        DateFormat.jm().format(DateTime.now().add(Duration(minutes: 30))));
-    // print(DateFormat("HH:mm").format(date));
-    // final dd = DateFormat("HH:mm").format(date);
-    // print("start $start and end $end");
-    // return;
+  Future<void> quick(int _minute) async {
+    DateTime now = DateTime.now();
     Schedule schedule = Schedule(
-      name: "Quick $_min" + "m",
-      start: DateFormat("HH:mm").format(start),
-      end: DateFormat("HH:mm").format(end),
+      name: "Quick $_minute" + "m",
+      start: DateTime(2021, 04, 12, now.hour, now.minute).toString(),
+      end: DateTime(2021, 04, 12, now.hour, now.minute)
+          .add(Duration(minutes: _minute))
+          .toString(),
       saturday: true,
       sunday: true,
       monday: true,
