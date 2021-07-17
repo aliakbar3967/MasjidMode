@@ -6,6 +6,7 @@ import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/screen/AppInfoScreen.dart';
+import 'package:peace_time/screen/schedule/CreateDateScheduleScreen.dart';
 import 'package:peace_time/screen/schedule/CreateScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -265,8 +266,8 @@ Widget speedDialFloatingAction(BuildContext context) {
     curve: Curves.bounceIn,
     overlayColor: Theme.of(context).primaryColor,
     overlayOpacity: 0.8,
-    onOpen: () => print('OPENING DIAL'),
-    onClose: () => print('DIAL CLOSED'),
+    onOpen: () => {},
+    onClose: () => {},
     tooltip: 'Speed Dial',
     heroTag: 'speed-dial-hero-tag',
     // backgroundColor: Colors.blue,
@@ -285,14 +286,26 @@ Widget speedDialFloatingAction(BuildContext context) {
         // backgroundColor: Colors.blue,
         // labelBackgroundColor: Colors.blue,
         // foregroundColor: Colors.white,
-        label: 'New Schedule',
+        label: 'Daily Schedule',
         // elevation: 0.3,
         labelStyle: TextStyle(fontSize: 18.0, color: Colors.black),
         onTap: () => Navigator.push(
           context,
           CupertinoPageRoute(builder: (context) => CreateScreen()),
         ).then((response) => null),
-        onLongPress: () => print('New Schedule LONG PRESS'),
+      ),
+      SpeedDialChild(
+        child: Icon(Icons.calendar_today_sharp),
+        // backgroundColor: Colors.blue,
+        // labelBackgroundColor: Colors.blue,
+        // foregroundColor: Colors.white,
+        label: 'Calender Schedule',
+        // elevation: 0.3,
+        labelStyle: TextStyle(fontSize: 18.0, color: Colors.black),
+        onTap: () => Navigator.push(
+          context,
+          CupertinoPageRoute(builder: (context) => CreateDateScheduleScreen()),
+        ).then((response) => null),
       ),
       SpeedDialChild(
         child: Icon(Icons.volume_off_sharp),
@@ -303,7 +316,6 @@ Widget speedDialFloatingAction(BuildContext context) {
         labelStyle: TextStyle(fontSize: 18.0, color: Colors.black),
         onTap: () =>
             Provider.of<ScheduleProvider>(context, listen: false).quick(30),
-        onLongPress: () => print('SECOND CHILD LONG PRESS'),
       ),
     ],
   );
@@ -360,21 +372,44 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
   String startTime = '';
   String endTime = '';
   if (is24HoursFormat) {
-    startTime = DateFormat.Hm().format(DateTime.parse(schedule.start));
-    endTime = Helper.isNextDay(schedule.start, schedule.end)
-        ? DateFormat.Hm().format(DateTime.parse(schedule.end)) + ', next day'
-        : DateFormat.Hm().format(DateTime.parse(schedule.end));
+    if (schedule.type == 'datetime') {
+      startTime = DateFormat('KK:MM a, dd-MM-yyyy')
+          .format(DateTime.parse(schedule.start));
+      endTime = DateFormat('KK:MM a, dd-MM-yyyy')
+          .format(DateTime.parse(schedule.end));
+    } else {
+      startTime = DateFormat.Hm().format(DateTime.parse(schedule.start));
+      endTime = Helper.isNextDay(schedule.start, schedule.end)
+          ? DateFormat.Hm().format(DateTime.parse(schedule.end)) + ', next day'
+          : DateFormat.Hm().format(DateTime.parse(schedule.end));
+    }
   } else {
-    startTime = DateFormat.jm().format(DateTime.parse(schedule.start));
-    endTime = Helper.isNextDay(schedule.start, schedule.end)
-        ? DateFormat.jm().format(DateTime.parse(schedule.end)) + ', next day'
-        : DateFormat.jm().format(DateTime.parse(schedule.end));
+    if (schedule.type == 'datetime') {
+      startTime = DateFormat('KK:MM a, dd-MM-yyyy')
+          .format(DateTime.parse(schedule.start));
+      endTime = DateFormat('KK:MM a, dd-MM-yyyy')
+          .format(DateTime.parse(schedule.end));
+    } else {
+      startTime = DateFormat.jm().format(DateTime.parse(schedule.start));
+      endTime = Helper.isNextDay(schedule.start, schedule.end)
+          ? DateFormat.jm().format(DateTime.parse(schedule.end)) + ', next day'
+          : DateFormat.jm().format(DateTime.parse(schedule.end));
+    }
   }
-  return Text(
-    (startTime + " ~ " + endTime).toLowerCase().toString(),
-    style: TextStyle(
-        fontSize: 0.04 * MediaQuery.of(context).size.width, color: Colors.blue),
-  );
+
+  if (schedule.type == 'datetime') {
+    return Text(
+      ("Start ~ " + startTime + "\nEnd ~ " + endTime).toLowerCase().toString(),
+      style: TextStyle(color: Colors.blue),
+    );
+  } else {
+    return Text(
+      (startTime + " ~ " + endTime).toLowerCase().toString(),
+      style: TextStyle(
+          fontSize: 0.04 * MediaQuery.of(context).size.width,
+          color: Colors.blue),
+    );
+  }
 }
 
 Widget timeText(String timeString, BuildContext context) {

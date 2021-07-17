@@ -9,81 +9,89 @@ import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:provider/provider.dart';
 
-class CreateScreen extends StatefulWidget {
+class EditDateScheduleScreen extends StatefulWidget {
+  final int index;
+  const EditDateScheduleScreen(this.index);
+
   @override
-  _CreateScreenState createState() => _CreateScreenState();
+  _EditDateScheduleScreenState createState() => _EditDateScheduleScreenState();
 }
 
-class _CreateScreenState extends State<CreateScreen> {
-  bool is24HoursFormat = false;
+class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
+  Schedule schedule;
   TimeOfDay time;
   TimeOfDay picked;
-  Schedule schedule = Schedule(
-      name: "",
-      type: "daily",
-      start: DateTime.now().toString(),
-      end: DateTime.now().toString(),
-      silent: true,
-      vibrate: false,
-      airplane: false,
-      notify: false,
-      saturday: true,
-      sunday: true,
-      monday: true,
-      tuesday: true,
-      wednesday: true,
-      thursday: true,
-      friday: true,
-      status: false,
-      isSelected: false);
+  TextEditingController name;
+
+  bool is24HoursFormat = false;
+
+  Map<String, bool> errors = {'name': false};
 
   Future<Null> selectStartTime(BuildContext context) async {
-    final picked = await showTimePicker(
-        context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now()));
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.parse(schedule.start),
+      firstDate: DateTime.parse(schedule.start),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+    final pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.start)));
     if (picked != null) {
       setState(() {
-        // final now = new DateTime.now();
-        schedule.start =
-            DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
-        schedule.end =
-            DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
+        schedule.start = DateTime(pickedDate.year, pickedDate.month,
+                pickedDate.month, pickedTime.hour, pickedTime.minute)
+            .toString();
+        schedule.end = DateTime(pickedDate.year, pickedDate.month,
+                pickedDate.month, pickedTime.hour, pickedTime.minute)
+            .toString();
       });
     }
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.parse(schedule.end),
+      firstDate: DateTime.parse(schedule.end),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+
     final picked = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.start)));
+        initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.end)));
     if (picked != null) {
       // final now = new DateTime.now();
-      schedule.end =
-          DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
-      if (Helper.isEndTimeBeforeStartTime(schedule.start, schedule.end)) {
-        setState(() {
-          schedule.end =
-              DateTime(2021, 04, 12 + 1, picked.hour, picked.minute).toString();
-        });
-      } else {
-        setState(() {
-          schedule.end =
-              DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
-        });
-      }
+      schedule.end = DateTime(pickedDate.year, pickedDate.month,
+              pickedDate.month, picked.hour, picked.minute)
+          .toString();
     }
   }
 
-  Future<void> saveData() async {
-    Provider.of<ScheduleProvider>(context, listen: false).add(schedule);
+  void saveData() async {
+    schedule.name = name.text;
+
+    Provider.of<ScheduleProvider>(context, listen: false)
+        .update(schedule, widget.index);
     Navigator.pop(context, true);
+  }
+
+  void getScheduleDetails() async {
+    this.schedule = Provider.of<ScheduleProvider>(context, listen: false)
+        .schedules[widget.index];
+    setState(() {
+      name = TextEditingController(text: schedule.name.toString());
+    });
   }
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     Timer(Duration(seconds: 1), () async {
       is24HoursFormat = MediaQuery.of(context).alwaysUse24HourFormat;
     });
+    getScheduleDetails();
   }
 
   @override
@@ -101,7 +109,7 @@ class _CreateScreenState extends State<CreateScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "Create New Schedule".toUpperCase(),
+          "Edit Schedule".toUpperCase(),
         ),
       ),
       body: SafeArea(
@@ -123,6 +131,7 @@ class _CreateScreenState extends State<CreateScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           child: TextField(
+                            controller: name,
                             onChanged: (String value) {
                               setState(() {
                                 schedule.name = value;
@@ -130,7 +139,7 @@ class _CreateScreenState extends State<CreateScreen> {
                             },
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Name...',
+                              hintText: 'Give a name..',
                             ),
                           ),
                         ),
@@ -143,10 +152,12 @@ class _CreateScreenState extends State<CreateScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              Helper.timeText(schedule.start, context),
+                              DateFormat('KK:MM a, dd-MM-yyyy')
+                                  .format(DateTime.parse(schedule.start))
+                                  .toString(),
                               style: TextStyle(color: Colors.blue),
                             ),
-                            subtitle: Text("Start Time"),
+                            subtitle: Text("Start DateTime"),
                             trailing: IconButton(
                               icon: Icon(Icons.alarm_add),
                               onPressed: () {
@@ -163,13 +174,12 @@ class _CreateScreenState extends State<CreateScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              Helper.isNextDay(schedule.start, schedule.end)
-                                  ? Helper.timeText(schedule.end, context) +
-                                      ', next day'
-                                  : Helper.timeText(schedule.end, context),
+                              DateFormat('KK:MM a, dd-MM-yyyy')
+                                  .format(DateTime.parse(schedule.end))
+                                  .toString(),
                               style: TextStyle(color: Colors.blue),
                             ),
-                            subtitle: Text("End Time"),
+                            subtitle: Text("End DateTime"),
                             trailing: IconButton(
                               icon: Icon(Icons.alarm_add),
                               onPressed: () {
@@ -177,76 +187,6 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Wrap(
-                          direction: Axis.horizontal,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.saturday = !schedule.saturday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  's', schedule.saturday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.sunday = !schedule.sunday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('s', schedule.sunday, context),
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    schedule.monday = !schedule.monday;
-                                  });
-                                },
-                                child: dayChipButton(
-                                    'm', schedule.monday, context)),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.tuesday = !schedule.tuesday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('t', schedule.tuesday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.wednesday = !schedule.wednesday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  'w', schedule.wednesday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.thursday = !schedule.thursday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  't', schedule.thursday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.friday = !schedule.friday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('f', schedule.friday, context),
-                            ),
-                          ],
                         ),
                       ),
                       Card(
@@ -289,6 +229,36 @@ class _CreateScreenState extends State<CreateScreen> {
                           ),
                         ),
                       ),
+                      // Card(
+                      //   child: ListTile(
+                      //     title: Text("Airplane Mode"),
+                      //     subtitle: Text("Phone will automatically airplane."),
+                      //     trailing: CupertinoSwitch(
+                      //       value: airplane,
+                      //       activeColor: Colors.grey[700],trackColor: Colors.black,
+                      //       onChanged: (bool value) {
+                      //         setState(() {
+                      //           airplane = !airplane;
+                      //         });
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+                      // Card(
+                      //   child: ListTile(
+                      //     title: Text("Notify Me"),
+                      //     subtitle: Text("Phone will automatically notify you."),
+                      //     trailing: CupertinoSwitch(
+                      //       value: notify,
+                      //       activeColor: Colors.grey[700],trackColor: Colors.black,
+                      //       onChanged: (bool value) {
+                      //         setState(() {
+                      //           notify = !notify;
+                      //         });
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
                     ]),
                   ),
                 ),

@@ -119,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           // style: TextStyle(color: Colors.grey[400]),
                         ),
                         subtitle: Text(
-                          "Auto silent will not work, if it is off.",
+                          "Running your app on background",
                           // style: TextStyle(color: Colors.grey[700]),
                         ),
                         trailing:
@@ -159,11 +159,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SettingsController.openDoNotDisturbSettings(),
                         child: ListTile(
                           title: Text(
-                            "Do Not Disturb",
+                            "Do Not Disturb Mode",
                             // style: TextStyle(color: Colors.grey[400]),
                           ),
                           subtitle: Text(
-                            "Auto silent will not work, if it is off.",
+                            "Responsible for switch your phone silent or vibrate mode",
                             // style: TextStyle(color: Colors.grey[700]),
                           ),
                           trailing: Transform.scale(
@@ -187,11 +187,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       elevation: 3,
                       child: ListTile(
                         title: Text(
-                          "Show Introduction Screen",
+                          "App Introduction Screen",
                           // style: TextStyle(color: Colors.grey[400]),
                         ),
                         subtitle: Text(
-                          "Get back app introduction screen.",
+                          "Get tips & guidelines on startup",
                           // style: TextStyle(color: Colors.grey[700]),
                         ),
                         trailing: Transform.scale(
@@ -221,6 +221,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           "Dark Mode",
                           // style: TextStyle(color: Colors.grey[400]),
                         ),
+                        subtitle: Text(
+                          "On / Off your app dark mode",
+                          // style: TextStyle(color: Colors.grey[700]),
+                        ),
                         trailing: Transform.scale(
                           scale: 0.8,
                           alignment: Alignment.centerRight,
@@ -243,11 +247,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       borderOnForeground: false,
                       elevation: 3,
                       child: ListTile(
-                        title: Center(
-                          child: Text(
-                            "Restore App",
-                            style: TextStyle(color: Colors.red),
-                          ),
+                        title: Text(
+                          "Reset",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        subtitle: Text(
+                          "Reset your app schedules and settings.",
+                          // style: TextStyle(color: Colors.grey[700]),
                         ),
                         onTap: () => showAlert(context),
                       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/screen/RemoveScheduleScreen.dart';
+import 'package:peace_time/screen/schedule/EditDateScheduleScreen.dart';
 import 'package:peace_time/screen/schedule/EditScreen.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:provider/provider.dart';
@@ -36,10 +37,18 @@ class ScheduleCard extends StatelessWidget {
         child: ListTile(
           // focusColor: Colors.grey[850],
           onTap: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(builder: (context) => EditScreen(index)),
-            ).then((response) => null);
+            if (schedule.type == 'datetime') {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => EditDateScheduleScreen(index)),
+              ).then((response) => null);
+            } else {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => EditScreen(index)),
+              ).then((response) => null);
+            }
           },
           onLongPress: () => Navigator.push(
             context,

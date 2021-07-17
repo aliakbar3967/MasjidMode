@@ -28,38 +28,37 @@ class Helper {
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
-  static bool isTimeBetween(String startTimeString, String endTimeString) {
+  static bool isTimeBetween(Schedule schedule) {
     // DateFormat dateFormat = new DateFormat.Hm();
     DateTime nowTime = DateTime.now();
-    DateTime startTime = DateTime.parse(startTimeString);
-    DateTime endTime = DateTime.parse(endTimeString);
+    DateTime startTime = DateTime.parse(schedule.start);
+    DateTime endTime = DateTime.parse(schedule.end);
     // .subtract(Duration(minutes: 1));
     DateTime now = DateTime(2021, 04, 12, nowTime.hour, nowTime.minute);
-    DateTime start = DateTime(2021, 04, 12, startTime.hour, startTime.minute);
+    DateTime start =
+        DateTime(2021, 04, 12, startTime.hour, startTime.minute - 1);
     DateTime end = DateTime(2021, 04, 12, endTime.hour, endTime.minute);
     if (startTime.day != endTime.day) {
       if (now.isBefore(end)) {
-        // end = DateTime(
-        //     2021, 04, now.day, endTime.hour, endTime.minute);
-        start = DateTime(2021, 04, 12 - 1, startTime.hour, startTime.minute);
+        start =
+            DateTime(2021, 04, 12 - 1, startTime.hour, startTime.minute - 1);
       } else if (now.isAfter(start)) {
         end = DateTime(2021, 04, 12 + 1, endTime.hour, endTime.minute);
       }
+    }
+    if (schedule.type == 'datetime') {
+      start = DateTime(startTime.year, startTime.month, startTime.day,
+          startTime.hour, startTime.minute - 1);
+      end = DateTime(endTime.year, endTime.month, endTime.day, endTime.hour,
+          endTime.minute);
+      now = DateTime(nowTime.year, nowTime.month, nowTime.day, nowTime.hour,
+          nowTime.minute);
     }
     // print('now = ' + now.toString());
     // print('start = ' + start.toString());
     // print('end = ' + end.toString());
     // print('-------------');
-    // var format = DateFormat("HH:mm");
-    // var one = format.parse("10:40");
-    // var two = format.parse("18:20");
-    // print("${now.difference(startTime).inDays}");
-    // print("${now.isBefore(end)}");
-
-    // if (endTime.difference(startTime) > 0) {
-    // if (endTime.isAfter(startTime)) {
     if (now.isAfter(start) && now.isBefore(end)) {
-      // print('between true');
       return true;
     } else {
       return false;

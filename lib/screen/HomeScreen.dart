@@ -9,6 +9,7 @@ import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:peace_time/screen/widgets/ScheduleCard.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -67,6 +68,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () => Share.share(
                           "Peace Time - A Silent Scheduler App. Please visit https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time and download this awesome app.",
                           subject: 'Peace Time - A Silent Scheduler App.')),
+                  IconButton(
+                      onPressed: () async => await canLaunch(
+                              "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
+                          ? await launch(
+                              "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
+                          : throw 'Could not launch',
+                      icon: Icon(Icons.star)),
                   dropDownMenus(),
                 ],
                 flexibleSpace: FlexibleSpaceBar(

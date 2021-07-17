@@ -9,18 +9,19 @@ import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:provider/provider.dart';
 
-class CreateScreen extends StatefulWidget {
+class CreateDateScheduleScreen extends StatefulWidget {
   @override
-  _CreateScreenState createState() => _CreateScreenState();
+  _CreateDateScheduleScreenState createState() =>
+      _CreateDateScheduleScreenState();
 }
 
-class _CreateScreenState extends State<CreateScreen> {
+class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
   bool is24HoursFormat = false;
   TimeOfDay time;
   TimeOfDay picked;
   Schedule schedule = Schedule(
       name: "",
-      type: "daily",
+      type: "datetime",
       start: DateTime.now().toString(),
       end: DateTime.now().toString(),
       silent: true,
@@ -38,38 +39,44 @@ class _CreateScreenState extends State<CreateScreen> {
       isSelected: false);
 
   Future<Null> selectStartTime(BuildContext context) async {
-    final picked = await showTimePicker(
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+    final pickedTime = await showTimePicker(
         context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now()));
+
     if (picked != null) {
       setState(() {
-        // final now = new DateTime.now();
-        schedule.start =
-            DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
-        schedule.end =
-            DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
+        schedule.start = DateTime(pickedDate.year, pickedDate.month,
+                pickedDate.day, pickedTime.hour, pickedTime.minute)
+            .toString();
+        schedule.end = DateTime(pickedDate.year, pickedDate.month,
+                pickedDate.day, pickedTime.hour, pickedTime.minute)
+            .toString();
       });
     }
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
-    final picked = await showTimePicker(
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.parse(schedule.start),
+      firstDate: DateTime.parse(schedule.start),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+
+    final pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.start)));
-    if (picked != null) {
+
+    if (pickedDate != null && pickedTime != null) {
       // final now = new DateTime.now();
-      schedule.end =
-          DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
-      if (Helper.isEndTimeBeforeStartTime(schedule.start, schedule.end)) {
-        setState(() {
-          schedule.end =
-              DateTime(2021, 04, 12 + 1, picked.hour, picked.minute).toString();
-        });
-      } else {
-        setState(() {
-          schedule.end =
-              DateTime(2021, 04, 12, picked.hour, picked.minute).toString();
-        });
-      }
+      schedule.end = DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
+              pickedTime.hour, pickedTime.minute)
+          .toString();
     }
   }
 
@@ -143,10 +150,12 @@ class _CreateScreenState extends State<CreateScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              Helper.timeText(schedule.start, context),
+                              DateFormat('KK:MM a, dd-MM-yyyy')
+                                  .format(DateTime.parse(schedule.start))
+                                  .toString(),
                               style: TextStyle(color: Colors.blue),
                             ),
-                            subtitle: Text("Start Time"),
+                            subtitle: Text("Start DateTime"),
                             trailing: IconButton(
                               icon: Icon(Icons.alarm_add),
                               onPressed: () {
@@ -163,13 +172,12 @@ class _CreateScreenState extends State<CreateScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              Helper.isNextDay(schedule.start, schedule.end)
-                                  ? Helper.timeText(schedule.end, context) +
-                                      ', next day'
-                                  : Helper.timeText(schedule.end, context),
+                              DateFormat('KK:MM a, dd-MM-yyyy')
+                                  .format(DateTime.parse(schedule.end))
+                                  .toString(),
                               style: TextStyle(color: Colors.blue),
                             ),
-                            subtitle: Text("End Time"),
+                            subtitle: Text("End DateTime"),
                             trailing: IconButton(
                               icon: Icon(Icons.alarm_add),
                               onPressed: () {
@@ -177,76 +185,6 @@ class _CreateScreenState extends State<CreateScreen> {
                               },
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Wrap(
-                          direction: Axis.horizontal,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.saturday = !schedule.saturday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  's', schedule.saturday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.sunday = !schedule.sunday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('s', schedule.sunday, context),
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    schedule.monday = !schedule.monday;
-                                  });
-                                },
-                                child: dayChipButton(
-                                    'm', schedule.monday, context)),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.tuesday = !schedule.tuesday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('t', schedule.tuesday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.wednesday = !schedule.wednesday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  'w', schedule.wednesday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.thursday = !schedule.thursday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  't', schedule.thursday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.friday = !schedule.friday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('f', schedule.friday, context),
-                            ),
-                          ],
                         ),
                       ),
                       Card(

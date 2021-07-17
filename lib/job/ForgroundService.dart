@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service_plugin/flutter_foreground_service_plugin.dart';
+import 'package:intl/intl.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/ScheduleController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
@@ -113,7 +114,7 @@ Future<void> soundModeChangeBySchedule() async {
     final index = schedules.indexWhere((schedule) =>
         (schedule.status == true &&
             Helper.isToday(schedule) == true &&
-            Helper.isTimeBetween(schedule.start, schedule.end)) ==
+            Helper.isTimeBetween(schedule)) ==
         true);
 
     if (index != -1 && index >= 0) {
@@ -121,7 +122,7 @@ Future<void> soundModeChangeBySchedule() async {
       if (currentSoundMode == 'Normal Mode') {
         await refreshForegroundServiceNotification(
             message:
-                '"${schedules[index].name.toString().toUpperCase()}" is active (${schedules[index].start.toString()} - ${schedules[index].end.toString()})');
+                '"${schedules[index].name.toString().toUpperCase()}" is active (${DateFormat.jm().format(DateTime.parse(schedules[index].start)).toString()} - ${DateFormat.jm().format(DateTime.parse(schedules[index].end)).toString()})');
         await DBController.setNormalPeriod(true);
         if (schedules[index].vibrate == true) {
           await SettingsController.setVibrateMode();
