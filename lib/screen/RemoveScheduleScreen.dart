@@ -73,7 +73,22 @@ class ScheduleList extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(scheduleProvider.schedules[index].name),
+                              Row(
+                                children: [
+                                  Icon(
+                                    scheduleProvider.schedules[index].type ==
+                                            'datetime'
+                                        ? Icons.calendar_today
+                                        : Icons.schedule,
+                                    size: 18,
+                                    // color: Theme.of(context).primaryColor,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(scheduleProvider.schedules[index].name),
+                                ],
+                              ),
                               Row(
                                 children: [
                                   dayChip(

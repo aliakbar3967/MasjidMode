@@ -106,6 +106,12 @@ class _EditScreenState extends State<EditScreen> {
         title: Text(
           "Edit Schedule".toUpperCase(),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.schedule),
+          )
+        ],
       ),
       body: SafeArea(
         child: Container(

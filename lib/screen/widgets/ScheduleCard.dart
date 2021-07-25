@@ -62,7 +62,21 @@ class ScheduleCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(schedule.name),
+                  Row(
+                    children: [
+                      Icon(
+                        schedule.type == 'datetime'
+                            ? Icons.calendar_today
+                            : Icons.schedule,
+                        size: 18,
+                        // color: Theme.of(context).primaryColor,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(schedule.name),
+                    ],
+                  ),
                   Row(
                     children: [
                       dayChip("S", schedule.saturday, context),
@@ -76,9 +90,9 @@ class ScheduleCard extends StatelessWidget {
                   )
                 ],
               ),
-              // SizedBox(
-              //   height: 4,
-              // ),
+              SizedBox(
+                height: 4,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,

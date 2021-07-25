@@ -30,19 +30,16 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
   Future<Null> selectStartTime(BuildContext context) async {
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.parse(schedule.start),
+      initialDate: DateTime.now(),
       firstDate: DateTime.parse(schedule.start),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
     final pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.start)));
-    if (picked != null) {
+    if (pickedDate != null && pickedTime != null) {
       setState(() {
         schedule.start = DateTime(pickedDate.year, pickedDate.month,
-                pickedDate.month, pickedTime.hour, pickedTime.minute)
-            .toString();
-        schedule.end = DateTime(pickedDate.year, pickedDate.month,
                 pickedDate.month, pickedTime.hour, pickedTime.minute)
             .toString();
       });
@@ -57,13 +54,13 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
 
-    final picked = await showTimePicker(
+    final pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.end)));
-    if (picked != null) {
+    if (pickedDate != null && pickedTime != null) {
       // final now = new DateTime.now();
       schedule.end = DateTime(pickedDate.year, pickedDate.month,
-              pickedDate.month, picked.hour, picked.minute)
+              pickedDate.month, pickedTime.hour, pickedTime.minute)
           .toString();
     }
   }
@@ -111,6 +108,12 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
         title: Text(
           "Edit Schedule".toUpperCase(),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.calendar_today),
+          )
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -152,7 +155,8 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              DateFormat('KK:MM a, dd-MM-yyyy')
+                              DateFormat.yMMMMd()
+                                  .add_jm()
                                   .format(DateTime.parse(schedule.start))
                                   .toString(),
                               style: TextStyle(color: Colors.blue),
@@ -174,7 +178,8 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              DateFormat('KK:MM a, dd-MM-yyyy')
+                              DateFormat.yMMMMd()
+                                  .add_jm()
                                   .format(DateTime.parse(schedule.end))
                                   .toString(),
                               style: TextStyle(color: Colors.blue),

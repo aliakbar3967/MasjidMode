@@ -46,7 +46,7 @@ class ForgroundService {
   static startTask() async {
     await FlutterForegroundServicePlugin.startPeriodicTask(
       periodicTaskFun: periodicTaskFun,
-      period: const Duration(seconds: 20),
+      period: const Duration(seconds: 25),
     );
   }
 
@@ -134,7 +134,7 @@ Future<void> soundModeChangeBySchedule() async {
       bool __normalPeriod = await DBController.getNormalPeriod();
       if (__normalPeriod == true) {
         await refreshForegroundServiceNotification(
-            message: 'No schedule is active now');
+            message: 'All schedules are off');
         await DBController.setNormalPeriod(false);
         await SettingsController.setNormalMode();
       }

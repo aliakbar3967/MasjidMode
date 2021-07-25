@@ -373,10 +373,9 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
   String endTime = '';
   if (is24HoursFormat) {
     if (schedule.type == 'datetime') {
-      startTime = DateFormat('KK:MM a, dd-MM-yyyy')
-          .format(DateTime.parse(schedule.start));
-      endTime = DateFormat('KK:MM a, dd-MM-yyyy')
-          .format(DateTime.parse(schedule.end));
+      startTime =
+          DateFormat.jm().add_yMd().format(DateTime.parse(schedule.start));
+      endTime = DateFormat.jm().add_yMd().format(DateTime.parse(schedule.end));
     } else {
       startTime = DateFormat.Hm().format(DateTime.parse(schedule.start));
       endTime = Helper.isNextDay(schedule.start, schedule.end)
@@ -385,10 +384,10 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
     }
   } else {
     if (schedule.type == 'datetime') {
-      startTime = DateFormat('KK:MM a, dd-MM-yyyy')
-          .format(DateTime.parse(schedule.start));
-      endTime = DateFormat('KK:MM a, dd-MM-yyyy')
-          .format(DateTime.parse(schedule.end));
+      startTime =
+          DateFormat.yMMMMd().add_jm().format(DateTime.parse(schedule.start));
+      endTime =
+          DateFormat.yMMMMd().add_jm().format(DateTime.parse(schedule.end));
     } else {
       startTime = DateFormat.jm().format(DateTime.parse(schedule.start));
       endTime = Helper.isNextDay(schedule.start, schedule.end)
@@ -399,15 +398,16 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
 
   if (schedule.type == 'datetime') {
     return Text(
-      ("Start ~ " + startTime + "\nEnd ~ " + endTime).toLowerCase().toString(),
-      style: TextStyle(color: Colors.blue),
+      (startTime + " ~ \n" + endTime).toString(),
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 14,
+      ),
     );
   } else {
     return Text(
-      (startTime + " ~ " + endTime).toLowerCase().toString(),
-      style: TextStyle(
-          fontSize: 0.04 * MediaQuery.of(context).size.width,
-          color: Colors.blue),
+      (startTime + " ~ " + endTime).toString(),
+      style: TextStyle(fontSize: 14, color: Colors.blue),
     );
   }
 }

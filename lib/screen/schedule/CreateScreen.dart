@@ -103,6 +103,12 @@ class _CreateScreenState extends State<CreateScreen> {
         title: Text(
           "Create New Schedule".toUpperCase(),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.schedule),
+          )
+        ],
       ),
       body: SafeArea(
         child: Container(

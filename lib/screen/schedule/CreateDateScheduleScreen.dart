@@ -48,7 +48,7 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
     final pickedTime = await showTimePicker(
         context: context, initialTime: TimeOfDay.fromDateTime(DateTime.now()));
 
-    if (picked != null) {
+    if (pickedDate != null && pickedTime != null) {
       setState(() {
         schedule.start = DateTime(pickedDate.year, pickedDate.month,
                 pickedDate.day, pickedTime.hour, pickedTime.minute)
@@ -110,6 +110,12 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
         title: Text(
           "Create New Schedule".toUpperCase(),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.calendar_today),
+          )
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -150,7 +156,8 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              DateFormat('KK:MM a, dd-MM-yyyy')
+                              DateFormat.yMMMMd()
+                                  .add_jm()
                                   .format(DateTime.parse(schedule.start))
                                   .toString(),
                               style: TextStyle(color: Colors.blue),
@@ -172,7 +179,8 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
                           },
                           child: ListTile(
                             title: Text(
-                              DateFormat('KK:MM a, dd-MM-yyyy')
+                              DateFormat.yMMMMd()
+                                  .add_jm()
                                   .format(DateTime.parse(schedule.end))
                                   .toString(),
                               style: TextStyle(color: Colors.blue),
