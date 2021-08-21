@@ -30,8 +30,8 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
   Future<Null> selectStartTime(BuildContext context) async {
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.parse(schedule.start),
+      initialDate: DateTime.parse(schedule.start),
+      firstDate: DateTime.now(),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
     final pickedTime = await showTimePicker(
@@ -40,7 +40,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
     if (pickedDate != null && pickedTime != null) {
       setState(() {
         schedule.start = DateTime(pickedDate.year, pickedDate.month,
-                pickedDate.month, pickedTime.hour, pickedTime.minute)
+                pickedDate.day, pickedTime.hour, pickedTime.minute)
             .toString();
       });
     }
@@ -50,7 +50,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(schedule.end),
-      firstDate: DateTime.parse(schedule.end),
+      firstDate: DateTime.now(),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
 
@@ -59,9 +59,11 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
         initialTime: TimeOfDay.fromDateTime(DateTime.parse(schedule.end)));
     if (pickedDate != null && pickedTime != null) {
       // final now = new DateTime.now();
-      schedule.end = DateTime(pickedDate.year, pickedDate.month,
-              pickedDate.month, pickedTime.hour, pickedTime.minute)
-          .toString();
+      setState(() {
+        schedule.end = DateTime(pickedDate.year, pickedDate.month,
+                pickedDate.day, pickedTime.hour, pickedTime.minute)
+            .toString();
+      });
     }
   }
 
