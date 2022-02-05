@@ -15,4 +15,9 @@ class Constant {
   static const String SP_INTRODUCTION = "__intro";
   static const String SP_DARKMODE = "__dark_mode";
   static const String SP_RESET = "__reset_v8";
+
+  static const EMPTY_SVG_LIGHTGREEN = 'assets/empty_lightgreen.svg';
+
+  static const APPICON = 'assets/ic_launcher.png';
+  static const APPICON_SVG = 'assets/ic_launcher.svg';
 }

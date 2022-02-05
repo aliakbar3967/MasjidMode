@@ -26,7 +26,7 @@ class RemoveScheduleScreen extends StatelessWidget {
             icon: Provider.of<ScheduleProvider>(context).isAllSelectedMode
                 ? Icon(
                     Icons.check_circle,
-                    color: Theme.of(context).iconTheme.color,
+                    color: Colors.red,
                   )
                 : Icon(Icons.radio_button_off_rounded,
                     color: Theme.of(context).iconTheme.color),
@@ -40,10 +40,7 @@ class RemoveScheduleScreen extends StatelessWidget {
             .removeMultiple(),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ScheduleList(),
-        ),
+        child: ScheduleList(),
       ),
     );
   }
@@ -56,14 +53,13 @@ class ScheduleList extends StatelessWidget {
       builder: (context, scheduleProvider, child) {
         return scheduleProvider.schedules.isNotEmpty
             ? ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
                 itemCount: scheduleProvider.schedules.length * 1,
                 itemBuilder: (context, index) {
                   return Card(
-                    margin: EdgeInsets.only(top: 12),
-                    elevation: 3,
-                    // color: Colors.grey[900],
                     child: ListTile(
-                      // focusColor: Colors.grey[850],
                       onTap: () => context
                           .read<ScheduleProvider>()
                           .toggleScheduleSelection(index),
@@ -142,7 +138,10 @@ class ScheduleList extends StatelessWidget {
                                   alignment: Alignment.centerRight,
                                   child: scheduleProvider
                                           .schedules[index].isSelected
-                                      ? Icon(Icons.check_circle)
+                                      ? Icon(
+                                          Icons.check_circle,
+                                          color: Colors.red,
+                                        )
                                       : Icon(
                                           Icons.radio_button_off,
                                         ),
@@ -161,9 +160,7 @@ class ScheduleList extends StatelessWidget {
                   );
                 },
               )
-            : Center(
-                child: Text('No items'),
-              );
+            : emptyWidget(context);
       },
     );
   }

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:sound_mode/permission_handler.dart';
 import 'package:sound_mode/sound_mode.dart';
-import 'package:sound_mode/utils/sound_profiles.dart';
+import 'package:sound_mode/utils/ringer_mode_statuses.dart';
 
 class SettingsController {
-  static Future<String> getCurrentSoundMode() async {
-    String ringerStatus;
+  static Future<RingerModeStatus> getCurrentSoundMode() async {
+    RingerModeStatus ringerStatus;
     try {
       ringerStatus = await SoundMode.ringerModeStatus;
       if (Platform.isIOS) {
@@ -17,7 +17,8 @@ class SettingsController {
         });
       }
     } catch (err) {
-      ringerStatus = 'Failed to get device\'s ringer status.$err';
+      ringerStatus = RingerModeStatus.unknown;
+      print('Failed to get device\'s ringer status.$err');
     }
     return ringerStatus;
   }
@@ -36,7 +37,7 @@ class SettingsController {
 
   static Future<void> setSilentMode() async {
     try {
-      await SoundMode.setSoundMode(Profiles.SILENT);
+      await SoundMode.setSoundMode(RingerModeStatus.silent);
     } on PlatformException {
       print('Do Not Disturb access permissions required!');
     }
@@ -44,7 +45,7 @@ class SettingsController {
 
   static Future<void> setNormalMode() async {
     try {
-      await SoundMode.setSoundMode(Profiles.NORMAL);
+      await SoundMode.setSoundMode(RingerModeStatus.normal);
     } on PlatformException {
       print('Do Not Disturb access permissions required!');
     }
@@ -52,7 +53,7 @@ class SettingsController {
 
   static Future<void> setVibrateMode() async {
     try {
-      await SoundMode.setSoundMode(Profiles.VIBRATE);
+      await SoundMode.setSoundMode(RingerModeStatus.vibrate);
     } on PlatformException {
       print('Do Not Disturb access permissions required!');
     }

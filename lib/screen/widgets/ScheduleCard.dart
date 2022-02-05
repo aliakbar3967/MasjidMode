@@ -17,14 +17,12 @@ class ScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 12),
-      elevation: 3,
-      // color: Colors.grey[900],
       child: Dismissible(
         direction: DismissDirection.startToEnd,
         background: Container(
           padding: EdgeInsets.only(left: 12),
-          color: Colors.red,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5), color: Colors.red),
           child: Icon(
             Icons.delete,
             color: Colors.white,
@@ -35,7 +33,6 @@ class ScheduleCard extends StatelessWidget {
         onDismissed: (direction) =>
             context.read<ScheduleProvider>().remove(index),
         child: ListTile(
-          // focusColor: Colors.grey[850],
           onTap: () {
             if (schedule.type == 'datetime') {
               Navigator.push(
@@ -114,7 +111,7 @@ class ScheduleCard extends StatelessWidget {
                               Provider.of<ScheduleProvider>(context,
                                       listen: false)
                                   .toggleScheduleStatus(index),
-                          activeColor: Colors.blue,
+                          //activeColor: Colors.blue,
                           // trackColor: Colors.black,
                         ),
                       ),

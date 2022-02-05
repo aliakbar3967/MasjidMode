@@ -17,6 +17,7 @@ class CreateDateScheduleScreen extends StatefulWidget {
 
 class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
   bool is24HoursFormat = false;
+  bool isFormSubmitting = false;
   TimeOfDay time;
   TimeOfDay picked;
   Schedule schedule = Schedule(
@@ -80,9 +81,44 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
     }
   }
 
-  Future<void> saveData() async {
-    Provider.of<ScheduleProvider>(context, listen: false).add(schedule);
-    Navigator.pop(context, true);
+  Future<void> submitForm() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() => isFormSubmitting = true);
+
+    if (schedule.name == null || schedule.name == '') {
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          'Oops! Schedule name required.',
+          style: TextStyle(color: Colors.black),
+        ),
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: 'OK',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (schedule.name.length > 10) {
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          'Oops! Schedule name should be less than 10 characters',
+          style: TextStyle(color: Colors.black),
+        ),
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: 'OK',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      Provider.of<ScheduleProvider>(context, listen: false).add(schedule);
+      Navigator.pop(context, true);
+    }
+
+    setState(() => isFormSubmitting = false);
   }
 
   @override
@@ -118,13 +154,15 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
         ],
       ),
       body: SafeArea(
-        child: Container(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                flex: 8,
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -239,73 +277,24 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: ButtonBar(
-                    alignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.pop(context, true);
-                        },
-                        child: Icon(Icons.close),
-                        autofocus: false,
-                        style: OutlinedButton.styleFrom(
-                            primary: Colors.redAccent,
-                            shape: StadiumBorder(),
-                            side: BorderSide(width: 2, color: Colors.redAccent),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 32, vertical: 16)),
+              Container(
+                // color: Theme.of(context).backgroundColor,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
+                child: isFormSubmitting
+                    ? const Center(child: CircularProgressIndicator())
+                    : MaterialButton(
+                        shape: const StadiumBorder(),
+                        elevation: 0,
+                        height: 50.0,
+                        minWidth: double.infinity,
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        child: const Text("Submit"),
+                        onPressed: () => submitForm(),
+                        splashColor: Colors.greenAccent,
                       ),
-                      OutlinedButton(
-                        onPressed: () {
-                          if (schedule.name == null || schedule.name == '') {
-                            final snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(
-                                'Oops! Schedule name required.',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              action: SnackBarAction(
-                                textColor: Colors.white,
-                                label: 'OK',
-                                onPressed: () {},
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else if (schedule.name.length > 10) {
-                            final snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(
-                                'Oops! Schedule name should be less than 10 characters',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              action: SnackBarAction(
-                                textColor: Colors.white,
-                                label: 'OK',
-                                onPressed: () {},
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else {
-                            saveData();
-                          }
-                        },
-                        child: Icon(Icons.done, color: Colors.blue),
-                        autofocus:
-                            (schedule.name != null && schedule.name != '')
-                                ? true
-                                : false,
-                        style: OutlinedButton.styleFrom(
-                            shape: StadiumBorder(),
-                            side: BorderSide(width: 2, color: Colors.blue),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 32, vertical: 16)),
-                      ),
-                    ]),
-              ),
+              )
             ],
           ),
         ),

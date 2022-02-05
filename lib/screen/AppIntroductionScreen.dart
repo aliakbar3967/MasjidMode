@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:peace_time/NavigationScreen.dart';
+import 'package:peace_time/constant.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
 import 'package:peace_time/job/ForgroundService.dart';
@@ -40,23 +41,24 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(
       fontSize: 19.0,
-      // color: Colors.blue,
+      // color: Colors.lightGreen,
     );
     const pageDecoration = const PageDecoration(
       titleTextStyle: TextStyle(
         fontSize: 28.0,
         fontWeight: FontWeight.w700,
-        // color: Colors.blue
+        // color: Colors.lightGreen.shade100
       ),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.blue,
+      // pageColor: Colors.lightGreen,
       imagePadding: EdgeInsets.zero,
+      fullScreen: false,
     );
 
     var introductionScreen = IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.blue,
+      globalBackgroundColor: Colors.lightGreen.shade100,
       color: Colors.black,
       onDone: () => _onIntroEnd(context),
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
@@ -80,7 +82,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
           title: "Welcome",
           body:
               "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
-          image: _buildImage(assetName: 'assets/circle.png'),
+          image: _buildImage(assetName: Constant.APPICON),
           decoration: pageDecoration,
         ),
         PageViewModel(
@@ -98,14 +100,10 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
           footer: OutlinedButton(
             onPressed: () async =>
                 await SettingsController.openDoNotDisturbSettings(),
-            child: Text(
-              'Open Settings',
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text('Open Settings'),
             autofocus: true,
             style: OutlinedButton.styleFrom(
                 shape: StadiumBorder(),
-                side: BorderSide(width: 2, color: Colors.white70),
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 10)),
           ),
           decoration: pageDecoration,

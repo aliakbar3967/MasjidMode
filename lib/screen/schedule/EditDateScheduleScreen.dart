@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
-import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:provider/provider.dart';
 
 class EditDateScheduleScreen extends StatefulWidget {
@@ -24,6 +22,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
   TextEditingController name;
 
   bool is24HoursFormat = false;
+  bool isFormSubmitting = false;
 
   Map<String, bool> errors = {'name': false};
 
@@ -50,7 +49,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(schedule.end),
-      firstDate: DateTime.now(),
+      firstDate: DateTime.parse(schedule.start),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
 
@@ -67,12 +66,46 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
     }
   }
 
-  void saveData() async {
-    schedule.name = name.text;
+  void submitForm() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() => isFormSubmitting = true);
+    if (schedule.name == null || schedule.name == '') {
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          'Oops! Schedule name required.',
+          style: TextStyle(color: Colors.black),
+        ),
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: 'OK',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (schedule.name.length > 10) {
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          'Oops! Schedule name should be less than 10 characters',
+          style: TextStyle(color: Colors.black),
+        ),
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: 'OK',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      schedule.name = name.text;
 
-    Provider.of<ScheduleProvider>(context, listen: false)
-        .update(schedule, widget.index);
-    Navigator.pop(context, true);
+      Provider.of<ScheduleProvider>(context, listen: false)
+          .update(schedule, widget.index);
+      Navigator.pop(context, true);
+    }
+
+    setState(() => isFormSubmitting = false);
   }
 
   void getScheduleDetails() async {
@@ -118,13 +151,15 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
         ],
       ),
       body: SafeArea(
-        child: Container(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                flex: 8,
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -270,73 +305,24 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: ButtonBar(
-                    alignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.pop(context, true);
-                        },
-                        child: Icon(Icons.close),
-                        autofocus: false,
-                        style: OutlinedButton.styleFrom(
-                            primary: Colors.redAccent,
-                            shape: StadiumBorder(),
-                            side: BorderSide(width: 2, color: Colors.redAccent),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 32, vertical: 16)),
+              Container(
+                // color: Theme.of(context).backgroundColor,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
+                child: isFormSubmitting
+                    ? const Center(child: CircularProgressIndicator())
+                    : MaterialButton(
+                        shape: const StadiumBorder(),
+                        elevation: 0,
+                        height: 50.0,
+                        minWidth: double.infinity,
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        child: const Text("Submit"),
+                        onPressed: () => submitForm(),
+                        splashColor: Colors.greenAccent,
                       ),
-                      OutlinedButton(
-                        onPressed: () {
-                          if (schedule.name == null || schedule.name == '') {
-                            final snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(
-                                'Oops! Schedule name required.',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              action: SnackBarAction(
-                                textColor: Colors.white,
-                                label: 'OK',
-                                onPressed: () {},
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else if (schedule.name.length > 10) {
-                            final snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(
-                                'Oops! Schedule name should be less than 10 characters',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              action: SnackBarAction(
-                                textColor: Colors.white,
-                                label: 'OK',
-                                onPressed: () {},
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else {
-                            saveData();
-                          }
-                        },
-                        child: Icon(Icons.done, color: Colors.blue),
-                        autofocus:
-                            (schedule.name != null && schedule.name != '')
-                                ? true
-                                : false,
-                        style: OutlinedButton.styleFrom(
-                            shape: StadiumBorder(),
-                            side: BorderSide(width: 2, color: Colors.blue),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 32, vertical: 16)),
-                      ),
-                    ]),
-              ),
+              )
             ],
           ),
         ),

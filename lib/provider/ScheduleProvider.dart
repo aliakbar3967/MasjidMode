@@ -234,7 +234,8 @@ class ScheduleProvider with ChangeNotifier {
     Schedule schedule = Schedule(
       name: "Quick $_minute" + "m",
       type: "datetime",
-      start: DateTime(now.year, now.month, now.day, now.hour, now.minute).toString(),
+      start: DateTime(now.year, now.month, now.day, now.hour, now.minute)
+          .toString(),
       end: DateTime(now.year, now.month, now.day, now.hour, now.minute)
           .add(Duration(minutes: _minute))
           .toString(),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> initialize() async {
     await DBController.reset();
-    await navigating();
+    Timer(const Duration(seconds: 1), () async {
+      await navigating();
+    });
   }
 
   @override
@@ -49,11 +53,9 @@ class _SplashScreenState extends State<SplashScreen> {
     // It will hide status bar and notch.
     // SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: Center(
-        child: CupertinoActivityIndicator(
-          radius: 20.0,
-        ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: const Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

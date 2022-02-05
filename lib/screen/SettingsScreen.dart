@@ -110,9 +110,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   children: [
                     Card(
-                      // color: Colors.grey[900],
-                      borderOnForeground: false,
-                      elevation: 3,
                       child: ListTile(
                         title: Text(
                           "Application",
@@ -151,9 +148,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     Card(
-                      // color: Colors.grey[900],
-                      borderOnForeground: false,
-                      elevation: 3,
                       child: GestureDetector(
                         onTap: () =>
                             SettingsController.openDoNotDisturbSettings(),
@@ -182,9 +176,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     Card(
-                      // color: Colors.grey[900],
-                      borderOnForeground: false,
-                      elevation: 3,
                       child: ListTile(
                         title: Text(
                           "App Introduction Screen",
@@ -213,9 +204,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     Card(
-                      // color: Colors.grey[900],
-                      borderOnForeground: false,
-                      elevation: 3,
                       child: ListTile(
                         title: Text(
                           "Dark Mode",
@@ -243,9 +231,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     Card(
-                      // color: Colors.redAccent,
-                      borderOnForeground: false,
-                      elevation: 3,
                       child: ListTile(
                         title: Text(
                           "Reset",

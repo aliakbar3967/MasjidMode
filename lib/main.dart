@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:peace_time/job/ForgroundService.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/provider/SettingsProvider.dart';
 import 'package:peace_time/screen/SplashScreen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  ));
+  WidgetsFlutterBinding.ensureInitialized();
+  // initializeService();
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
   runApp(
     MultiProvider(
       providers: [
@@ -22,42 +30,49 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).primaryColor,
+    return MaterialApp(
+      // title: 'Peace Time',
+      // theme: ThemeData.light(),
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          // color: Colors.transparent,
+          elevation: 2,
+        ),
+        // primarySwatch: Colors.lightGreen,
+        // backgroundColor: Colors.lightGreen.shade100,
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        // canvasColor: Colors.white,
+        // shadowColor: Colors.white,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+            // circularTrackColor: Colors.lightGreen
+            // color: Colors.lightGreen
+            // linearTrackColor: Colors.lightGreen
+            // refreshBackgroundColor: Colors.lightGreen
+            ),
+        bottomSheetTheme: BottomSheetThemeData(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(27),
+                    topRight: Radius.circular(27)))),
+        cardTheme: CardTheme(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        listTileTheme: ListTileThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        dividerColor: Colors.transparent,
       ),
-      child: MaterialApp(
-        // title: 'Peace Time',
-        theme: ThemeData.light(),
-        // theme: ThemeData(
-        //   primarySwatch: Colors.blue,
-        //   primaryColor: Colors.white,
-        //   brightness: Brightness.light,
-        //   accentColor: Colors.black,
-        //   accentIconTheme: IconThemeData(color: Colors.white),
-        //   dividerColor: Colors.white54,
-        //   scaffoldBackgroundColor: Colors.grey[200],
-        //   backgroundColor: Colors.white,
-        // ),
-        darkTheme: ThemeData.dark(),
-        // darkTheme: ThemeData(
-        //   primarySwatch: Colors.blue,
-        //   primaryColor: Colors.black,
-        //   brightness: Brightness.dark,
-        //   accentColor: Colors.white,
-        //   accentIconTheme: IconThemeData(color: Colors.black),
-        //   dividerColor: Colors.black12,
-        //   scaffoldBackgroundColor: Colors.black,
-        //   backgroundColor: Colors.grey.shade900,
-        //   cardColor: Colors.grey[850],
-        // ),
-        themeMode: Provider.of<SettingsProvider>(context).settings.darkMode
-            ? ThemeMode.dark
-            : ThemeMode.system,
-        debugShowCheckedModeBanner: false,
-        // home: NavigationScreen(),
-        home: SplashScreen(),
-      ),
+      darkTheme: ThemeData.dark(),
+      themeMode: Provider.of<SettingsProvider>(context).settings.darkMode
+          ? ThemeMode.dark
+          : ThemeMode.system,
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
     );
   }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="myblue">#2196f3</color>
+    <!-- <color name="myBackground">#8bc34a</color> -->
+    <color name="myBackground">#1a1a1a</color>
 </resources>
