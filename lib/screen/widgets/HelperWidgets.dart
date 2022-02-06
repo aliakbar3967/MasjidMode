@@ -136,7 +136,7 @@ Widget emptyWidget(BuildContext context) {
   return Center(
     child: Container(
       width: MediaQuery.of(context).size.width / 1.5,
-      child: SvgPicture.asset(Constant.EMPTY_SVG_LIGHTGREEN),
+      child: SvgPicture.asset(Constant.EMPTY_SVG),
     ),
   );
 }

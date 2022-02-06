@@ -1,9 +1,6 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/DBController.dart';
-import 'package:peace_time/controller/ScheduleController.dart';
-import 'package:peace_time/job/ForgroundService.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 
 class ScheduleProvider with ChangeNotifier {
@@ -141,7 +138,6 @@ class ScheduleProvider with ChangeNotifier {
       String encodedSchedulesList = Schedule.encode(schedules);
       await DBController.setSchedules(encodedSchedulesList);
 
-      await ForgroundService.refresh();
       notifyListeners();
     }
   }
@@ -162,7 +158,6 @@ class ScheduleProvider with ChangeNotifier {
       String encodedSchedulesList = Schedule.encode(schedules);
       await DBController.setSchedules(encodedSchedulesList);
 
-      await ForgroundService.refresh();
       schedules = Schedule.decode(encodedSchedulesList);
       notifyListeners();
     }
@@ -177,7 +172,6 @@ class ScheduleProvider with ChangeNotifier {
       await DBController.setSchedules(encodedSchedulesList);
     }
 
-    await ForgroundService.refresh();
     notifyListeners();
   }
 
@@ -218,7 +212,6 @@ class ScheduleProvider with ChangeNotifier {
     isAllSelectedMode = false;
     selectedMode = false;
 
-    await ForgroundService.refresh();
     notifyListeners();
   }
 
@@ -259,7 +252,6 @@ class ScheduleProvider with ChangeNotifier {
     await DBController.setSchedules(encodedSchedulesList);
 
     // this line should place before set provider schedules list, otherwise app will crash
-    await ForgroundService.refresh();
 
     schedules = Schedule.decode(encodedSchedulesList);
 
@@ -269,7 +261,7 @@ class ScheduleProvider with ChangeNotifier {
   Future<void> restoreDB() async {
     await DBController.restore();
     schedules = List<Schedule>.empty(growable: true);
-    await ForgroundService.refresh();
+
     notifyListeners();
   }
 }

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:peace_time/NavigationScreen.dart';
 import 'package:peace_time/constant.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
 import 'package:peace_time/job/ForgroundService.dart';
-import 'package:flutter/cupertino.dart';
 
 class AppIntroductionScreen extends StatefulWidget {
   @override
@@ -23,14 +21,14 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
       await DBController.toggleIntroductionScreenStatus(false);
 
       if (await ForgroundService.isRunningForgroundService() == false) {
-        await ForgroundService.startForgroundServiceAndTask();
+        await ForgroundService.startForgroundService();
       }
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => NavigationScreen()));
     }
   }
 
-  Widget _buildImage({String assetName, double width = 300.0}) {
+  Widget _buildImage({String assetName, double width = 100.0}) {
     return Align(
       child: Image.asset(assetName, width: width),
       alignment: Alignment.center,
@@ -41,24 +39,24 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(
       fontSize: 19.0,
-      // color: Colors.lightGreen,
+      // color: Colors.deepPurple,
     );
     const pageDecoration = const PageDecoration(
       titleTextStyle: TextStyle(
         fontSize: 28.0,
         fontWeight: FontWeight.w700,
-        // color: Colors.lightGreen.shade100
+        // color: Colors.deepPurple.shade100
       ),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      // pageColor: Colors.lightGreen,
+      // pageColor: Colors.deepPurple,
       imagePadding: EdgeInsets.zero,
       fullScreen: false,
     );
 
     var introductionScreen = IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.lightGreen.shade100,
+      globalBackgroundColor: Colors.grey.shade100,
       color: Colors.black,
       onDone: () => _onIntroEnd(context),
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
@@ -86,17 +84,17 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "30m Quick Silent",
-          body: "One tap to silent your phone from now to next 30 minutes.",
-          image:
-              _buildImage(assetName: 'assets/30mquicksilent.png', width: 275.0),
+          title: "Quick Silent",
+          body:
+              "One tap to silent your phone from now to next 30 or custom minutes.",
+          image: _buildImage(assetName: Constant.APPICON),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Only Permission",
           body:
               "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
-          image: _buildImage(assetName: 'assets/donotdisturb.png'),
+          image: _buildImage(assetName: 'assets/donotdisturb.png', width: 300),
           footer: OutlinedButton(
             onPressed: () async =>
                 await SettingsController.openDoNotDisturbSettings(),
@@ -119,6 +117,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
 
     // to hide both:
     // SystemChrome.setEnabledSystemUIOverlays([]);
+    // print(Theme.of(context).brightness);
 
     return introductionScreen;
   }

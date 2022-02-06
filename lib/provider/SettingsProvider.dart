@@ -39,7 +39,6 @@ class SettingsProvider with ChangeNotifier {
 
   Future<void> refresh() async {
     initialize();
-    notifyListeners();
   }
 
   Future<void> toggleDarkMode() async {
@@ -59,15 +58,11 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> toggleForgroundServiceStatus() async {
-    Timer(Duration(seconds: 1), () async {
-      settings.forgroundServiceStatus
-          ? await ForgroundService.stopForgroundService()
-          : await ForgroundService.startForgroundServiceAndTask();
-      settings.forgroundServiceStatus =
-          await ForgroundService.isRunningForgroundService();
-      // isPending = false;
-      notifyListeners();
-    });
+    settings.forgroundServiceStatus
+        ? await ForgroundService.stopForgroundService()
+        : await ForgroundService.startForgroundService();
+    settings.forgroundServiceStatus = !settings.forgroundServiceStatus;
+    notifyListeners();
   }
 
   Future<void> toggleIntroductionScreenStatus() async {
@@ -77,8 +72,7 @@ class SettingsProvider with ChangeNotifier {
     await DBController.toggleIntroductionScreenStatus(
         !settings.introductionScreenStatus);
 
-    settings.introductionScreenStatus =
-        await DBController.getIntroductionScreenStatus();
+    settings.introductionScreenStatus = !settings.introductionScreenStatus;
     notifyListeners();
   }
 }

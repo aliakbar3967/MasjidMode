@@ -79,6 +79,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var _settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
     return Scaffold(
       // backgroundColor: Colors.black,
       appBar: AppBar(
@@ -88,7 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         title: Text('Settings'),
       ),
-      body: Provider.of<SettingsProvider>(context).isLoading
+      body: _settingsProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: () async =>
@@ -118,18 +120,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         scale: 0.8,
                         alignment: Alignment.centerRight,
                         child: CupertinoSwitch(
-                          value: Provider.of<SettingsProvider>(context,
-                                  listen: false)
-                              .settings
-                              .forgroundServiceStatus,
+                          value:
+                              _settingsProvider.settings.forgroundServiceStatus,
                           activeColor: Theme.of(context).primaryColor,
                           // trackColor: Colors.black,
                           onChanged: (bool value) async {
                             // await Provider.of<SettingsProvider>(context,
                             //         listen: false)
                             //     .isPendingValue(true);
-                            await Provider.of<SettingsProvider>(context,
-                                    listen: false)
+                            await _settingsProvider
                                 .toggleForgroundServiceStatus();
                           },
                         ),
@@ -153,9 +152,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           scale: 0.8,
                           alignment: Alignment.centerRight,
                           child: CupertinoSwitch(
-                            value: Provider.of<SettingsProvider>(context)
-                                .settings
-                                .isDoNotDisturbPermissionStatus,
+                            value: _settingsProvider
+                                .settings.isDoNotDisturbPermissionStatus,
                             activeColor: Theme.of(context).primaryColor,
                             // trackColor: Colors.black,
                             onChanged: (bool value) {},
@@ -178,10 +176,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         scale: 0.8,
                         alignment: Alignment.centerRight,
                         child: CupertinoSwitch(
-                          value: Provider.of<SettingsProvider>(context,
-                                  listen: false)
-                              .settings
-                              .introductionScreenStatus,
+                          value: _settingsProvider
+                              .settings.introductionScreenStatus,
                           activeColor: Theme.of(context).primaryColor,
                           // trackColor: Colors.black,
                           onChanged: (bool value) =>
@@ -206,9 +202,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         scale: 0.8,
                         alignment: Alignment.centerRight,
                         child: CupertinoSwitch(
-                          value: Provider.of<SettingsProvider>(context)
-                              .settings
-                              .darkMode,
+                          value: _settingsProvider.settings.darkMode,
                           activeColor: Theme.of(context).primaryColor,
                           // trackColor: Colors.black,
                           onChanged: (bool value) =>

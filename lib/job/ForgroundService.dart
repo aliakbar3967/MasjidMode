@@ -16,21 +16,22 @@ class ForgroundService {
   static startForgroundService() async {
     FlutterBackgroundService().sendData({"action": "setAsForeground"});
     FlutterBackgroundService().start();
+
+    print("Forground Service Started");
   }
 
   static stopForgroundService() async {
     FlutterBackgroundService().sendData({"action": "stopService"});
+
+    print("Forground Service Stopped");
   }
 
   static Future<bool> isRunningForgroundService() async {
     final service = FlutterBackgroundService();
     bool isRunning = await service.isServiceRunning();
+    print("Is Running Forground Service: " + isRunning.toString());
     return isRunning;
   }
-
-  static Future<void> startForgroundServiceAndTask() async {}
-
-  static Future<void> stopForgroundServiceAndTask() async {}
 }
 
 Future<void> refreshForegroundServiceNotification(
