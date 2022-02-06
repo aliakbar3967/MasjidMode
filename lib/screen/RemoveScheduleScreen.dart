@@ -22,7 +22,7 @@ class RemoveScheduleScreen extends StatelessWidget {
             onPressed: () =>
                 Provider.of<ScheduleProvider>(context, listen: false)
                     .toggleAllScheduleSelection(),
-            padding: EdgeInsets.only(right: 24.0),
+            padding: EdgeInsets.only(right: 18.0),
             icon: Provider.of<ScheduleProvider>(context).isAllSelectedMode
                 ? Icon(
                     Icons.check_circle,
@@ -53,7 +53,7 @@ class ScheduleList extends StatelessWidget {
       builder: (context, scheduleProvider, child) {
         return scheduleProvider.schedules.isNotEmpty
             ? ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                // padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 physics: const BouncingScrollPhysics(
                     parent: AlwaysScrollableScrollPhysics()),
                 itemCount: scheduleProvider.schedules.length * 1,

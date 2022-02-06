@@ -25,7 +25,7 @@
 //       notificationContent: NotificationContent(
 //         iconName: 'ic_launcher',
 //         titleText: 'App is running on background.',
-//         color: Colors.blue,
+//         color: Theme.of(context).primaryColor,
 //         priority: NotificationPriority.low,
 //       ),
 //       notificationChannelContent: NotificationChannelContent(

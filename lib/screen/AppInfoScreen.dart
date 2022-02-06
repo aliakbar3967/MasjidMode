@@ -8,7 +8,6 @@ class AppInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         title: Text("About"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined),

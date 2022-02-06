@@ -86,131 +86,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
           icon: Icon(Icons.arrow_back_ios_outlined),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
-          'Settings',
-          // style: TextStyle(color: Colors.grey[400]),
-        ),
-        // backgroundColor: Theme.of(context).cardColor,
-        // elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () =>
-                  Provider.of<SettingsProvider>(context, listen: false)
-                      .refresh(),
-              icon: Icon(Icons.refresh))
-        ],
+        title: Text('Settings'),
       ),
       body: Provider.of<SettingsProvider>(context).isLoading
-          ? Center(
-              child: CupertinoActivityIndicator(),
-            )
-          : SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Column(
-                  children: [
-                    Card(
-                      child: ListTile(
-                        title: Text(
-                          "Application",
-                          // style: TextStyle(color: Colors.grey[400]),
-                        ),
-                        subtitle: Text(
-                          "Running your app on background",
-                          // style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        trailing:
-                            // Provider.of<SettingsProvider>(context,
-                            // listen: false)
-                            // .isPending
-                            // ? CupertinoActivityIndicator()
-                            // :
-                            Transform.scale(
-                          scale: 0.8,
-                          alignment: Alignment.centerRight,
-                          child: CupertinoSwitch(
-                            value: Provider.of<SettingsProvider>(context,
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: () async =>
+                  await Provider.of<SettingsProvider>(context, listen: false)
+                      .refresh(),
+              child: ListView(
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                children: [
+                  Card(
+                    child: ListTile(
+                      title: Text(
+                        "Application",
+                        // style: TextStyle(color: Colors.grey[400]),
+                      ),
+                      subtitle: Text(
+                        "Running your app on background",
+                        // style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      trailing:
+                          // Provider.of<SettingsProvider>(context,
+                          // listen: false)
+                          // .isPending
+                          // ? CupertinoActivityIndicator()
+                          // :
+                          Transform.scale(
+                        scale: 0.8,
+                        alignment: Alignment.centerRight,
+                        child: CupertinoSwitch(
+                          value: Provider.of<SettingsProvider>(context,
+                                  listen: false)
+                              .settings
+                              .forgroundServiceStatus,
+                          activeColor: Theme.of(context).primaryColor,
+                          // trackColor: Colors.black,
+                          onChanged: (bool value) async {
+                            // await Provider.of<SettingsProvider>(context,
+                            //         listen: false)
+                            //     .isPendingValue(true);
+                            await Provider.of<SettingsProvider>(context,
                                     listen: false)
-                                .settings
-                                .forgroundServiceStatus,
-                            activeColor: Colors.blue,
-                            // trackColor: Colors.black,
-                            onChanged: (bool value) async {
-                              // await Provider.of<SettingsProvider>(context,
-                              //         listen: false)
-                              //     .isPendingValue(true);
-                              await Provider.of<SettingsProvider>(context,
-                                      listen: false)
-                                  .toggleForgroundServiceStatus();
-                            },
-                          ),
+                                .toggleForgroundServiceStatus();
+                          },
                         ),
                       ),
                     ),
-                    Card(
-                      child: GestureDetector(
-                        onTap: () =>
-                            SettingsController.openDoNotDisturbSettings(),
-                        child: ListTile(
-                          title: Text(
-                            "Do Not Disturb Mode",
-                            // style: TextStyle(color: Colors.grey[400]),
-                          ),
-                          subtitle: Text(
-                            "Responsible for switch your phone silent or vibrate mode",
-                            // style: TextStyle(color: Colors.grey[700]),
-                          ),
-                          trailing: Transform.scale(
-                            scale: 0.8,
-                            alignment: Alignment.centerRight,
-                            child: CupertinoSwitch(
-                              value: Provider.of<SettingsProvider>(context)
-                                  .settings
-                                  .isDoNotDisturbPermissionStatus,
-                              activeColor: Colors.blue,
-                              // trackColor: Colors.black,
-                              onChanged: (bool value) {},
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
+                  ),
+                  Card(
+                    child: GestureDetector(
+                      onTap: () =>
+                          SettingsController.openDoNotDisturbSettings(),
                       child: ListTile(
                         title: Text(
-                          "App Introduction Screen",
+                          "Do Not Disturb Mode",
                           // style: TextStyle(color: Colors.grey[400]),
                         ),
                         subtitle: Text(
-                          "Get tips & guidelines on startup",
-                          // style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        trailing: Transform.scale(
-                          scale: 0.8,
-                          alignment: Alignment.centerRight,
-                          child: CupertinoSwitch(
-                            value: Provider.of<SettingsProvider>(context,
-                                    listen: false)
-                                .settings
-                                .introductionScreenStatus,
-                            activeColor: Colors.blue,
-                            // trackColor: Colors.black,
-                            onChanged: (bool value) =>
-                                Provider.of<SettingsProvider>(context,
-                                        listen: false)
-                                    .toggleIntroductionScreenStatus(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text(
-                          "Dark Mode",
-                          // style: TextStyle(color: Colors.grey[400]),
-                        ),
-                        subtitle: Text(
-                          "On / Off your app dark mode",
+                          "Responsible for switch your phone silent or vibrate mode",
                           // style: TextStyle(color: Colors.grey[700]),
                         ),
                         trailing: Transform.scale(
@@ -219,32 +155,84 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: CupertinoSwitch(
                             value: Provider.of<SettingsProvider>(context)
                                 .settings
-                                .darkMode,
-                            activeColor: Colors.blue,
+                                .isDoNotDisturbPermissionStatus,
+                            activeColor: Theme.of(context).primaryColor,
                             // trackColor: Colors.black,
-                            onChanged: (bool value) =>
-                                Provider.of<SettingsProvider>(context,
-                                        listen: false)
-                                    .toggleDarkMode(),
+                            onChanged: (bool value) {},
                           ),
                         ),
                       ),
                     ),
-                    Card(
-                      child: ListTile(
-                        title: Text(
-                          "Reset",
-                          style: TextStyle(color: Colors.red),
+                  ),
+                  Card(
+                    child: ListTile(
+                      title: Text(
+                        "App Introduction Screen",
+                        // style: TextStyle(color: Colors.grey[400]),
+                      ),
+                      subtitle: Text(
+                        "Get tips & guidelines on startup",
+                        // style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      trailing: Transform.scale(
+                        scale: 0.8,
+                        alignment: Alignment.centerRight,
+                        child: CupertinoSwitch(
+                          value: Provider.of<SettingsProvider>(context,
+                                  listen: false)
+                              .settings
+                              .introductionScreenStatus,
+                          activeColor: Theme.of(context).primaryColor,
+                          // trackColor: Colors.black,
+                          onChanged: (bool value) =>
+                              Provider.of<SettingsProvider>(context,
+                                      listen: false)
+                                  .toggleIntroductionScreenStatus(),
                         ),
-                        subtitle: Text(
-                          "Reset your app schedules and settings.",
-                          // style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        onTap: () => showAlert(context),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      title: Text(
+                        "Dark Mode",
+                        // style: TextStyle(color: Colors.grey[400]),
+                      ),
+                      subtitle: Text(
+                        "On / Off your app dark mode",
+                        // style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      trailing: Transform.scale(
+                        scale: 0.8,
+                        alignment: Alignment.centerRight,
+                        child: CupertinoSwitch(
+                          value: Provider.of<SettingsProvider>(context)
+                              .settings
+                              .darkMode,
+                          activeColor: Theme.of(context).primaryColor,
+                          // trackColor: Colors.black,
+                          onChanged: (bool value) =>
+                              Provider.of<SettingsProvider>(context,
+                                      listen: false)
+                                  .toggleDarkMode(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      title: Text(
+                        "Reset",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      subtitle: Text(
+                        "Reset your app schedules and settings.",
+                        // style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      onTap: () => showAlert(context),
+                    ),
+                  ),
+                ],
               ),
             ),
     );

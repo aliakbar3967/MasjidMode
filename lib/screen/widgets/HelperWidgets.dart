@@ -20,8 +20,9 @@ Widget dayChip(name, isActive, BuildContext context) {
       name,
       style: TextStyle(
         fontSize: 0.03 * MediaQuery.of(context).size.width,
-        color:
-            isActive ? Colors.blue : Theme.of(context).chipTheme.disabledColor,
+        color: isActive
+            ? Theme.of(context).primaryColor
+            : Theme.of(context).chipTheme.disabledColor,
       ),
     ),
   );
@@ -67,8 +68,10 @@ Widget timeView(Schedule schedule, BuildContext context) {
 Widget dayChipButton(String name, bool status, BuildContext context) {
   return Chip(
     label: Text(name.toUpperCase()),
-    backgroundColor:
-        status ? Colors.blue : Theme.of(context).chipTheme.selectedColor,
+    backgroundColor: status ? Theme.of(context).primaryColor : null,
+    labelStyle: TextStyle(
+      color: status ? Colors.white : null,
+    ),
   );
 }
 
@@ -106,14 +109,14 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
     return Text(
       (startTime + " ~ \n" + endTime).toString(),
       style: TextStyle(
-        color: Colors.blue,
+        color: Theme.of(context).primaryColor,
         fontSize: 14,
       ),
     );
   } else {
     return Text(
       (startTime + " ~ " + endTime).toString(),
-      style: TextStyle(fontSize: 14, color: Colors.blue),
+      style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
     );
   }
 }

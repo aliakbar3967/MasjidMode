@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:peace_time/job/ForgroundService.dart';
@@ -38,16 +39,16 @@ class App extends StatelessWidget {
           // color: Colors.transparent,
           elevation: 2,
         ),
-        // primarySwatch: Colors.lightGreen,
-        // backgroundColor: Colors.lightGreen.shade100,
+        primarySwatch: Colors.deepPurple,
+        backgroundColor: Colors.deepPurple.shade100,
         scaffoldBackgroundColor: Colors.grey.shade100,
-        // canvasColor: Colors.white,
+        canvasColor: Colors.white,
         // shadowColor: Colors.white,
         progressIndicatorTheme: const ProgressIndicatorThemeData(
-            // circularTrackColor: Colors.lightGreen
-            // color: Colors.lightGreen
-            // linearTrackColor: Colors.lightGreen
-            // refreshBackgroundColor: Colors.lightGreen
+            // circularTrackColor: Colors.deepPurple
+            color: Colors.deepPurple
+            // linearTrackColor: Colors.deepPurple
+            // refreshBackgroundColor: Colors.deepPurple
             ),
         bottomSheetTheme: BottomSheetThemeData(
             shape: RoundedRectangleBorder(

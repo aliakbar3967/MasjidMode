@@ -191,7 +191,8 @@ class _EditScreenState extends State<EditScreen> {
                           child: ListTile(
                             title: Text(
                               Helper.timeText(schedule.start, context),
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
                             ),
                             subtitle: Text("Start Time"),
                             trailing: IconButton(
@@ -214,7 +215,8 @@ class _EditScreenState extends State<EditScreen> {
                                   ? Helper.timeText(schedule.end, context) +
                                       ', next day'
                                   : Helper.timeText(schedule.end, context),
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
                             ),
                             subtitle: Text("End Time"),
                             trailing: IconButton(
@@ -309,7 +311,7 @@ class _EditScreenState extends State<EditScreen> {
                             alignment: Alignment.centerRight,
                             child: CupertinoSwitch(
                               value: schedule.silent,
-                              activeColor: Colors.blue,
+                              activeColor: Theme.of(context).primaryColor,
                               onChanged: (bool value) {
                                 setState(() {
                                   schedule.silent = !schedule.silent;
@@ -329,7 +331,7 @@ class _EditScreenState extends State<EditScreen> {
                             alignment: Alignment.centerRight,
                             child: CupertinoSwitch(
                               value: schedule.vibrate,
-                              activeColor: Colors.blue,
+                              activeColor: Theme.of(context).primaryColor,
                               onChanged: (bool value) {
                                 setState(() {
                                   schedule.silent = !schedule.silent;

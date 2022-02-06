@@ -107,11 +107,12 @@ class ScheduleCard extends StatelessWidget {
                         scale: 0.8,
                         child: CupertinoSwitch(
                           value: schedule.status,
+                          activeColor: Theme.of(context).primaryColor,
                           onChanged: (bool value) =>
                               Provider.of<ScheduleProvider>(context,
                                       listen: false)
                                   .toggleScheduleStatus(index),
-                          //activeColor: Colors.blue,
+                          //activeColor: Theme.of(context).primaryColor,
                           // trackColor: Colors.black,
                         ),
                       ),

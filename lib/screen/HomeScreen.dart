@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 scheduleProvider.schedules.isEmpty)
             ? emptyWidget(context)
             : ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                // padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 physics: const BouncingScrollPhysics(
                     parent: AlwaysScrollableScrollPhysics()),
                 // shrinkWrap: false,
