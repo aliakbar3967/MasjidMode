@@ -17,12 +17,16 @@ class ScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.symmetric(vertical: 1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
       child: Dismissible(
         direction: DismissDirection.startToEnd,
         background: Container(
           padding: EdgeInsets.only(left: 12),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
+              // borderRadius: BorderRadius.circular(5),
               color: Colors.red.shade400),
           child: Icon(
             Icons.delete,
