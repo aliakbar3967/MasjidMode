@@ -353,7 +353,6 @@ class _CreateScreenState extends State<CreateScreen> {
                         textColor: Colors.white,
                         child: const Text("Submit"),
                         onPressed: () => submitForm(),
-                        splashColor: Colors.greenAccent,
                       ),
               )
             ],

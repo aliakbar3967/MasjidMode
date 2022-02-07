@@ -391,7 +391,6 @@ class _EditScreenState extends State<EditScreen> {
                         textColor: Colors.white,
                         child: const Text("Submit"),
                         onPressed: () => submitForm(),
-                        splashColor: Colors.greenAccent,
                       ),
               ),
             ],
