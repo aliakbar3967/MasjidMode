@@ -52,11 +52,11 @@ class App extends StatelessWidget {
             // linearTrackColor: Colors.deepPurple
             // refreshBackgroundColor: Colors.deepPurple
             ),
-        bottomSheetTheme: BottomSheetThemeData(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(27),
-                    topRight: Radius.circular(27)))),
+        // bottomSheetTheme: BottomSheetThemeData(
+        //     shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.only(
+        //             topLeft: Radius.circular(27),
+        //             topRight: Radius.circular(27)))),
         cardTheme: CardTheme(
           elevation: 0,
           shape: RoundedRectangleBorder(

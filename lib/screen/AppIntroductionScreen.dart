@@ -28,7 +28,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
     }
   }
 
-  Widget _buildImage({String assetName, double width = 100.0}) {
+  Widget _buildImage({String assetName = "", double width = 100.0}) {
     return Align(
       child: Image.asset(assetName, width: width),
       alignment: Alignment.center,
@@ -56,7 +56,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
 
     var introductionScreen = IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.grey.shade100,
+      globalBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
       color: Colors.black,
       onDone: () => _onIntroEnd(context),
       //onSkip: () => _onIntroEnd(context), // You can override onSkip callback

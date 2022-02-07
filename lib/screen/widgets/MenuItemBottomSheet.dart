@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:peace_time/screen/AppInfoScreen.dart';
 import 'package:peace_time/screen/HelpScreen.dart';
 import 'package:peace_time/screen/SettingsScreen.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MenuItemBottomSheet extends StatelessWidget {
@@ -13,7 +13,9 @@ class MenuItemBottomSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.settings),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Settings'),
@@ -23,7 +25,9 @@ class MenuItemBottomSheet extends StatelessWidget {
           ).then((response) => null),
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.share),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Share'),
@@ -32,7 +36,9 @@ class MenuItemBottomSheet extends StatelessWidget {
               subject: 'Peace Time - A Silent Scheduler App.'),
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.star),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Rate this app'),
@@ -43,7 +49,9 @@ class MenuItemBottomSheet extends StatelessWidget {
               : throw 'Could not launch',
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.privacy_tip),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Privacy policy'),
@@ -54,7 +62,9 @@ class MenuItemBottomSheet extends StatelessWidget {
               : throw 'Could not launch',
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.help),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Help'),
@@ -64,7 +74,9 @@ class MenuItemBottomSheet extends StatelessWidget {
           ).then((response) => null),
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.info),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('App Info'),
@@ -74,7 +86,9 @@ class MenuItemBottomSheet extends StatelessWidget {
           ).then((response) => null),
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.apps),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('More apps'),

@@ -22,7 +22,8 @@ class ScheduleCard extends StatelessWidget {
         background: Container(
           padding: EdgeInsets.only(left: 12),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: Colors.red),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.red.shade400),
           child: Icon(
             Icons.delete,
             color: Colors.white,

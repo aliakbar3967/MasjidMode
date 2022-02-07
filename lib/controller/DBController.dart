@@ -5,7 +5,7 @@ class DBController {
   static Future<bool> getIntroductionScreenStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.reload();
-    return prefs.getBool(Constant.SP_INTRODUCTION);
+    return prefs.getBool(Constant.SP_INTRODUCTION) == true ? true : false;
   }
 
   static Future<void> toggleIntroductionScreenStatus(bool value) async {
@@ -18,11 +18,11 @@ class DBController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.reload();
     bool value = prefs.containsKey(Constant.SP_DARKMODE);
-    if (value == null || value == false) {
+    if (value == false) {
       await toggleDarkModeStatus(false);
       return false;
     } else {
-      return prefs.getBool(Constant.SP_DARKMODE);
+      return prefs.getBool(Constant.SP_DARKMODE) == true ? true : false;
     }
   }
 
@@ -35,7 +35,7 @@ class DBController {
   static Future<bool> getDefaultSchedulesStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.reload();
-    return prefs.getBool(Constant.SP_INTRODUCTION);
+    return prefs.getBool(Constant.SP_INTRODUCTION) == true ? true : false;
   }
 
   static Future<bool> setDefaultSchedulesStatus(bool value) async {
@@ -44,7 +44,7 @@ class DBController {
     return prefs.setBool(Constant.SP_DEFAULT_SCHEDULE, value);
   }
 
-  static Future<String> getSchedules() async {
+  static Future<String?> getSchedules() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.reload();
     return prefs.getString(Constant.SP_SCHEDULES);
@@ -59,13 +59,26 @@ class DBController {
   static Future<bool> getNormalPeriod() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.reload();
-    return prefs.getBool(Constant.SP_NORMAL_PERIOD);
+    return prefs.getBool(Constant.SP_NORMAL_PERIOD) == true ? true : false;
   }
 
   static Future<void> setNormalPeriod(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.reload();
     await prefs.setBool(Constant.SP_NORMAL_PERIOD, value);
+  }
+
+  static Future<int> getDefaultSilentMinute() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.reload();
+    int? minute = prefs.getInt(Constant.SP_DEFAULT_SILENT_MINUTE);
+    return minute == null ? 0 : minute;
+  }
+
+  static Future<void> setDefaultSilentMinute(int value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.reload();
+    await prefs.setInt(Constant.SP_DEFAULT_SILENT_MINUTE, value);
   }
 
   static Future<void> reset() async {

@@ -114,7 +114,7 @@ class Helper {
   }
 
   static bool isToday(Schedule schedule) {
-    String todayName;
+    String? todayName;
 
     DateTime date = DateTime.now();
     todayName = Constant.dayNames[date.weekday];

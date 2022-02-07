@@ -14,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> navigating() async {
-    final bool out = await DBController.getIntroductionScreenStatus();
+    final bool? out = await DBController.getIntroductionScreenStatus();
     if (out == false) {
       setState(() {
         Navigator.of(context).pushReplacement(MaterialPageRoute(

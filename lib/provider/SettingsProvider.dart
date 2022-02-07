@@ -47,7 +47,7 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> darkModeStatus() async {
+  Future<void> darkModeStatus() async {
     settings.darkMode = await DBController.getDarkModeStatus();
     notifyListeners();
   }

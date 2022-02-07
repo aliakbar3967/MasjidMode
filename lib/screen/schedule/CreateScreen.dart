@@ -16,8 +16,8 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   bool is24HoursFormat = false;
   bool isFormSubmitting = false;
-  TimeOfDay time;
-  TimeOfDay picked;
+  TimeOfDay time = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay picked = TimeOfDay(hour: 0, minute: 0);
   Schedule schedule = Schedule(
       name: "",
       type: "daily",
@@ -77,7 +77,7 @@ class _CreateScreenState extends State<CreateScreen> {
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() => isFormSubmitting = true);
 
-    if (schedule.name == null || schedule.name == '') {
+    if (schedule.name == '') {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
         content: Text(

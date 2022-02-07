@@ -40,7 +40,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   void navigating() async {
-    final bool out = await DBController.getIntroductionScreenStatus();
+    final bool? out = await DBController.getIntroductionScreenStatus();
     if (out == false || out == null) {
       _incrementTab(0);
     } else {

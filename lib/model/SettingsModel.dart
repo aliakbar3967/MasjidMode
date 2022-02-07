@@ -7,8 +7,8 @@ class Settings {
   bool darkMode = false;
 
   Settings(
-      {this.forgroundServiceStatus,
-      this.isDoNotDisturbPermissionStatus,
-      this.introductionScreenStatus,
-      this.darkMode});
+      {required this.forgroundServiceStatus,
+      required this.isDoNotDisturbPermissionStatus,
+      required this.introductionScreenStatus,
+      required this.darkMode});
 }

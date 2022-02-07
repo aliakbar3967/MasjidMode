@@ -24,11 +24,11 @@ class SettingsController {
   }
 
   static Future<bool> getPermissionStatus() async {
-    bool permissionStatus = false;
+    bool? permissionStatus = false;
     try {
       permissionStatus = await PermissionHandler.permissionsGranted;
       // print(permissionStatus);
-      return permissionStatus;
+      return permissionStatus == true ? true : false;
     } catch (err) {
       // print(err);
       return false;

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/screen/schedule/CreateDateScheduleScreen.dart';
 import 'package:peace_time/screen/schedule/CreateScreen.dart';
@@ -13,22 +16,28 @@ class HomeBottomSheet extends StatefulWidget {
 class _HomeBottomSheetState extends State<HomeBottomSheet> {
   int _minute = 30;
 
-  void increment(value) {
+  void increment({int value = 5}) {
     setState(() {
       _minute += value;
     });
   }
 
-  void decrement(value) {
-    if (_minute - value >= 30) {
+  void decrement({int value = 5}) {
+    if (_minute - value >= 0) {
       setState(() {
         _minute -= value;
       });
-    } else {
-      setState(() {
-        _minute = 30;
-      });
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 0), () async {
+      _minute = await DBController.getDefaultSilentMinute();
+      setState(() {});
+    });
   }
 
   @override
@@ -37,7 +46,9 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.schedule),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Daily Schedule'),
@@ -47,7 +58,9 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
           ).then((response) => response ? Navigator.of(context).pop() : null),
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.calendar_today_sharp),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Calender Schedule'),
@@ -58,7 +71,9 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
           ).then((response) => response ? Navigator.of(context).pop() : null),
         ),
         ListTile(
-          shape: StadiumBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
           leading: const Icon(Icons.volume_off_sharp),
           trailing: const Icon(Icons.arrow_forward_ios),
           title: Row(
@@ -73,7 +88,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                 child: Row(
                   children: [
                     InkWell(
-                        onTap: () => decrement(5),
+                        onTap: () => decrement(value: 5),
                         child: Icon(Icons.remove, color: Colors.white)),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 3),
@@ -87,7 +102,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       ),
                     ),
                     InkWell(
-                        onTap: () => increment(5),
+                        onTap: () => increment(value: 5),
                         child: Icon(Icons.add, color: Colors.white)),
                   ],
                 ),

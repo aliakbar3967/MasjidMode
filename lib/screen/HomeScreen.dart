@@ -5,7 +5,7 @@ import 'package:peace_time/screen/widgets/HomeBottomSheet.dart';
 import 'package:peace_time/screen/widgets/MenuItemBottomSheet.dart';
 import 'package:peace_time/screen/widgets/ScheduleCard.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {

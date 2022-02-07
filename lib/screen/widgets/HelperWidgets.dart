@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,12 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:peace_time/constant.dart';
 import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
-import 'package:peace_time/screen/AppInfoScreen.dart';
-import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:peace_time/screen/HelpScreen.dart';
-import 'package:peace_time/screen/SettingsScreen.dart';
 
 Widget dayChip(name, isActive, BuildContext context) {
   return Padding(

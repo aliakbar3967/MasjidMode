@@ -18,8 +18,8 @@ class CreateDateScheduleScreen extends StatefulWidget {
 class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
   bool is24HoursFormat = false;
   bool isFormSubmitting = false;
-  TimeOfDay time;
-  TimeOfDay picked;
+  TimeOfDay time = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay picked = TimeOfDay(hour: 0, minute: 0);
   Schedule schedule = Schedule(
       name: "",
       type: "datetime",

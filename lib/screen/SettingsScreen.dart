@@ -14,6 +14,25 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  int _minute = 0;
+  bool isLoading = false;
+
+  Future<void> increment({int value = 5}) async {
+    setState(() => isLoading = true);
+    _minute += value;
+    await DBController.setDefaultSilentMinute(_minute);
+    setState(() => isLoading = false);
+  }
+
+  Future<void> decrement({int value = 5}) async {
+    setState(() => isLoading = true);
+    if (_minute - value >= 0) {
+      _minute -= value;
+    }
+    await DBController.setDefaultSilentMinute(_minute);
+    setState(() => isLoading = false);
+  }
+
   showAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -68,6 +87,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.initState();
     Timer(Duration(seconds: 1), () async {
       Provider.of<SettingsProvider>(context, listen: false).refresh();
+      _minute = await DBController.getDefaultSilentMinute();
+      setState(() {});
     });
   }
 
@@ -101,6 +122,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     parent: AlwaysScrollableScrollPhysics()),
                 children: [
                   Card(
+                    margin: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
                     child: ListTile(
                       title: Text(
                         "Application",
@@ -135,7 +160,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 1),
                   Card(
+                    margin: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
                     child: GestureDetector(
                       onTap: () =>
                           SettingsController.openDoNotDisturbSettings(),
@@ -162,7 +192,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 1),
                   Card(
+                    margin: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
                     child: ListTile(
                       title: Text(
                         "App Introduction Screen",
@@ -188,7 +223,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 1),
                   Card(
+                    margin: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
                     child: ListTile(
                       title: Text(
                         "Dark Mode",
@@ -213,7 +253,70 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 1),
                   Card(
+                    margin: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: ListTile(
+                        subtitle: Text(
+                          "Set default minutes for quick silent",
+                          // style: TextStyle(color: Colors.grey[400]),
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Default Minutes'),
+                            Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context).primaryColor),
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                      onTap: () => isLoading
+                                          ? null
+                                          : decrement(value: 5),
+                                      child: Icon(Icons.remove,
+                                          color: Colors.white)),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 3, vertical: 2),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                        color: Colors.white),
+                                    child: isLoading
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : Text(
+                                            _minute.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16),
+                                          ),
+                                  ),
+                                  InkWell(
+                                      onTap: () => isLoading
+                                          ? null
+                                          : increment(value: 5),
+                                      child:
+                                          Icon(Icons.add, color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                            // IconButton(onPressed: () {}, icon: Icon(Icons.done))
+                          ],
+                        )),
+                  ),
+                  const SizedBox(height: 1),
+                  Card(
+                    margin: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
                     child: ListTile(
                       title: Text(
                         "Reset",

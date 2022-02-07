@@ -77,7 +77,7 @@ void onStart() {
   WidgetsFlutterBinding.ensureInitialized();
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
-    if (event["action"] == "setAsForeground") {
+    if (event!["action"] == "setAsForeground") {
       service.setForegroundMode(true);
       return;
     }
@@ -107,7 +107,7 @@ void onStart() {
 }
 
 Future<void> soundModeChangeBySchedule() async {
-  List<Schedule> schedules = await ScheduleController.getSchedules();
+  List<Schedule>? schedules = await ScheduleController.getSchedules();
 
   if (schedules == null) {
     return;
@@ -135,7 +135,7 @@ Future<void> soundModeChangeBySchedule() async {
         }
       }
     } else {
-      bool __normalPeriod = await DBController.getNormalPeriod();
+      bool? __normalPeriod = await DBController.getNormalPeriod();
       if (__normalPeriod == true) {
         await refreshForegroundServiceNotification(
             message: 'All schedules are off');

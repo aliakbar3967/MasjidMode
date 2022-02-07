@@ -16,10 +16,10 @@ class EditDateScheduleScreen extends StatefulWidget {
 }
 
 class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
-  Schedule schedule;
-  TimeOfDay time;
-  TimeOfDay picked;
-  TextEditingController name;
+  late Schedule schedule;
+  TimeOfDay time = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay picked = TimeOfDay(hour: 0, minute: 0);
+  TextEditingController name = TextEditingController();
 
   bool is24HoursFormat = false;
   bool isFormSubmitting = false;
@@ -69,7 +69,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
   void submitForm() async {
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() => isFormSubmitting = true);
-    if (schedule.name == null || schedule.name == '') {
+    if (schedule.name == '') {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
         content: Text(

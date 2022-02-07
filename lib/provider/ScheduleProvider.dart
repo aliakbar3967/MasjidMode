@@ -123,7 +123,7 @@ class ScheduleProvider with ChangeNotifier {
     //   await DBController.setDefaultSchedulesStatus(true);
     // }
 
-    String schedulesFromPrefs = await DBController.getSchedules();
+    String? schedulesFromPrefs = await DBController.getSchedules();
     if (schedulesFromPrefs != null) {
       schedules = Schedule.decode(schedulesFromPrefs);
     }
@@ -133,13 +133,11 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Future<void> toggleScheduleStatus(index) async {
-    if (schedules != null) {
-      schedules[index].status = !schedules[index].status;
-      String encodedSchedulesList = Schedule.encode(schedules);
-      await DBController.setSchedules(encodedSchedulesList);
+    schedules[index].status = !schedules[index].status;
+    String encodedSchedulesList = Schedule.encode(schedules);
+    await DBController.setSchedules(encodedSchedulesList);
 
-      notifyListeners();
-    }
+    notifyListeners();
   }
 
   Future<void> add(Schedule _schedule) async {
@@ -153,19 +151,17 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Future<void> update(schedule, index) async {
-    if (schedules != null) {
-      schedules[index] = schedule;
-      String encodedSchedulesList = Schedule.encode(schedules);
-      await DBController.setSchedules(encodedSchedulesList);
+    schedules[index] = schedule;
+    String encodedSchedulesList = Schedule.encode(schedules);
+    await DBController.setSchedules(encodedSchedulesList);
 
-      schedules = Schedule.decode(encodedSchedulesList);
-      notifyListeners();
-    }
+    schedules = Schedule.decode(encodedSchedulesList);
+    notifyListeners();
   }
 
   Future<void> remove(index) async {
     schedules.removeAt(index);
-    if (schedules == null || schedules.length == 0) {
+    if (schedules.length == 0) {
       await DBController.setSchedules(Schedule.encode(schedules));
     } else {
       String encodedSchedulesList = Schedule.encode(schedules);
@@ -203,7 +199,7 @@ class ScheduleProvider with ChangeNotifier {
 
   Future<void> removeMultiple() async {
     schedules.removeWhere((element) => element.isSelected == true);
-    if (schedules == null || schedules.length == 0) {
+    if (schedules.length == 0) {
       await DBController.setSchedules(Schedule.encode(schedules));
     } else {
       String encodedSchedulesList = Schedule.encode(schedules);

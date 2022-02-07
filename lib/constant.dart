@@ -15,6 +15,7 @@ class Constant {
   static const String SP_INTRODUCTION = "__intro";
   static const String SP_DARKMODE = "__dark_mode";
   static const String SP_RESET = "__reset_v8";
+  static const String SP_DEFAULT_SILENT_MINUTE = "__default_silent_minute";
 
   static const EMPTY_SVG = 'assets/empty.svg';
 
