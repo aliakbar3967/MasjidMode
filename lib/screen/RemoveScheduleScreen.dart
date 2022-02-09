@@ -22,7 +22,7 @@ class RemoveScheduleScreen extends StatelessWidget {
             onPressed: () =>
                 Provider.of<ScheduleProvider>(context, listen: false)
                     .toggleAllScheduleSelection(),
-            padding: EdgeInsets.only(right: 18.0),
+            padding: EdgeInsets.only(right: 10.0),
             icon: Provider.of<ScheduleProvider>(context).isAllSelectedMode
                 ? Icon(
                     Icons.check_circle,

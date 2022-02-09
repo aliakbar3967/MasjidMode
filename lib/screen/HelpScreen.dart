@@ -13,7 +13,7 @@ class HelpScreen extends StatelessWidget {
         ),
         // backgroundColor: Theme.of(context).cardColor,
         // elevation: 0,
-        title: Text('Help'),
+        title: Text('How to use?'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -25,121 +25,56 @@ class HelpScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 8),
-                Text(
-                  "How to use?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
-                    // color: Colors.grey[400],
-                  ),
-                ),
-                SizedBox(height: 15),
-                Text(
-                  "Create Quick Schedule",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    // color: Colors.grey[400]
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "Tap floating plus (+) button then tap \'30m Quick Silent'\. It will create current 30 minute quick schedule silent for you.",
-                  // style: TextStyle(color: Colors.grey[700])
-                ),
-                SizedBox(height: 15),
-                Text(
-                  "Create Schedule",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    // color: Colors.grey[400]
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "Tap floating plus (+) button then tap \'New Schedule'\ and create new schedule by giving schedule name and select start and end time and select days and select silent and vibrate options.",
-                  // style: TextStyle(color: Colors.grey[700])
-                ),
-                SizedBox(height: 15),
-                Text(
-                  "Update Schedule",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    // color: Colors.grey[400]
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "Tap any schedule from schedule list in home screen and update schedule by giving schedule name and select start and end time and select days and select silent and vibrate options.",
-                  // style: TextStyle(color: Colors.grey[700])
-                ),
-                SizedBox(height: 15),
-                Text(
-                  "Remove Schedule One by One",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    // color: Colors.grey[400]
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "Hold and Swipe Right which schedule you want to remove and it will remove.",
-                  // style: TextStyle(color: Colors.grey[700])
-                ),
-                SizedBox(height: 15),
-                Text(
-                  "Remove Multiple Schedule At A Time",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    // color: Colors.grey[400]
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "Long press any of schedule from schedule list and select schedule and remove schedule by taping floating trash button.",
-                  // style: TextStyle(color: Colors.grey[700])
-                ),
-                SizedBox(height: 25),
-                Text(
-                  "Note:",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
-                    color: Colors.red,
-                  ),
-                ),
-                Text(
-                  "Why app is not working?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.red,
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                    "Realme, Oneplus, Samsung, Xiaomi, Huawei and a few other manufacturers have their own layer of 'Battery Saver' or 'Security' that kills or restricts background running apps. That's why app is not working properly. You have to enable battery uses restictions, or other security restrictions so that app can work properly.",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 16,
-                    )),
-
-                // Text("It is easy to use this app. This app has only auto silent or vibrate feature. To use this features you have to allow permission of \'Do Not Distub'\. Then create new schedule and give this schedule start and end time and select days. By your selected time and days, auto silent or vibrate will work repeatedly. You can also create a quick schedule by clicking \'Quick 30m\'."),
-              ],
+        child: ListView(
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
+          children: <Widget>[
+            Card(
+              child: ListTile(
+                title: Text("Quick schedule"),
+                subtitle: Text(
+                    "Tap floating plus (+) button then set minutes and tap \'Quick Silent'\. It will create your selected fixed minute quick schedule silent."),
+              ),
             ),
-          ),
+            Card(
+              child: ListTile(
+                title: Text("Create schedule"),
+                subtitle: Text(
+                    "Tap floating plus (+) button then tap \'New Schedule'\ and create new schedule by giving schedule name and select start and end time and select days and select silent and vibrate options."),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: Text("Update schedule"),
+                subtitle: Text(
+                    "Tap any schedule from schedule list in home screen and update schedule by giving schedule name and select start and end time and select days and select silent and vibrate options."),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: Text("Remove schedule one by one"),
+                subtitle: Text(
+                    "Hold and swipe right which schedule you want to remove and it will remove."),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: Text("Remove multiple schedule at a time"),
+                subtitle: Text(
+                    "Long press any of schedule from schedule list and select schedule and remove schedule by taping floating trash button."),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: Text(
+                  "Note: Why app is not working?",
+                  style: TextStyle(color: Colors.red.shade300),
+                ),
+                subtitle: Text(
+                    "Realme, Oneplus, Samsung, Xiaomi, Huawei and a few other manufacturers have their own layer of 'Battery Saver' or 'Security' that kills or restricts background running apps. That's why app is not working properly. You have to enable battery uses restictions, or other security restrictions so that app can work properly."),
+              ),
+            ),
+          ],
         ),
       ),
     );

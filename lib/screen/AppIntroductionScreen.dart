@@ -37,19 +37,11 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(
-      fontSize: 19.0,
-      // color: Colors.deepPurple,
-    );
+    const bodyStyle = TextStyle(fontSize: 19.0);
     const pageDecoration = const PageDecoration(
-      titleTextStyle: TextStyle(
-        fontSize: 28.0,
-        fontWeight: FontWeight.w700,
-        // color: Colors.deepPurple.shade100
-      ),
+      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      // pageColor: Colors.deepPurple,
       imagePadding: EdgeInsets.zero,
       fullScreen: false,
     );

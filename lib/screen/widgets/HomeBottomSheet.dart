@@ -50,7 +50,6 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.schedule),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Daily Schedule'),
           onTap: () => Navigator.push(
             context,
@@ -62,7 +61,6 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.calendar_today_sharp),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Calender Schedule'),
           onTap: () => Navigator.push(
             context,
@@ -75,7 +73,6 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.volume_off_sharp),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

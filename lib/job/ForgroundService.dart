@@ -37,7 +37,7 @@ class ForgroundService {
 Future<void> refreshForegroundServiceNotification(
     {String message = 'App is running...'}) async {
   FlutterBackgroundService().setNotificationInfo(
-    title: "My App Service",
+    title: "App Service",
     content: message,
   );
 }

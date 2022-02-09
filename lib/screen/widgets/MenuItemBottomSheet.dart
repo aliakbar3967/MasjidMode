@@ -11,13 +11,12 @@ class MenuItemBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
+      children: [
         ListTile(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.settings),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Settings'),
           onTap: () => Navigator.push(
             context,
@@ -29,8 +28,7 @@ class MenuItemBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.share),
-          trailing: const Icon(Icons.arrow_forward_ios),
-          title: const Text('Share'),
+          title: const Text('Share with friends'),
           onTap: () => Share.share(
               "Peace Time - A Silent Scheduler App. Please visit https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time and download this awesome app.",
               subject: 'Peace Time - A Silent Scheduler App.'),
@@ -40,7 +38,6 @@ class MenuItemBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.star),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Rate this app'),
           onTap: () async => await canLaunch(
                   "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
@@ -53,7 +50,6 @@ class MenuItemBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.privacy_tip),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Privacy policy'),
           onTap: () async => await canLaunch(
                   "https://fivepeacetime.blogspot.com/p/privacy-policy.html")
@@ -66,7 +62,6 @@ class MenuItemBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.help),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('Help'),
           onTap: () => Navigator.push(
             context,
@@ -78,8 +73,7 @@ class MenuItemBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.info),
-          trailing: const Icon(Icons.arrow_forward_ios),
-          title: const Text('App Info'),
+          title: const Text('About'),
           onTap: () => Navigator.push(
             context,
             CupertinoPageRoute(builder: (context) => AppInfoScreen()),
@@ -90,7 +84,6 @@ class MenuItemBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           leading: const Icon(Icons.apps),
-          trailing: const Icon(Icons.arrow_forward_ios),
           title: const Text('More apps'),
           onTap: () async => await canLaunch(
                   "https://play.google.com/store/apps/developer?id=Peace+Time")

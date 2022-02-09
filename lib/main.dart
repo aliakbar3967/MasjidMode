@@ -35,32 +35,19 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // title: 'Peace Time',
-      // theme: ThemeData.light(),
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          // color: Colors.transparent,
-          elevation: 2,
-        ),
-        primarySwatch: Colors.deepPurple,
-        backgroundColor: Colors.deepPurple.shade100,
+        appBarTheme: AppBarTheme(elevation: 2),
+        primarySwatch: Colors.indigo,
+        backgroundColor: Colors.indigo.shade100,
         scaffoldBackgroundColor: Colors.grey.shade100,
         canvasColor: Colors.white,
-        // shadowColor: Colors.white,
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-            // circularTrackColor: Colors.deepPurple
-            color: Colors.deepPurple
-            // linearTrackColor: Colors.deepPurple
-            // refreshBackgroundColor: Colors.deepPurple
-            ),
-        // bottomSheetTheme: BottomSheetThemeData(
-        //     shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.only(
-        //             topLeft: Radius.circular(27),
-        //             topRight: Radius.circular(27)))),
+        progressIndicatorTheme:
+            const ProgressIndicatorThemeData(color: Colors.indigo),
         cardTheme: CardTheme(
           elevation: 0,
+          margin: const EdgeInsets.symmetric(vertical: 1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(0),
           ),
         ),
         listTileTheme: ListTileThemeData(
@@ -70,7 +57,23 @@ class App extends StatelessWidget {
         ),
         dividerColor: Colors.transparent,
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData(
+        appBarTheme: AppBarTheme(elevation: 2),
+        brightness: Brightness.dark,
+        cardTheme: CardTheme(
+          elevation: 0,
+          margin: const EdgeInsets.symmetric(vertical: 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+        ),
+        listTileTheme: ListTileThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        dividerColor: Colors.transparent,
+      ),
       themeMode: Provider.of<SettingsProvider>(context).settings.darkMode
           ? ThemeMode.dark
           : ThemeMode.system,
