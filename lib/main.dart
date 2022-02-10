@@ -40,7 +40,9 @@ class App extends StatelessWidget {
         primarySwatch: Colors.indigo,
         backgroundColor: Colors.indigo.shade100,
         scaffoldBackgroundColor: Colors.grey.shade100,
-        canvasColor: Colors.white,
+        chipTheme: ChipThemeData(
+          selectedColor: Colors.indigo,
+        ),
         progressIndicatorTheme:
             const ProgressIndicatorThemeData(color: Colors.indigo),
         cardTheme: CardTheme(
@@ -60,6 +62,9 @@ class App extends StatelessWidget {
       darkTheme: ThemeData(
         appBarTheme: AppBarTheme(elevation: 2),
         brightness: Brightness.dark,
+        chipTheme: ChipThemeData(
+          selectedColor: Colors.cyanAccent,
+        ),
         cardTheme: CardTheme(
           elevation: 0,
           margin: const EdgeInsets.symmetric(vertical: 1),

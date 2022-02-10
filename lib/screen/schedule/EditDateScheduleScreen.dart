@@ -141,7 +141,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "Edit Schedule".toUpperCase(),
+          "Edit Schedule",
         ),
         actions: [
           Padding(
@@ -161,150 +161,149 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(children: [
-                      SizedBox(height: 10.0),
-                      Card(
-                        elevation: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          child: TextField(
-                            controller: name,
-                            onChanged: (String value) {
+                  physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  child: Column(children: [
+                    SizedBox(height: 10.0),
+                    Card(
+                      // elevation: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: TextField(
+                          controller: name,
+                          onChanged: (String value) {
+                            setState(() {
+                              schedule.name = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Give a name..',
+                          ),
+                        ),
+                      ),
+                    ),
+                    // SizedBox(height: 8 * 5.0),
+                    Card(
+                      child: GestureDetector(
+                        onTap: () {
+                          selectStartTime(context);
+                        },
+                        child: ListTile(
+                          title: Text(
+                            DateFormat.yMMMMd()
+                                .add_jm()
+                                .format(DateTime.parse(schedule.start))
+                                .toString(),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          subtitle: Text("Start DateTime"),
+                          trailing: IconButton(
+                            icon: Icon(Icons.alarm_add),
+                            onPressed: () {
+                              selectStartTime(context);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      child: GestureDetector(
+                        onTap: () {
+                          selectEndTime(context);
+                        },
+                        child: ListTile(
+                          title: Text(
+                            DateFormat.yMMMMd()
+                                .add_jm()
+                                .format(DateTime.parse(schedule.end))
+                                .toString(),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          subtitle: Text("End DateTime"),
+                          trailing: IconButton(
+                            icon: Icon(Icons.alarm_add),
+                            onPressed: () {
+                              selectEndTime(context);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text("Silent Mode"),
+                        subtitle: Text("Phone will automatically silent."),
+                        trailing: Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: CupertinoSwitch(
+                            value: schedule.silent,
+                            activeColor: Theme.of(context).primaryColor,
+                            onChanged: (bool value) {
                               setState(() {
-                                schedule.name = value;
+                                schedule.silent = !schedule.silent;
+                                schedule.vibrate = !schedule.vibrate;
                               });
                             },
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Give a name..',
-                            ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 8 * 5.0),
-                      Card(
-                        child: GestureDetector(
-                          onTap: () {
-                            selectStartTime(context);
-                          },
-                          child: ListTile(
-                            title: Text(
-                              DateFormat.yMMMMd()
-                                  .add_jm()
-                                  .format(DateTime.parse(schedule.start))
-                                  .toString(),
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            subtitle: Text("Start DateTime"),
-                            trailing: IconButton(
-                              icon: Icon(Icons.alarm_add),
-                              onPressed: () {
-                                selectStartTime(context);
-                              },
-                            ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text("Vibrate Mode"),
+                        subtitle: Text("Phone will automatically vibrate."),
+                        trailing: Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: CupertinoSwitch(
+                            value: schedule.vibrate,
+                            activeColor: Theme.of(context).primaryColor,
+                            onChanged: (bool value) {
+                              setState(() {
+                                schedule.silent = !schedule.silent;
+                                schedule.vibrate = !schedule.vibrate;
+                              });
+                            },
                           ),
                         ),
                       ),
-                      Card(
-                        child: GestureDetector(
-                          onTap: () {
-                            selectEndTime(context);
-                          },
-                          child: ListTile(
-                            title: Text(
-                              DateFormat.yMMMMd()
-                                  .add_jm()
-                                  .format(DateTime.parse(schedule.end))
-                                  .toString(),
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            subtitle: Text("End DateTime"),
-                            trailing: IconButton(
-                              icon: Icon(Icons.alarm_add),
-                              onPressed: () {
-                                selectEndTime(context);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: Text("Silent Mode"),
-                          subtitle: Text("Phone will automatically silent."),
-                          trailing: Transform.scale(
-                            scale: 0.8,
-                            alignment: Alignment.centerRight,
-                            child: CupertinoSwitch(
-                              value: schedule.silent,
-                              activeColor: Theme.of(context).primaryColor,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  schedule.silent = !schedule.silent;
-                                  schedule.vibrate = !schedule.vibrate;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: Text("Vibrate Mode"),
-                          subtitle: Text("Phone will automatically vibrate."),
-                          trailing: Transform.scale(
-                            scale: 0.8,
-                            alignment: Alignment.centerRight,
-                            child: CupertinoSwitch(
-                              value: schedule.vibrate,
-                              activeColor: Theme.of(context).primaryColor,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  schedule.silent = !schedule.silent;
-                                  schedule.vibrate = !schedule.vibrate;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Card(
-                      //   child: ListTile(
-                      //     title: Text("Airplane Mode"),
-                      //     subtitle: Text("Phone will automatically airplane."),
-                      //     trailing: CupertinoSwitch(
-                      //       value: airplane,
-                      //       activeColor: Colors.grey[700],trackColor: Colors.black,
-                      //       onChanged: (bool value) {
-                      //         setState(() {
-                      //           airplane = !airplane;
-                      //         });
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                      // Card(
-                      //   child: ListTile(
-                      //     title: Text("Notify Me"),
-                      //     subtitle: Text("Phone will automatically notify you."),
-                      //     trailing: CupertinoSwitch(
-                      //       value: notify,
-                      //       activeColor: Colors.grey[700],trackColor: Colors.black,
-                      //       onChanged: (bool value) {
-                      //         setState(() {
-                      //           notify = !notify;
-                      //         });
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                    ]),
-                  ),
+                    ),
+                    // Card(
+                    //   child: ListTile(
+                    //     title: Text("Airplane Mode"),
+                    //     subtitle: Text("Phone will automatically airplane."),
+                    //     trailing: CupertinoSwitch(
+                    //       value: airplane,
+                    //       activeColor: Colors.grey[700],trackColor: Colors.black,
+                    //       onChanged: (bool value) {
+                    //         setState(() {
+                    //           airplane = !airplane;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    // Card(
+                    //   child: ListTile(
+                    //     title: Text("Notify Me"),
+                    //     subtitle: Text("Phone will automatically notify you."),
+                    //     trailing: CupertinoSwitch(
+                    //       value: notify,
+                    //       activeColor: Colors.grey[700],trackColor: Colors.black,
+                    //       onChanged: (bool value) {
+                    //         setState(() {
+                    //           notify = !notify;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                  ]),
                 ),
               ),
               Container(
@@ -320,7 +319,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
                         minWidth: double.infinity,
                         color: Theme.of(context).primaryColor,
                         textColor: Colors.white,
-                        child: const Text("Submit"),
+                        child: const Text("UPDATE"),
                         onPressed: () => submitForm(),
                       ),
               )

@@ -61,9 +61,9 @@ Widget timeView(Schedule schedule, BuildContext context) {
 Widget dayChipButton(String name, bool status, BuildContext context) {
   return Chip(
     label: Text(name.toUpperCase()),
-    backgroundColor: status ? Theme.of(context).primaryColor : null,
+    backgroundColor: status ? Theme.of(context).chipTheme.selectedColor : null,
     labelStyle: TextStyle(
-      color: status ? Colors.white : null,
+      color: status ? Theme.of(context).scaffoldBackgroundColor : null,
     ),
   );
 }

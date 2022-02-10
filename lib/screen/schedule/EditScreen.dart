@@ -139,7 +139,7 @@ class _EditScreenState extends State<EditScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "Edit Schedule".toUpperCase(),
+          "Edit Schedule",
         ),
         actions: [
           Padding(
@@ -159,221 +159,218 @@ class _EditScreenState extends State<EditScreen> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(children: [
-                      SizedBox(height: 10.0),
-                      Card(
-                        elevation: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          child: TextField(
-                            controller: name,
-                            onChanged: (String value) {
+                  physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  child: Column(children: [
+                    SizedBox(height: 10.0),
+                    Card(
+                      // elevation: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: TextField(
+                          controller: name,
+                          onChanged: (String value) {
+                            setState(() {
+                              schedule.name = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Give a name..',
+                          ),
+                        ),
+                      ),
+                    ),
+                    // SizedBox(height: 8 * 5.0),
+                    Card(
+                      child: GestureDetector(
+                        onTap: () {
+                          selectStartTime(context);
+                        },
+                        child: ListTile(
+                          title: Text(
+                            Helper.timeText(schedule.start, context),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          subtitle: Text("Start Time"),
+                          trailing: IconButton(
+                            icon: Icon(Icons.alarm_add),
+                            onPressed: () {
+                              selectStartTime(context);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      child: GestureDetector(
+                        onTap: () {
+                          selectEndTime(context);
+                        },
+                        child: ListTile(
+                          title: Text(
+                            Helper.isNextDay(schedule.start, schedule.end)
+                                ? Helper.timeText(schedule.end, context) +
+                                    ', next day'
+                                : Helper.timeText(schedule.end, context),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          subtitle: Text("End Time"),
+                          trailing: IconButton(
+                            icon: Icon(Icons.alarm_add),
+                            onPressed: () {
+                              selectEndTime(context);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Wrap(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        direction: Axis.horizontal,
+                        // alignment: WrapAlignment.spaceBetween,
+                        // runAlignment: WrapAlignment.spaceBetween,
+                        // crossAxisAlignment: WrapCrossAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
                               setState(() {
-                                schedule.name = value;
+                                schedule.saturday = !schedule.saturday;
                               });
                             },
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Give a name..',
-                            ),
+                            child:
+                                dayChipButton('s', schedule.saturday, context),
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 8 * 5.0),
-                      Card(
-                        child: GestureDetector(
-                          onTap: () {
-                            selectStartTime(context);
-                          },
-                          child: ListTile(
-                            title: Text(
-                              Helper.timeText(schedule.start, context),
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            subtitle: Text("Start Time"),
-                            trailing: IconButton(
-                              icon: Icon(Icons.alarm_add),
-                              onPressed: () {
-                                selectStartTime(context);
-                              },
-                            ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                schedule.sunday = !schedule.sunday;
+                              });
+                            },
+                            child: dayChipButton('s', schedule.sunday, context),
                           ),
-                        ),
-                      ),
-                      Card(
-                        child: GestureDetector(
-                          onTap: () {
-                            selectEndTime(context);
-                          },
-                          child: ListTile(
-                            title: Text(
-                              Helper.isNextDay(schedule.start, schedule.end)
-                                  ? Helper.timeText(schedule.end, context) +
-                                      ', next day'
-                                  : Helper.timeText(schedule.end, context),
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            subtitle: Text("End Time"),
-                            trailing: IconButton(
-                              icon: Icon(Icons.alarm_add),
-                              onPressed: () {
-                                selectEndTime(context);
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Wrap(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          direction: Axis.horizontal,
-                          // alignment: WrapAlignment.spaceBetween,
-                          // runAlignment: WrapAlignment.spaceBetween,
-                          // crossAxisAlignment: WrapCrossAlignment.start,
-                          children: [
-                            GestureDetector(
+                          GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  schedule.saturday = !schedule.saturday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  's', schedule.saturday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.sunday = !schedule.sunday;
+                                  schedule.monday = !schedule.monday;
                                 });
                               },
                               child:
-                                  dayChipButton('s', schedule.sunday, context),
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    schedule.monday = !schedule.monday;
-                                  });
-                                },
-                                child: dayChipButton(
-                                    'm', schedule.monday, context)),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.tuesday = !schedule.tuesday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('t', schedule.tuesday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.wednesday = !schedule.wednesday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  'w', schedule.wednesday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.thursday = !schedule.thursday;
-                                });
-                              },
-                              child: dayChipButton(
-                                  't', schedule.thursday, context),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  schedule.friday = !schedule.friday;
-                                });
-                              },
-                              child:
-                                  dayChipButton('f', schedule.friday, context),
-                            ),
-                          ],
-                        ),
+                                  dayChipButton('m', schedule.monday, context)),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                schedule.tuesday = !schedule.tuesday;
+                              });
+                            },
+                            child:
+                                dayChipButton('t', schedule.tuesday, context),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                schedule.wednesday = !schedule.wednesday;
+                              });
+                            },
+                            child:
+                                dayChipButton('w', schedule.wednesday, context),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                schedule.thursday = !schedule.thursday;
+                              });
+                            },
+                            child:
+                                dayChipButton('t', schedule.thursday, context),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                schedule.friday = !schedule.friday;
+                              });
+                            },
+                            child: dayChipButton('f', schedule.friday, context),
+                          ),
+                        ],
                       ),
-                      Card(
-                        child: ListTile(
-                          title: Text("Silent Mode"),
-                          subtitle: Text("Phone will automatically silent."),
-                          trailing: Transform.scale(
-                            scale: 0.8,
-                            alignment: Alignment.centerRight,
-                            child: CupertinoSwitch(
-                              value: schedule.silent,
-                              activeColor: Theme.of(context).primaryColor,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  schedule.silent = !schedule.silent;
-                                  schedule.vibrate = !schedule.vibrate;
-                                });
-                              },
-                            ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text("Silent Mode"),
+                        subtitle: Text("Phone will automatically silent."),
+                        trailing: Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: CupertinoSwitch(
+                            value: schedule.silent,
+                            activeColor: Theme.of(context).primaryColor,
+                            onChanged: (bool value) {
+                              setState(() {
+                                schedule.silent = !schedule.silent;
+                                schedule.vibrate = !schedule.vibrate;
+                              });
+                            },
                           ),
                         ),
                       ),
-                      Card(
-                        child: ListTile(
-                          title: Text("Vibrate Mode"),
-                          subtitle: Text("Phone will automatically vibrate."),
-                          trailing: Transform.scale(
-                            scale: 0.8,
-                            alignment: Alignment.centerRight,
-                            child: CupertinoSwitch(
-                              value: schedule.vibrate,
-                              activeColor: Theme.of(context).primaryColor,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  schedule.silent = !schedule.silent;
-                                  schedule.vibrate = !schedule.vibrate;
-                                });
-                              },
-                            ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text("Vibrate Mode"),
+                        subtitle: Text("Phone will automatically vibrate."),
+                        trailing: Transform.scale(
+                          scale: 0.8,
+                          alignment: Alignment.centerRight,
+                          child: CupertinoSwitch(
+                            value: schedule.vibrate,
+                            activeColor: Theme.of(context).primaryColor,
+                            onChanged: (bool value) {
+                              setState(() {
+                                schedule.silent = !schedule.silent;
+                                schedule.vibrate = !schedule.vibrate;
+                              });
+                            },
                           ),
                         ),
                       ),
-                      // Card(
-                      //   child: ListTile(
-                      //     title: Text("Airplane Mode"),
-                      //     subtitle: Text("Phone will automatically airplane."),
-                      //     trailing: CupertinoSwitch(
-                      //       value: airplane,
-                      //       activeColor: Colors.grey[700],trackColor: Colors.black,
-                      //       onChanged: (bool value) {
-                      //         setState(() {
-                      //           airplane = !airplane;
-                      //         });
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                      // Card(
-                      //   child: ListTile(
-                      //     title: Text("Notify Me"),
-                      //     subtitle: Text("Phone will automatically notify you."),
-                      //     trailing: CupertinoSwitch(
-                      //       value: notify,
-                      //       activeColor: Colors.grey[700],trackColor: Colors.black,
-                      //       onChanged: (bool value) {
-                      //         setState(() {
-                      //           notify = !notify;
-                      //         });
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                    ]),
-                  ),
+                    ),
+                    // Card(
+                    //   child: ListTile(
+                    //     title: Text("Airplane Mode"),
+                    //     subtitle: Text("Phone will automatically airplane."),
+                    //     trailing: CupertinoSwitch(
+                    //       value: airplane,
+                    //       activeColor: Colors.grey[700],trackColor: Colors.black,
+                    //       onChanged: (bool value) {
+                    //         setState(() {
+                    //           airplane = !airplane;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    // Card(
+                    //   child: ListTile(
+                    //     title: Text("Notify Me"),
+                    //     subtitle: Text("Phone will automatically notify you."),
+                    //     trailing: CupertinoSwitch(
+                    //       value: notify,
+                    //       activeColor: Colors.grey[700],trackColor: Colors.black,
+                    //       onChanged: (bool value) {
+                    //         setState(() {
+                    //           notify = !notify;
+                    //         });
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                  ]),
                 ),
               ),
               Container(
@@ -389,7 +386,7 @@ class _EditScreenState extends State<EditScreen> {
                         minWidth: double.infinity,
                         color: Theme.of(context).primaryColor,
                         textColor: Colors.white,
-                        child: const Text("Submit"),
+                        child: const Text("UPDATE"),
                         onPressed: () => submitForm(),
                       ),
               ),
