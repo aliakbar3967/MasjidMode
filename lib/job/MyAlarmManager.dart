@@ -1,5 +1,6 @@
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:peace_time/constant.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/ScheduleController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
@@ -97,57 +98,40 @@ class MyAlarmManager {
     await SettingsController.setNormalMode();
     await AndroidAlarmManager.cancel(id);
   }
+
+  static Future<void> stopEventById(int id) async {
+    await DBController.setNormalPeriod(false);
+    await AndroidAlarmManager.cancel(Constant.NORMAL_MODE_ID);
+    await AndroidAlarmManager.cancel(id);
+  }
 }
 
 Future<void> algorithm() async {
-  print("===> Algorithm Start <===");
+  print("===> 🔫 Thanos Snapped🤌 <===");
   // await DBController.setNormalPeriod(false);
 
   List<Schedule>? schedules = await ScheduleController.getSchedules();
+  print("==== Schedules ${schedules?.length}");
 
-  if (schedules == null) return ;
+  if (schedules == null) return;
 
   final index = schedules.indexWhere((schedule) =>
   (schedule.status == true && Helper.isToday(schedule) == true && (Helper.isNowBefore(schedule.start) == true || Helper.isTimeBetween(schedule) == true)) ==
       true);
 
-  if(index < 0) return;
-
   // return if found that already once activated a schedule
   bool? __normalPeriod = await DBController.getNormalPeriod();
-  if(__normalPeriod == true) return;
+  if(index < 0 && __normalPeriod == true) {
+    await DBController.setNormalPeriod(false);
+    await SettingsController.setNormalMode();
+  }
+  if(index < 0 && __normalPeriod == false) return;
 
-  print("===> __normalPeriod");
+  if(index < 0) return;
 
-  if(Helper.isNowBefore(schedules[index].start) == true) {
+  if(Helper.isTimeBetween(schedules[index]) == true) {
 
-    RingerModeStatus currentSoundMode = await SettingsController.getCurrentSoundMode();
-
-    if (currentSoundMode == RingerModeStatus.normal) {
-      DateTime now = DateTime.now();
-      DateTime start = DateTime.parse(schedules[index].start);
-      DateTime end = DateTime.parse(schedules[index].end);
-
-      DateTime startDateTime = DateTime(now.year, now.month, now.day, start.hour, start.minute);
-      DateTime endDateTime = DateTime(now.year, now.month, now.day, end.hour, end.minute);
-      if(Helper.isEndTimeBeforeStartTime(schedules[index].start, schedules[index].end)) {
-        endDateTime = DateTime(now.year, now.month, now.day + 1, end.hour, end.minute);
-      }
-
-      print("Start = $start, End = $end, id = ${index + 5}");
-
-      if (schedules[index].vibrate == true) {
-        // await SettingsController.setVibrateMode();
-        await MyAlarmManager().setOneShotAt(startDateTime, index, RingerModeStatus.vibrate);
-        await MyAlarmManager().setOneShotAt(endDateTime, 99999, RingerModeStatus.normal);
-      } else if (schedules[index].silent == true) {
-        // await SettingsController.setSilentMode();
-        await MyAlarmManager().setOneShotAt(startDateTime, index, RingerModeStatus.silent);
-        await MyAlarmManager().setOneShotAt(endDateTime, 99999, RingerModeStatus.normal);
-      }
-    }
-
-  } else if(Helper.isTimeBetween(schedules[index]) == true) {
+    print("===> Is between 😎 ");
 
     RingerModeStatus currentSoundMode = await SettingsController.getCurrentSoundMode();
 
@@ -167,12 +151,43 @@ Future<void> algorithm() async {
       if (schedules[index].vibrate == true) {
         // await SettingsController.setVibrateMode();
         await MyAlarmManager().setOneShot(index, RingerModeStatus.vibrate);
-        await MyAlarmManager().setOneShotAt(endDateTime, 99999, RingerModeStatus.normal);
+        await MyAlarmManager().setOneShotAt(endDateTime, Constant.NORMAL_MODE_ID, RingerModeStatus.normal);
       } else if (schedules[index].silent == true) {
         // await SettingsController.setSilentMode();
         await MyAlarmManager().setOneShot(index, RingerModeStatus.silent);
-        await MyAlarmManager().setOneShotAt(endDateTime, 99999, RingerModeStatus.normal);
+        await MyAlarmManager().setOneShotAt(endDateTime, Constant.NORMAL_MODE_ID, RingerModeStatus.normal);
       }
     }
+  }
+  else if(Helper.isNowBefore(schedules[index].start) == true) {
+
+    print("===> Is now before 😎 ");
+
+    RingerModeStatus currentSoundMode = await SettingsController.getCurrentSoundMode();
+
+    if (currentSoundMode == RingerModeStatus.normal) {
+      DateTime now = DateTime.now();
+      DateTime start = DateTime.parse(schedules[index].start);
+      DateTime end = DateTime.parse(schedules[index].end);
+
+      DateTime startDateTime = DateTime(now.year, now.month, now.day, start.hour, start.minute);
+      DateTime endDateTime = DateTime(now.year, now.month, now.day, end.hour, end.minute);
+      if(Helper.isEndTimeBeforeStartTime(schedules[index].start, schedules[index].end)) {
+        endDateTime = DateTime(now.year, now.month, now.day + 1, end.hour, end.minute);
+      }
+
+      print("Start = $start, End = $end, id = ${index + 5}");
+
+      if (schedules[index].vibrate == true) {
+        // await SettingsController.setVibrateMode();
+        await MyAlarmManager().setOneShotAt(startDateTime, index, RingerModeStatus.vibrate);
+        await MyAlarmManager().setOneShotAt(endDateTime, Constant.NORMAL_MODE_ID, RingerModeStatus.normal);
+      } else if (schedules[index].silent == true) {
+        // await SettingsController.setSilentMode();
+        await MyAlarmManager().setOneShotAt(startDateTime, index, RingerModeStatus.silent);
+        await MyAlarmManager().setOneShotAt(endDateTime, Constant.NORMAL_MODE_ID, RingerModeStatus.normal);
+      }
+    }
+
   }
 }

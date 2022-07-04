@@ -52,8 +52,8 @@ class DBController {
 
   static Future<void> setSchedules(String string) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.reload();
     await prefs.setString(Constant.SP_SCHEDULES, string);
+    prefs.reload();
   }
 
   static Future<bool> getNormalPeriod() async {

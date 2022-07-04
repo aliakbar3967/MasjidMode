@@ -114,10 +114,19 @@ class Helper {
   }
 
   static bool isToday(Schedule schedule) {
-    String? todayName;
 
-    DateTime date = DateTime.now();
-    todayName = Constant.dayNames[date.weekday];
+    DateTime today = DateTime.now();
+
+    if(schedule.type == ScheduleType.dateTime) {
+      DateTime startDay = DateTime.parse(schedule.start);
+      DateTime endDay = DateTime.parse(schedule.end);
+
+      if(today.difference(startDay).inDays == 0) return true;
+      else if(today.difference(endDay).inDays == 0) return true;
+      else return false;
+    }
+
+    String? todayName = Constant.dayNames[today.weekday];
 
     if (schedule.saturday == true && todayName == 'saturday')
       return true;

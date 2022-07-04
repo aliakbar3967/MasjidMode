@@ -17,6 +17,9 @@ class Constant {
   static const String SP_RESET = "__reset_v8";
   static const String SP_DEFAULT_SILENT_MINUTE = "__default_silent_minute";
 
+  static const int ARC_REACTOR_ID = 10000000;
+  static const int NORMAL_MODE_ID = 99999999;
+
   static const EMPTY_SVG = 'assets/empty.svg';
 
   static const APPICON = 'assets/ic_launcher.png';

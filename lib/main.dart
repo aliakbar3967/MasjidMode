@@ -1,15 +1,14 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:peace_time/constant.dart';
 import 'package:peace_time/job/MyAlarmManager.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/provider/SettingsProvider.dart';
 import 'package:peace_time/screen/SplashScreen.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui';
 
-void printHello() async => await algorithm();
+void arcReactor() async => await algorithm();
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -32,7 +31,8 @@ void main() async {
       child: App(),
     ),
   );
-  await AndroidAlarmManager.periodic(const Duration(minutes: 1), 100000, printHello);
+  await AndroidAlarmManager.periodic(
+      const Duration(minutes: 1), Constant.ARC_REACTOR_ID, arcReactor);
 }
 
 class App extends StatelessWidget {

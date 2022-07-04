@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/DBController.dart';
+import 'package:peace_time/job/MyAlarmManager.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 
 class ScheduleProvider with ChangeNotifier {
@@ -137,6 +138,8 @@ class ScheduleProvider with ChangeNotifier {
     String encodedSchedulesList = Schedule.encode(schedules);
     await DBController.setSchedules(encodedSchedulesList);
 
+    await algorithm();
+
     notifyListeners();
   }
 
@@ -147,6 +150,9 @@ class ScheduleProvider with ChangeNotifier {
     await DBController.setSchedules(encodedSchedulesList);
 
     schedules = Schedule.decode(encodedSchedulesList);
+
+    await algorithm();
+
     notifyListeners();
   }
 
@@ -156,10 +162,14 @@ class ScheduleProvider with ChangeNotifier {
     await DBController.setSchedules(encodedSchedulesList);
 
     schedules = Schedule.decode(encodedSchedulesList);
+
+    await algorithm();
+
     notifyListeners();
   }
 
   Future<void> remove(index) async {
+    await MyAlarmManager.stopEventById(index);
     schedules.removeAt(index);
     if (schedules.length == 0) {
       await DBController.setSchedules(Schedule.encode(schedules));
@@ -168,12 +178,17 @@ class ScheduleProvider with ChangeNotifier {
       await DBController.setSchedules(encodedSchedulesList);
     }
 
+    await algorithm();
+
     notifyListeners();
   }
 
   Future<void> toggleScheduleSelection(index) async {
     schedules[index].isSelected = !schedules[index].isSelected;
     selectedScheduleItems();
+
+    await algorithm();
+
     notifyListeners();
   }
 
@@ -184,6 +199,9 @@ class ScheduleProvider with ChangeNotifier {
       schedules.forEach((element) => element.isSelected = true);
     isAllSelectedMode = !isAllSelectedMode;
     selectedScheduleItems();
+
+    await algorithm();
+
     notifyListeners();
   }
 
@@ -207,6 +225,8 @@ class ScheduleProvider with ChangeNotifier {
     }
     isAllSelectedMode = false;
     selectedMode = false;
+
+    await algorithm();
 
     notifyListeners();
   }
@@ -250,6 +270,8 @@ class ScheduleProvider with ChangeNotifier {
     // this line should place before set provider schedules list, otherwise app will crash
 
     schedules = Schedule.decode(encodedSchedulesList);
+
+    await algorithm();
 
     notifyListeners();
   }
