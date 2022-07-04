@@ -22,7 +22,7 @@ class _CreateDateScheduleScreenState extends State<CreateDateScheduleScreen> {
   TimeOfDay picked = TimeOfDay(hour: 0, minute: 0);
   Schedule schedule = Schedule(
       name: "",
-      type: "datetime",
+      type: ScheduleType.dateTime,
       start: DateTime.now().toString(),
       end: DateTime.now().toString(),
       silent: true,

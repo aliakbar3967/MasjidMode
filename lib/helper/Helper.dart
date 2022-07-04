@@ -46,7 +46,7 @@ class Helper {
         end = DateTime(2021, 04, 12 + 1, endTime.hour, endTime.minute);
       }
     }
-    if (schedule.type == 'datetime') {
+    if (schedule.type == ScheduleType.dateTime) {
       start = DateTime(startTime.year, startTime.month, startTime.day,
           startTime.hour, startTime.minute - 1);
       end = DateTime(endTime.year, endTime.month, endTime.day, endTime.hour,
@@ -135,5 +135,21 @@ class Helper {
       return true;
     else
       return false;
+  }
+
+  static bool isNowBefore(String startTime) {
+    // DateFormat dateFormat = new DateFormat.Hm();
+    DateTime dateTimeNow = DateTime.now();
+    DateTime start = DateTime.parse(startTime);
+    DateTime dateTimeCreatedAt = DateTime(dateTimeNow.year,dateTimeNow.month,dateTimeNow.day,start.hour,start.minute);
+    final difference = dateTimeCreatedAt.difference(dateTimeNow).inSeconds;
+    // print('Start time = $dateTimeCreatedAt');
+    // print('Now = $dateTimeNow');
+    // print('difference minutes = $difference');
+    if (difference <= 600 && difference > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

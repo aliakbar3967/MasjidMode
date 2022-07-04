@@ -1,8 +1,14 @@
 import 'dart:convert';
 
+enum ScheduleType {
+  quick,
+  daily,
+  dateTime
+}
+
 class Schedule {
   String name;
-  String type;
+  ScheduleType type;
   String start;
   String end;
   bool silent;
@@ -43,7 +49,7 @@ class Schedule {
   factory Schedule.fromJson(Map<String, dynamic> jsonData) {
     return Schedule(
       name: jsonData['name'],
-      type: jsonData['type'],
+      type: ScheduleType.values.byName(jsonData['type']),
       start: jsonData['start'],
       end: jsonData['end'],
       silent: jsonData['silent'],
@@ -65,7 +71,7 @@ class Schedule {
   // schedule to json map
   static Map<String, dynamic> toMap(Schedule schedule) => {
         'name': schedule.name,
-        'type': schedule.type,
+        'type': schedule.type.name,
         'start': schedule.start,
         'end': schedule.end,
         'silent': schedule.silent,

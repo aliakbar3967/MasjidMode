@@ -20,7 +20,7 @@ class _CreateScreenState extends State<CreateScreen> {
   TimeOfDay picked = TimeOfDay(hour: 0, minute: 0);
   Schedule schedule = Schedule(
       name: "",
-      type: "daily",
+      type: ScheduleType.daily,
       start: DateTime.now().toString(),
       end: DateTime.now().toString(),
       silent: true,

@@ -1,13 +1,17 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:peace_time/job/ForgroundService.dart';
+import 'package:peace_time/job/MyAlarmManager.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/provider/SettingsProvider.dart';
 import 'package:peace_time/screen/SplashScreen.dart';
 import 'package:provider/provider.dart';
+import 'dart:ui';
 
-void main() {
+void printHello() async => await algorithm();
+
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -15,7 +19,8 @@ void main() {
     // systemNavigationBarIconBrightness: Brightness.dark,
   ));
   WidgetsFlutterBinding.ensureInitialized();
-  initializeService();
+  await AndroidAlarmManager.initialize();
+  // initializeService();
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
   runApp(
     MultiProvider(
@@ -27,6 +32,7 @@ void main() {
       child: App(),
     ),
   );
+  await AndroidAlarmManager.periodic(const Duration(minutes: 1), 100000, printHello);
 }
 
 class App extends StatelessWidget {

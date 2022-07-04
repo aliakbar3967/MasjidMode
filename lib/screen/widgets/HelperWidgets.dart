@@ -74,7 +74,7 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
   String startTime = '';
   String endTime = '';
   if (is24HoursFormat) {
-    if (schedule.type == 'datetime') {
+    if (schedule.type == ScheduleType.dateTime) {
       startTime =
           DateFormat.jm().add_yMd().format(DateTime.parse(schedule.start));
       endTime = DateFormat.jm().add_yMd().format(DateTime.parse(schedule.end));
@@ -85,7 +85,7 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
           : DateFormat.Hm().format(DateTime.parse(schedule.end));
     }
   } else {
-    if (schedule.type == 'datetime') {
+    if (schedule.type == ScheduleType.dateTime) {
       startTime =
           DateFormat.yMMMd().add_jm().format(DateTime.parse(schedule.start));
       endTime =
@@ -98,7 +98,7 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
     }
   }
 
-  if (schedule.type == 'datetime') {
+  if (schedule.type == ScheduleType.dateTime) {
     return Text(
       (startTime + " ~ \n" + endTime).toString(),
       style: TextStyle(

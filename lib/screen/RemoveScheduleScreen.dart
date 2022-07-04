@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:provider/provider.dart';
+import 'package:peace_time/model/ScheduleModel.dart';
 
 class RemoveScheduleScreen extends StatelessWidget {
   @override
@@ -73,7 +74,7 @@ class ScheduleList extends StatelessWidget {
                                 children: [
                                   Icon(
                                     scheduleProvider.schedules[index].type ==
-                                            'datetime'
+                                        ScheduleType.dateTime
                                         ? Icons.calendar_today
                                         : Icons.schedule,
                                     size: 18,

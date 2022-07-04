@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'dart:ui';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:intl/intl.dart';
@@ -7,28 +8,32 @@ import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/ScheduleController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
 import 'package:peace_time/helper/Helper.dart';
+import 'package:peace_time/helper/MyNotification.dart';
+import 'package:peace_time/job/MyAlarmManager.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:sound_mode/utils/ringer_mode_statuses.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+
 
 class ForgroundService {
   static refresh() async {}
 
   static startForgroundService() async {
-    FlutterBackgroundService().sendData({"action": "setAsForeground"});
-    FlutterBackgroundService().start();
+    FlutterBackgroundService().startService();
+    FlutterBackgroundService().invoke("stopService");
 
     print("Forground Service Started");
   }
 
   static stopForgroundService() async {
-    FlutterBackgroundService().sendData({"action": "stopService"});
+    FlutterBackgroundService().invoke("stopService");
 
     print("Forground Service Stopped");
   }
 
   static Future<bool> isRunningForgroundService() async {
     final service = FlutterBackgroundService();
-    bool isRunning = await service.isServiceRunning();
+    bool isRunning = await service.isRunning();
     print("Is Running Forground Service: " + isRunning.toString());
     return isRunning;
   }
@@ -36,17 +41,13 @@ class ForgroundService {
 
 Future<void> refreshForegroundServiceNotification(
     {String message = 'App is running...'}) async {
-  FlutterBackgroundService().setNotificationInfo(
-    title: "App Service",
-    content: message,
-  );
 }
 
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
   await service.configure(
     androidConfiguration: AndroidConfiguration(
-      // this will executed when app is in foreground or background in separated isolate
+      // this will be executed when app is in foreground or background in separated isolate
       onStart: onStart,
 
       // auto start service
@@ -57,52 +58,61 @@ Future<void> initializeService() async {
       // auto start service
       autoStart: true,
 
-      // this will executed when app is in foreground in separated isolate
+      // this will be executed when app is in foreground in separated isolate
       onForeground: onStart,
 
       // you have to enable background fetch capability on xcode project
       onBackground: onIosBackground,
     ),
   );
+  service.startService();
 }
 
-// to ensure this executed
+// to ensure this is executed
 // run app from xcode, then from xcode menu, select Simulate Background Fetch
-void onIosBackground() {
+bool onIosBackground(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
   print('FLUTTER BACKGROUND FETCH');
+
+  return true;
 }
 
-void onStart() {
-  WidgetsFlutterBinding.ensureInitialized();
-  final service = FlutterBackgroundService();
-  service.onDataReceived.listen((event) {
-    if (event!["action"] == "setAsForeground") {
-      service.setForegroundMode(true);
-      return;
-    }
+void onStart(ServiceInstance service) async {
 
-    if (event["action"] == "setAsBackground") {
-      service.setForegroundMode(false);
-    }
+  // Only available for flutter 3.0.0 and later
+  DartPluginRegistrant.ensureInitialized();
 
-    if (event["action"] == "stopService") {
-      service.stopBackgroundService();
-    }
+  // For flutter prior to version 3.0.0
+  // We have to register the plugin manually
+
+  if (service is AndroidServiceInstance) {
+    service.on('setAsForeground').listen((event) {
+      service.setAsForegroundService();
+    });
+
+    service.on('setAsBackground').listen((event) {
+      service.setAsBackgroundService();
+    });
+  }
+
+  service.on('stopService').listen((event) {
+    service.stopSelf();
   });
 
   // bring to foreground
-  service.setForegroundMode(true);
-  Timer.periodic(Duration(seconds: 1), (timer) async {
-    if (!(await service.isServiceRunning())) timer.cancel();
-    // service.setNotificationInfo(
-    //   title: "My App Service",
-    //   content: "Updated at ${DateTime.now()}",
-    // );
+  Timer.periodic(const Duration(seconds: 1), (timer) async {
+    if (service is AndroidServiceInstance) {
+      service.setForegroundNotificationInfo(
+        title: "Schedule Active",
+        content: "Updated at ${DateTime.now()}",
+      );
+    }
+
+    /// you can see this log in logcat
+    print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
+
+    // test using external plugin
     await soundModeChangeBySchedule();
-    // service.sendData(
-    //   {"current_date": DateTime.now().toIso8601String()},
-    // );
   });
 }
 
@@ -115,18 +125,18 @@ Future<void> soundModeChangeBySchedule() async {
     // await ForgroundService.refresh();
 
     final index = schedules.indexWhere((schedule) =>
-        (schedule.status == true &&
-            Helper.isToday(schedule) == true &&
-            Helper.isTimeBetween(schedule)) ==
+    (schedule.status == true &&
+        Helper.isToday(schedule) == true &&
+        Helper.isTimeBetween(schedule)) ==
         true);
 
     if (index != -1 && index >= 0) {
       RingerModeStatus currentSoundMode =
-          await SettingsController.getCurrentSoundMode();
+      await SettingsController.getCurrentSoundMode();
       if (currentSoundMode == RingerModeStatus.normal) {
         await refreshForegroundServiceNotification(
             message:
-                '"${schedules[index].name.toString().toUpperCase()}" is active (${DateFormat.jm().format(DateTime.parse(schedules[index].start)).toString()} - ${DateFormat.jm().format(DateTime.parse(schedules[index].end)).toString()})');
+            '"${schedules[index].name.toString().toUpperCase()}" is active (${DateFormat.jm().format(DateTime.parse(schedules[index].start)).toString()} - ${DateFormat.jm().format(DateTime.parse(schedules[index].end)).toString()})');
         await DBController.setNormalPeriod(true);
         if (schedules[index].vibrate == true) {
           await SettingsController.setVibrateMode();
