@@ -83,6 +83,8 @@ class ScheduleProvider with ChangeNotifier {
     schedules.removeAt(index);
     await DBController.setSchedules(Schedule.encode(schedules));
 
+    await algorithm();
+
     notifyListeners();
   }
 
@@ -95,6 +97,8 @@ class ScheduleProvider with ChangeNotifier {
     await DBController.setSchedules(Schedule.encode(schedules));
     isAllSelectedMode = false;
     selectedMode = false;
+
+    await algorithm();
 
     notifyListeners();
   }

@@ -27,7 +27,7 @@ class AppInfoScreen extends StatelessWidget {
           children: [
             SvgPicture.asset(
               Constant.APPICON_SVG,
-              width: MediaQuery.of(context).size.width / 5,
+              width: MediaQuery.of(context).size.width / 5, fit: BoxFit.contain
             ),
             SizedBox(
               height: 16,
@@ -41,7 +41,7 @@ class AppInfoScreen extends StatelessWidget {
               ),
             ),
             Text(
-              "Version: 14.0.0",
+              "Version: 15.0.0",
               style: TextStyle(
                   // fontWeight: FontWeight.w700,
                   color: Theme.of(context).disabledColor),

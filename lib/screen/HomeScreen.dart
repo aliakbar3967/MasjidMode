@@ -34,35 +34,19 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              pinned: false,
+              pinned: true,
               snap: false,
-              floating: false,
-              expandedHeight: 300.0,
+              floating: true,
+              expandedHeight: MediaQuery.of(context).size.height / 2.5,
               backgroundColor: Theme.of(context).primaryColor,
-              title: Text("Auto Silent"),
-              actions: [
-                IconButton(
-                    icon: Icon(Icons.share),
-                    onPressed: () => Share.share(
-                        "Peace Time - A Silent Scheduler App. Please visit https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time and download this awesome app.",
-                        subject: 'Peace Time - A Silent Scheduler App.')),
-                IconButton(
-                    onPressed: () async => await canLaunch(
-                            "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
-                        ? await launch(
-                            "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
-                        : throw 'Could not launch',
-                    icon: Icon(Icons.star)),
-                IconButton(
-                    onPressed: () async => showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return MenuItemBottomSheet();
-                          },
-                        ),
-                    icon: Icon(Icons.more_vert)),
-              ],
+              centerTitle: false,
+              // stretch: true,
+              // title: Text("Auto Silent"),
+
               flexibleSpace: FlexibleSpaceBar(
+                // titlePadding: const EdgeInsetsDirectional.only(start: 16.0, bottom: 16.0),
+                // centerTitle: false,
+                // title: Text("Auto Silent", style: TextStyle(fontSize: 18),),
                 background: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,6 +89,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
+              ),
+              bottom: AppBar(
+                elevation: 0,
+                title: Text("Shedule"),
+                actions: [
+                  IconButton(
+                      icon: Icon(Icons.share),
+                      onPressed: () => Share.share(
+                          "Peace Time - A Silent Scheduler App. Please visit https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time and download this awesome app.",
+                          subject: 'Peace Time - A Silent Scheduler App.')),
+                  IconButton(
+                      onPressed: () async => await canLaunch(
+                          "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
+                          ? await launch(
+                          "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
+                          : throw 'Could not launch',
+                      icon: Icon(Icons.star)),
+                  IconButton(
+                      onPressed: () async => showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return MenuItemBottomSheet();
+                        },
+                      ),
+                      icon: Icon(Icons.more_vert)),
+                ],
               ),
             ),
             SliverFillRemaining(

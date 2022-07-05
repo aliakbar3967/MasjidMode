@@ -43,7 +43,10 @@ class App extends StatelessWidget {
     return MaterialApp(
       // title: 'Peace Time',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(elevation: 2),
+        appBarTheme: AppBarTheme(
+          elevation: 2,
+          // titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20)
+        ),
         primarySwatch: Colors.indigo,
         backgroundColor: Colors.indigo.shade100,
         scaffoldBackgroundColor: Colors.grey.shade100,
@@ -65,6 +68,7 @@ class App extends StatelessWidget {
           ),
         ),
         bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Colors.grey.shade200,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(topLeft: const Radius.circular(15.0),topRight: const Radius.circular(15.0)),
           ),
