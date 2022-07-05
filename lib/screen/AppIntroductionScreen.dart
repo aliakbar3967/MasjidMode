@@ -16,12 +16,12 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
 
   void _onIntroEnd(context) async {
     if (await SettingsController.getPermissionStatus() == false) {
-    await SettingsController.openDoNotDisturbSettings();
+      await SettingsController.openDoNotDisturbSettings();
     } else {
-    await DBController.toggleIntroductionScreenStatus(false);
+      await DBController.toggleIntroductionScreenStatus(false);
 
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-    builder: (BuildContext context) => NavigationScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (BuildContext context) => NavigationScreen()));
     }
   }
 

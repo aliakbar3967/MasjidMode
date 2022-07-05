@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/controller/DBController.dart';
+import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/job/Algorithm.dart';
 import 'package:peace_time/job/MyAlarmManager.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
@@ -21,7 +22,18 @@ class ScheduleProvider with ChangeNotifier {
 
     String? schedulesFromPrefs = await DBController.getSchedules();
     if (schedulesFromPrefs != null) {
+      List<Schedule> schedulesArray = Schedule.decode(schedulesFromPrefs);
       schedules = Schedule.decode(schedulesFromPrefs);
+
+      schedulesArray.asMap().forEach((index, element) async {
+        bool check = Helper.isScheduleRemovable(element);
+        if(check) {
+          schedules.removeAt(index);
+        }
+      });
+
+      String encodedSchedulesList = Schedule.encode(schedules);
+      await DBController.setSchedules(encodedSchedulesList);
     }
 
     isLoading = false;

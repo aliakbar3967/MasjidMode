@@ -121,6 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 physics: const BouncingScrollPhysics(
                     parent: AlwaysScrollableScrollPhysics()),
                 children: [
+                  const SizedBox(height: 10),
                   Card(
                     margin: const EdgeInsets.all(0),
                     shape: RoundedRectangleBorder(

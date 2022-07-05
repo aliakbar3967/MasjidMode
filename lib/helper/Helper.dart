@@ -161,4 +161,20 @@ class Helper {
       return false;
     }
   }
+
+  static bool isScheduleRemovable(Schedule schedule) {
+    // DateFormat dateFormat = new DateFormat.Hm();
+    DateTime dateTimeNow = DateTime.now();
+    DateTime end = DateTime.parse(schedule.end);
+    DateTime dateTimeEnding = DateTime(dateTimeNow.year,dateTimeNow.month,dateTimeNow.day,end.hour,end.minute);
+    final difference = dateTimeEnding.difference(dateTimeNow).inSeconds;
+    // print('Start time = $dateTimeCreatedAt');
+    // print('Now = $dateTimeNow');
+    // print('difference minutes = $difference');
+    if (difference < 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

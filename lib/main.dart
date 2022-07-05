@@ -64,6 +64,11 @@ class App extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
           ),
         ),
+        bottomSheetTheme: BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topLeft: const Radius.circular(15.0),topRight: const Radius.circular(15.0)),
+          ),
+        ),
         dividerColor: Colors.transparent,
       ),
       darkTheme: ThemeData(
@@ -82,6 +87,11 @@ class App extends StatelessWidget {
         listTileTheme: ListTileThemeData(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        bottomSheetTheme: BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topLeft: const Radius.circular(15.0),topRight: const Radius.circular(15.0)),
           ),
         ),
         dividerColor: Colors.transparent,
