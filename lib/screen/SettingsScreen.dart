@@ -126,46 +126,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),
-                    child: ListTile(
-                      title: Text(
-                        "Application",
-                        // style: TextStyle(color: Colors.grey[400]),
-                      ),
-                      subtitle: Text(
-                        "Running your app on background",
-                        // style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      trailing:
-                          // Provider.of<SettingsProvider>(context,
-                          // listen: false)
-                          // .isPending
-                          // ? CupertinoActivityIndicator()
-                          // :
-                          Transform.scale(
-                        scale: 0.8,
-                        alignment: Alignment.centerRight,
-                        child: CupertinoSwitch(
-                          value:
-                              _settingsProvider.settings.forgroundServiceStatus,
-                          activeColor: Theme.of(context).primaryColor,
-                          // trackColor: Colors.black,
-                          onChanged: (bool value) async {
-                            // await Provider.of<SettingsProvider>(context,
-                            //         listen: false)
-                            //     .isPendingValue(true);
-                            await _settingsProvider
-                                .toggleForgroundServiceStatus();
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 1),
-                  Card(
-                    margin: const EdgeInsets.all(0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
                     child: GestureDetector(
                       onTap: () =>
                           SettingsController.openDoNotDisturbSettings(),

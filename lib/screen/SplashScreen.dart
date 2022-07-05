@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:peace_time/NavigationScreen.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/screen/AppIntroductionScreen.dart';

@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:peace_time/controller/SettingsController.dart';
 import 'package:peace_time/controller/DBController.dart';
-import 'package:peace_time/job/ForgroundService.dart';
 import 'package:peace_time/model/SettingsModel.dart';
 
 class SettingsProvider with ChangeNotifier {
   bool isLoading = true;
   bool isPending = false;
   Settings settings = Settings(
-      forgroundServiceStatus: false,
       isDoNotDisturbPermissionStatus: false,
       introductionScreenStatus: false,
       darkMode: false);
@@ -23,8 +21,6 @@ class SettingsProvider with ChangeNotifier {
   Future<void> initialize() async {
     settings.isDoNotDisturbPermissionStatus =
         await SettingsController.getPermissionStatus();
-    settings.forgroundServiceStatus =
-        await ForgroundService.isRunningForgroundService();
     settings.introductionScreenStatus =
         await DBController.getIntroductionScreenStatus();
     settings.darkMode = await DBController.getDarkModeStatus();
@@ -54,14 +50,6 @@ class SettingsProvider with ChangeNotifier {
 
   Future<void> isPendingValue(bool value) async {
     isPending = value;
-    notifyListeners();
-  }
-
-  Future<void> toggleForgroundServiceStatus() async {
-    settings.forgroundServiceStatus
-        ? await ForgroundService.stopForgroundService()
-        : await ForgroundService.startForgroundService();
-    settings.forgroundServiceStatus = !settings.forgroundServiceStatus;
     notifyListeners();
   }
 

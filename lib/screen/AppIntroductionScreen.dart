@@ -4,7 +4,7 @@ import 'package:peace_time/NavigationScreen.dart';
 import 'package:peace_time/constant.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
-import 'package:peace_time/job/ForgroundService.dart';
+import 'package:flutter/foundation.dart';
 
 class AppIntroductionScreen extends StatefulWidget {
   @override
@@ -16,15 +16,12 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
 
   void _onIntroEnd(context) async {
     if (await SettingsController.getPermissionStatus() == false) {
-      await SettingsController.openDoNotDisturbSettings();
+    await SettingsController.openDoNotDisturbSettings();
     } else {
-      await DBController.toggleIntroductionScreenStatus(false);
+    await DBController.toggleIntroductionScreenStatus(false);
 
-      if (await ForgroundService.isRunningForgroundService() == false) {
-        await ForgroundService.startForgroundService();
-      }
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => NavigationScreen()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+    builder: (BuildContext context) => NavigationScreen()));
     }
   }
 
@@ -38,58 +35,62 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 19.0);
+
     const pageDecoration = const PageDecoration(
+      // pageColor: Colors.white,
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
-      descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       imagePadding: EdgeInsets.zero,
       fullScreen: false,
     );
 
-    var introductionScreen = IntroductionScreen(
+    return IntroductionScreen(
       key: introKey,
       globalBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      color: Colors.black,
-      onDone: () => _onIntroEnd(context),
-      //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-      showSkipButton: true,
-      skipFlex: 0,
-      nextFlex: 0,
-      skip: const Text('SKIP'),
-      next: const Icon(Icons.arrow_forward),
-      done: const Text('START', style: TextStyle(fontWeight: FontWeight.w600)),
-      dotsDecorator: const DotsDecorator(
-        size: Size(10.0, 10.0),
-        color: Colors.black45,
-        activeColor: Colors.black,
-        activeSize: Size(22.0, 10.0),
-        activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0)),
-        ),
-      ),
+      // globalHeader: Align(
+      //   alignment: Alignment.topRight,
+      //   child: SafeArea(
+      //     child: Padding(
+      //       padding: const EdgeInsets.only(top: 16, right: 16),
+      //       child: _buildImage('flutter.png',),
+      //     ),
+      //   ),
+      // ),
+      // globalFooter: SizedBox(
+      //   width: double.infinity,
+      //   height: 60,
+      //   child: ElevatedButton(
+      //     child: const Text(
+      //       'Let\'s go right away!',
+      //       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+      //     ),
+      //     onPressed: () => _onIntroEnd(context),
+      //   ),
+      // ),
       pages: [
         PageViewModel(
           title: "Welcome",
           body:
-              "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
+          "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
           image: _buildImage(assetName: Constant.APPICON),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Quick Silent",
           body:
-              "One tap to silent your phone from now to next 30 or custom minutes.",
+          "One tap to silent your phone from now to next 30 or custom minutes.",
           image: _buildImage(assetName: Constant.APPICON),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Only Permission",
           body:
-              "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
+          "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
           image: _buildImage(assetName: 'assets/donotdisturb.png', width: 300),
           footer: OutlinedButton(
             onPressed: () async =>
-                await SettingsController.openDoNotDisturbSettings(),
+            await SettingsController.openDoNotDisturbSettings(),
             child: Text('Open Settings'),
             autofocus: true,
             style: OutlinedButton.styleFrom(
@@ -99,18 +100,37 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
           decoration: pageDecoration,
         ),
       ],
+      onDone: () => _onIntroEnd(context),
+      //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
+      showSkipButton: false,
+      skipOrBackFlex: 0,
+      nextFlex: 0,
+      showBackButton: true,
+      //rtl: true, // Display as right-to-left
+      back: const Icon(Icons.arrow_back),
+      skip: const Text('SKIP', style: TextStyle(fontWeight: FontWeight.w600)),
+      next: const Icon(Icons.arrow_forward),
+      done: const Text('DONE', style: TextStyle(fontWeight: FontWeight.w600)),
+      curve: Curves.fastLinearToSlowEaseIn,
+      controlsMargin: const EdgeInsets.all(16),
+      controlsPadding: kIsWeb
+          ? const EdgeInsets.all(12.0)
+          : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+      dotsDecorator: const DotsDecorator(
+        size: Size(10.0, 10.0),
+        // color: Colors.black45,
+        // activeColor: Colors.black,
+        activeSize: Size(22.0, 10.0),
+        activeShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+        ),
+      ),
+      // dotsContainerDecorator: const ShapeDecoration(
+      //   color: Colors.transparent,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      //   ),
+      // ),
     );
-
-    // to hide only bottom bar:
-    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
-
-    // to hide only status bar:
-    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-
-    // to hide both:
-    // SystemChrome.setEnabledSystemUIOverlays([]);
-    // print(Theme.of(context).brightness);
-
-    return introductionScreen;
   }
 }
