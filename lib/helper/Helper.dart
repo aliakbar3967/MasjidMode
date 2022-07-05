@@ -163,6 +163,7 @@ class Helper {
   }
 
   static bool isScheduleRemovable(Schedule schedule) {
+    if(schedule.type == ScheduleType.daily) return false;
     // DateFormat dateFormat = new DateFormat.Hm();
     DateTime dateTimeNow = DateTime.now();
     DateTime end = DateTime.parse(schedule.end);
