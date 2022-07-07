@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:peace_time/constant.dart';
 import 'package:peace_time/helper/Helper.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
+import 'package:peace_time/provider/ScheduleProvider.dart';
+import 'package:provider/provider.dart';
 
 Widget dayChip(name, isActive, BuildContext context) {
   return Padding(
@@ -81,7 +83,7 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
     } else {
       startTime = DateFormat.Hm().format(DateTime.parse(schedule.start));
       endTime = Helper.isNextDay(schedule.start, schedule.end)
-          ? DateFormat.Hm().format(DateTime.parse(schedule.end)) + ', next day'
+          ? DateFormat.Hm().format(DateTime.parse(schedule.end))
           : DateFormat.Hm().format(DateTime.parse(schedule.end));
     }
   } else {
@@ -93,7 +95,7 @@ Widget scheduleCardTimeText(Schedule schedule, BuildContext context) {
     } else {
       startTime = DateFormat.jm().format(DateTime.parse(schedule.start));
       endTime = Helper.isNextDay(schedule.start, schedule.end)
-          ? DateFormat.jm().format(DateTime.parse(schedule.end)) + ', next day'
+          ? DateFormat.jm().format(DateTime.parse(schedule.end))
           : DateFormat.jm().format(DateTime.parse(schedule.end));
     }
   }
@@ -131,5 +133,60 @@ Widget emptyWidget(BuildContext context) {
       width: MediaQuery.of(context).size.width / 1.5,
       child: SvgPicture.asset(Constant.EMPTY_SVG),
     ),
+  );
+}
+
+Widget bottomNavigationBar(BuildContext context) {
+
+  var scheduleProvider = Provider.of<ScheduleProvider>(context,listen: false);
+  return BottomAppBar(
+    child: Container(
+      margin: EdgeInsets.only(left: 12.0, right: 75.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Card(
+              shape: StadiumBorder(),
+              child: Icon(Icons.volume_off_sharp,color: Theme.of(context).disabledColor,)
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                    onTap: () => scheduleProvider.quick(60),
+                    child: Chip(
+                      label: Text('60m'),
+                    ),
+                ),
+                GestureDetector(
+                    onTap: () => scheduleProvider.quick(120),
+                    child: Chip(
+                      label: Text('120m'),
+                    ),
+                ),
+                GestureDetector(
+                    onTap: () => scheduleProvider.quick(180),
+                    child: Chip(
+                      label: Text('150m'),
+                    ),
+                ),
+                GestureDetector(
+                    onTap: () => scheduleProvider.quick(180),
+                    child: Chip(
+                      label: Text('180m'),
+                    ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+    //to add a space between the FAB and BottomAppBar
+    shape: CircularNotchedRectangle(),
+    //color of the BottomAppBar
+    // color: Colors.white,
   );
 }

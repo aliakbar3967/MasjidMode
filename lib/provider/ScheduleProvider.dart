@@ -15,6 +15,7 @@ class ScheduleProvider with ChangeNotifier {
 
   // String get name => schedule;
   ScheduleProvider() {
+    // print("===== schedule provider initializing");
     initialize();
   }
 
@@ -142,7 +143,7 @@ class ScheduleProvider with ChangeNotifier {
     DateTime now = DateTime.now();
     Schedule schedule = Schedule(
       name: "Quick $_minute" + "m",
-      type: ScheduleType.dateTime,
+      type: ScheduleType.quick,
       start: DateTime(now.year, now.month, now.day, now.hour, now.minute)
           .toString(),
       end: DateTime(now.year, now.month, now.day, now.hour, now.minute)

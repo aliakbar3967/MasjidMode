@@ -136,7 +136,7 @@ class _CreateScreenState extends State<CreateScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "Create New Schedule",
+          "Create New".toUpperCase(),
         ),
         actions: [
           Padding(

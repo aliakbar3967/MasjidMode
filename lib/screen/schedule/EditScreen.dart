@@ -139,7 +139,7 @@ class _EditScreenState extends State<EditScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "Edit Schedule",
+          "Update".toUpperCase(),
         ),
         actions: [
           Padding(

@@ -198,7 +198,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.bolt_sharp,size: 60,),
+                            Icon(Icons.volume_off,size: 60,),
                             SizedBox(height: 15),
                             Text("Quick [${_minute}m]")
                           ],

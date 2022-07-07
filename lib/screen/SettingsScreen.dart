@@ -109,7 +109,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           icon: Icon(Icons.arrow_back_ios_outlined),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('Settings'),
+        title: Text('Settings'.toUpperCase()),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.settings_sharp,
+              // color: Colors.grey[700],
+            ),
+          ),
+        ],
       ),
       body: _settingsProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -121,7 +130,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 physics: const BouncingScrollPhysics(
                     parent: AlwaysScrollableScrollPhysics()),
                 children: [
-                  const SizedBox(height: 10),
                   Card(
                     margin: const EdgeInsets.all(0),
                     shape: RoundedRectangleBorder(
@@ -136,7 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           // style: TextStyle(color: Colors.grey[400]),
                         ),
                         subtitle: Text(
-                          "Responsible for switch your phone silent or vibrate mode",
+                          "Allow for change sound mode",
                           // style: TextStyle(color: Colors.grey[700]),
                         ),
                         trailing: Transform.scale(
@@ -161,7 +169,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     child: ListTile(
                       title: Text(
-                        "App Introduction Screen",
+                        "App Introduction",
                         // style: TextStyle(color: Colors.grey[400]),
                       ),
                       subtitle: Text(

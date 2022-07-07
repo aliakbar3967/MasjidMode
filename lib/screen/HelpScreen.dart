@@ -13,7 +13,7 @@ class HelpScreen extends StatelessWidget {
         ),
         // backgroundColor: Theme.of(context).cardColor,
         // elevation: 0,
-        title: Text('How to use?'),
+        title: Text('How to use?'.toUpperCase()),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -57,13 +57,13 @@ class HelpScreen extends StatelessWidget {
                     "Hold and swipe right which schedule you want to remove and it will remove."),
               ),
             ),
-            Card(
-              child: ListTile(
-                title: Text("Remove multiple schedule at a time"),
-                subtitle: Text(
-                    "Long press any of schedule from schedule list and select schedule and remove schedule by taping floating trash button."),
-              ),
-            ),
+            // Card(
+            //   child: ListTile(
+            //     title: Text("Remove multiple schedule at a time"),
+            //     subtitle: Text(
+            //         "Long press any of schedule from schedule list and select schedule and remove schedule by taping floating trash button."),
+            //   ),
+            // ),
             Card(
               child: ListTile(
                 title: Text(

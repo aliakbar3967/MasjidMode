@@ -8,7 +8,7 @@ class AppInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("About"),
+        title: Text("About".toUpperCase()),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined),
           onPressed: () => Navigator.of(context).pop(),

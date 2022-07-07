@@ -141,7 +141,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "Edit Schedule",
+          "Update".toUpperCase(),
         ),
         actions: [
           Padding(

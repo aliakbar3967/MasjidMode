@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peace_time/model/ScheduleModel.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
-import 'package:peace_time/screen/RemoveScheduleScreen.dart';
 import 'package:peace_time/screen/schedule/EditDateScheduleScreen.dart';
 import 'package:peace_time/screen/schedule/EditScreen.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
@@ -30,7 +29,7 @@ class ScheduleCard extends StatelessWidget {
             context.read<ScheduleProvider>().remove(index),
         child: ListTile(
           onTap: () {
-            if (schedule.type == ScheduleType.dateTime) {
+            if (schedule.type == ScheduleType.dateTime || schedule.type == ScheduleType.quick) {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
@@ -43,12 +42,6 @@ class ScheduleCard extends StatelessWidget {
               ).then((response) => null);
             }
           },
-          onLongPress: () => Navigator.push(
-            context,
-            CupertinoPageRoute(builder: (context) => RemoveScheduleScreen()),
-          ).then((response) =>
-              Provider.of<ScheduleProvider>(context, listen: false)
-                  .setIsAllSelectedMode(false)),
           contentPadding: EdgeInsets.fromLTRB(16, 12, 16, 8),
           title: Column(
             children: [
@@ -58,7 +51,7 @@ class ScheduleCard extends StatelessWidget {
                   Row(
                     children: [
                       Icon(
-                        schedule.type == ScheduleType.dateTime
+                        (schedule.type == ScheduleType.dateTime || schedule.type == ScheduleType.quick)
                             ? Icons.calendar_today
                             : Icons.schedule,
                         size: 18,
@@ -118,11 +111,6 @@ class ScheduleCard extends StatelessWidget {
               ),
             ],
           ),
-          // trailing: CupertinoSwitch(
-          //   value: true,
-          //   onChanged: (bool value) {},
-          //   activeColor: Colors.grey[700],
-          // ),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Constant {
   static const Map<int, String> dayNames = {
     1: 'monday',
@@ -24,4 +26,69 @@ class Constant {
 
   static const APPICON = 'assets/ic_launcher.png';
   static const APPICON_SVG = 'assets/ic_launcher.svg';
+
+  static ThemeData lightMode = ThemeData(
+    // appBarTheme: AppBarTheme(
+    //   elevation: 2,
+    //   // titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20)
+    // ),
+    primarySwatch: Colors.indigo,
+    backgroundColor: Colors.indigo.shade100,
+    scaffoldBackgroundColor: Colors.grey.shade100,
+    chipTheme: ChipThemeData(
+      selectedColor: Colors.indigoAccent,
+      // backgroundColor: Colors.indigo
+    ),
+    progressIndicatorTheme:
+    const ProgressIndicatorThemeData(color: Colors.indigo),
+    cardTheme: CardTheme(
+      elevation: 0,
+      margin: const EdgeInsets.symmetric(vertical: 1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+    ),
+    listTileTheme: ListTileThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: Colors.grey.shade200,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: const Radius.circular(15.0),topRight: const Radius.circular(15.0)),
+      ),
+    ),
+    dividerColor: Colors.transparent,
+  );
+
+  static ThemeData darkMode = ThemeData(
+    // primarySwatch: Colors.cyan,
+    primaryColor: Colors.cyan,
+    // backgroundColor: Colors.indigo.shade100,
+    // scaffoldBackgroundColor: Colors.grey.shade100,
+    appBarTheme: AppBarTheme(elevation: 2),
+    brightness: Brightness.dark,
+    chipTheme: ChipThemeData(
+      selectedColor: Colors.cyanAccent,
+    ),
+    cardTheme: CardTheme(
+      elevation: 0,
+      margin: const EdgeInsets.symmetric(vertical: 1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+    ),
+    listTileTheme: ListTileThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: const Radius.circular(15.0),topRight: const Radius.circular(15.0)),
+      ),
+    ),
+    dividerColor: Colors.transparent,
+  );
 }
