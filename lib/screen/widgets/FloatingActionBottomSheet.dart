@@ -8,12 +8,13 @@ import 'package:peace_time/screen/schedule/CreateDateScheduleScreen.dart';
 import 'package:peace_time/screen/schedule/CreateScreen.dart';
 import 'package:provider/provider.dart';
 
-class HomeBottomSheet extends StatefulWidget {
+class FloatingActionBottomSheet extends StatefulWidget {
   @override
-  _HomeBottomSheetState createState() => _HomeBottomSheetState();
+  _FloatingActionBottomSheetState createState() =>
+      _FloatingActionBottomSheetState();
 }
 
-class _HomeBottomSheetState extends State<HomeBottomSheet> {
+class _FloatingActionBottomSheetState extends State<FloatingActionBottomSheet> {
   int _minute = 30;
 
   void increment({int value = 5}) {
@@ -43,7 +44,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -55,10 +56,11 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
               children: <Widget>[
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    // padding: EdgeInsets.all(4.0),
                     // width: MediaQuery.of(context).size.width / 2.5,
                     height: MediaQuery.of(context).size.width / 2.5,
                     child: Card(
+                      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -66,17 +68,21 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       // color: Colors.teal[200],
                       child: InkWell(
                         onTap: () => Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => CreateDateScheduleScreen()),
-                            ).then((response) => response ? Navigator.of(context).pop() : null),
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => CreateDateScheduleScreen()),
+                        ).then((response) =>
+                            response ? Navigator.of(context).pop() : null),
                         borderRadius: BorderRadius.circular(10.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.calendar_today_sharp,size: 60,),
+                            Icon(
+                              Icons.calendar_today_sharp,
+                              size: 60,
+                            ),
                             SizedBox(height: 15),
                             Text("Calender")
                           ],
@@ -87,10 +93,11 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    // padding: EdgeInsets.all(4.0),
                     // width: MediaQuery.of(context).size.width / 2.5,
                     height: MediaQuery.of(context).size.width / 2.5,
                     child: Card(
+                      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -99,15 +106,20 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       child: InkWell(
                         onTap: () => Navigator.push(
                           context,
-                          CupertinoPageRoute(builder: (context) => CreateScreen()),
-                        ).then((response) => response ? Navigator.of(context).pop() : null),
+                          CupertinoPageRoute(
+                              builder: (context) => CreateScreen()),
+                        ).then((response) =>
+                            response ? Navigator.of(context).pop() : null),
                         borderRadius: BorderRadius.circular(10.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.schedule,size: 60,),
+                            Icon(
+                              Icons.schedule,
+                              size: 60,
+                            ),
                             SizedBox(height: 15),
                             Text("Daily")
                           ],
@@ -128,10 +140,11 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    // padding: EdgeInsets.all(8.0),
                     // width: MediaQuery.of(context).size.width / 2.5,
                     height: MediaQuery.of(context).size.width / 2.5,
                     child: Card(
+                      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -147,9 +160,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: Icon(Icons.remove),
-                                  )
-                              )
-                          ),
+                                  ))),
                           Card(
                             // color: Colors.blue,
                             shape: StadiumBorder(),
@@ -167,9 +178,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: Icon(Icons.add),
-                                  )
-                              )
-                          ),
+                                  ))),
                         ],
                       ),
                     ),
@@ -177,17 +186,18 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    // padding: EdgeInsets.all(8.0),
                     // width: MediaQuery.of(context).size.width / 2.5,
                     height: MediaQuery.of(context).size.width / 2.5,
                     child: Card(
+                      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       // padding: const EdgeInsets.all(8),
                       // color: Colors.teal[100],
                       child: InkWell(
-                        onTap: ()  {
+                        onTap: () {
                           Provider.of<ScheduleProvider>(context, listen: false)
                               .quick(_minute);
                           Navigator.of(context).pop();
@@ -198,7 +208,10 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.volume_off,size: 60,),
+                            Icon(
+                              Icons.volume_off,
+                              size: 60,
+                            ),
                             SizedBox(height: 15),
                             Text("Quick [${_minute}m]")
                           ],
@@ -218,7 +231,6 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-
         Container(
           child: Column(
             mainAxisSize: MainAxisSize.max,

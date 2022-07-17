@@ -1,28 +1,19 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:clear_all_notifications/clear_all_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:peace_time/NavigationScreen.dart';
 import 'package:peace_time/constant.dart';
 import 'package:peace_time/job/Algorithm.dart';
-import 'package:peace_time/job/MyAlarmManager.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/provider/SettingsProvider.dart';
-import 'package:peace_time/screen/SplashScreen.dart';
 import 'package:provider/provider.dart';
 
 void arcReactor() async => await algorithm();
 
 void main() async {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-    // systemNavigationBarColor: Colors.transparent,
-    // systemNavigationBarIconBrightness: Brightness.dark,
-  ));
   WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
-  // initializeService();
-  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
+  await ClearAllNotifications.clear();
   runApp(
     MultiProvider(
       providers: [
@@ -34,7 +25,14 @@ void main() async {
     ),
   );
   await AndroidAlarmManager.periodic(
-      const Duration(minutes: 1), Constant.ARC_REACTOR_ID, arcReactor);
+    const Duration(minutes: 1),
+    Constant.ARC_REACTOR_ID,
+    arcReactor,
+    wakeup: true,
+    exact: true,
+    allowWhileIdle: false,
+    rescheduleOnReboot: true,
+  );
 }
 
 class App extends StatelessWidget {
@@ -45,9 +43,7 @@ class App extends StatelessWidget {
       // title: 'Peace Time',
       theme: Constant.lightMode,
       darkTheme: Constant.darkMode,
-      themeMode: Provider.of<SettingsProvider>(context).settings.darkMode
-          ? ThemeMode.dark
-          : ThemeMode.system,
+      themeMode: Provider.of<SettingsProvider>(context).settings.theme,
       debugShowCheckedModeBanner: false,
       home: NavigationScreen(),
     );

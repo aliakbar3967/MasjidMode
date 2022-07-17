@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peace_time/screen/components/ScheduleList.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
-import 'package:peace_time/screen/widgets/HomeBottomSheet.dart';
+import 'package:peace_time/screen/widgets/FloatingActionBottomSheet.dart';
 import 'package:peace_time/screen/widgets/MenuItemBottomSheet.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () async => showModalBottomSheet<void>(
           context: context,
           builder: (BuildContext context) {
-            return HomeBottomSheet();
+            return FloatingActionBottomSheet();
           },
         ),
       ),
@@ -37,18 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   subject: 'Peace Time - A Silent Scheduler App.')),
           IconButton(
               onPressed: () async => await canLaunch(
-                  "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
+                      "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
                   ? await launch(
-                  "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
+                      "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
                   : throw 'Could not launch',
               icon: Icon(Icons.star)),
           IconButton(
               onPressed: () async => showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return MenuItemBottomSheet();
-                },
-              ),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return MenuItemBottomSheet();
+                    },
+                  ),
               icon: Icon(Icons.more_vert)),
         ],
       ),

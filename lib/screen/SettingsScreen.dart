@@ -6,6 +6,7 @@ import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/controller/SettingsController.dart';
 import 'package:peace_time/provider/ScheduleProvider.dart';
 import 'package:peace_time/provider/SettingsProvider.dart';
+import 'package:peace_time/screen/widgets/ThemeModeBottomSheet.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -200,26 +201,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     child: ListTile(
                       title: Text(
-                        "Dark Mode",
+                        "Application Theme Mode",
                         // style: TextStyle(color: Colors.grey[400]),
                       ),
                       subtitle: Text(
-                        "On / Off your app dark mode",
+                        _settingsProvider.settings.theme.name,
                         // style: TextStyle(color: Colors.grey[700]),
                       ),
-                      trailing: Transform.scale(
-                        scale: 0.8,
-                        alignment: Alignment.centerRight,
-                        child: CupertinoSwitch(
-                          value: _settingsProvider.settings.darkMode,
-                          activeColor: Theme.of(context).primaryColor,
-                          // trackColor: Colors.black,
-                          onChanged: (bool value) =>
-                              Provider.of<SettingsProvider>(context,
-                                      listen: false)
-                                  .toggleDarkMode(),
-                        ),
+                      onTap: () async => showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ThemeModeBottomSheet();
+                        },
                       ),
+                      // trailing: Transform.scale(
+                      //   scale: 0.8,
+                      //   alignment: Alignment.centerRight,
+                      //   child: CupertinoSwitch(
+                      //     value: _settingsProvider.settings.darkMode,
+                      //     activeColor: Theme.of(context).primaryColor,
+                      //     // trackColor: Colors.black,
+                      //     onChanged: (bool value) =>
+                      //         Provider.of<SettingsProvider>(context,
+                      //                 listen: false)
+                      //             .toggleDarkMode(),
+                      //   ),
+                      // ),
                     ),
                   ),
                   const SizedBox(height: 1),

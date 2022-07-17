@@ -21,7 +21,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
       await DBController.toggleIntroductionScreenStatus(false);
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (BuildContext context) => NavigationScreen()));
+          builder: (BuildContext context) => NavigationScreen()));
     }
   }
 
@@ -47,7 +47,7 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
 
     return IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // globalBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
       // globalHeader: Align(
       //   alignment: Alignment.topRight,
       //   child: SafeArea(
@@ -72,26 +72,29 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
         PageViewModel(
           title: "Welcome",
           body:
-          "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
+              "Keep your phone silent\n when you are busy and stay safe from embarrassing moments.",
           image: _buildImage(assetName: Constant.APPICON),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Quick Silent",
           body:
-          "One tap to silent your phone from now to next 30 or custom minutes.",
+              "One tap to silent your phone from now to next 30 or custom minutes.",
           image: _buildImage(assetName: Constant.APPICON),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Only Permission",
           body:
-          "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
+              "Please allow do not disturb mode.\n Otherwise, your phone will not turn on silent or vibrate mode according to your schedule.",
           image: _buildImage(assetName: 'assets/donotdisturb.png', width: 300),
           footer: OutlinedButton(
             onPressed: () async =>
-            await SettingsController.openDoNotDisturbSettings(),
-            child: Text('Open Settings'),
+                await SettingsController.openDoNotDisturbSettings(),
+            child: Text(
+              'Open Settings',
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
             autofocus: true,
             style: OutlinedButton.styleFrom(
                 shape: StadiumBorder(),
@@ -107,10 +110,24 @@ class _AppIntroductionScreenState extends State<AppIntroductionScreen> {
       nextFlex: 0,
       showBackButton: true,
       //rtl: true, // Display as right-to-left
-      back: const Icon(Icons.arrow_back),
-      skip: const Text('SKIP', style: TextStyle(fontWeight: FontWeight.w600)),
-      next: const Icon(Icons.arrow_forward),
-      done: const Text('DONE', style: TextStyle(fontWeight: FontWeight.w600)),
+      back: Icon(
+        Icons.arrow_back,
+        color: Theme.of(context).primaryColor,
+      ),
+      skip: Text(
+        'SKIP',
+        style: TextStyle(
+            fontWeight: FontWeight.w600, color: Theme.of(context).primaryColor),
+      ),
+      next: Icon(
+        Icons.arrow_forward,
+        color: Theme.of(context).primaryColor,
+      ),
+      done: Text(
+        'DONE',
+        style: TextStyle(
+            fontWeight: FontWeight.w600, color: Theme.of(context).primaryColor),
+      ),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: kIsWeb

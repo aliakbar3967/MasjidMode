@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:peace_time/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,21 +15,25 @@ class DBController {
     await prefs.reload();
   }
 
-  static Future<bool> getDarkModeStatus() async {
+  static Future<ThemeMode> getThemeMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.reload();
-    bool value = prefs.containsKey(Constant.SP_DARKMODE);
-    if (value == false) {
-      await toggleDarkModeStatus(false);
-      return false;
+    String? value = prefs.getString(Constant.SP_DARKMODE);
+
+    if (value == ThemeMode.light.name.toString()) {
+      // await togglelightModeStatus(false);
+      return ThemeMode.light;
+    } else if (value == ThemeMode.dark.name.toString()) {
+      // await toggleDarkModeStatus(false);
+      return ThemeMode.dark;
     } else {
-      return prefs.getBool(Constant.SP_DARKMODE) == true ? true : false;
+      return ThemeMode.system;
     }
   }
 
-  static Future<void> toggleDarkModeStatus(bool value) async {
+  static Future<void> setThemeMode(ThemeMode value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(Constant.SP_DARKMODE, value);
+    await prefs.setString(Constant.SP_DARKMODE, value.name.toString());
     await prefs.reload();
   }
 

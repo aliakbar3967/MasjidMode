@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/screen/AppIntroductionScreen.dart';
 import 'package:peace_time/screen/ErrorScreen.dart';
@@ -37,9 +38,25 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(isAppIntroduction == true) {
+    Brightness brightness = Theme.of(context).brightness == Brightness.dark
+        ? Brightness.light
+        : Brightness.dark;
+    // Color systemNavigationBarColor =
+    //     Theme.of(context).brightness == Brightness.dark
+    //         ? Theme.of(context).cardColor
+    //         : Colors.white;
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        // statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: brightness,
+        systemNavigationBarColor: Theme.of(context).bottomAppBarTheme.color,
+        systemNavigationBarIconBrightness: brightness,
+      ),
+    );
+    if (isAppIntroduction == true) {
       return AppIntroductionScreen();
-    } else if(isAppIntroduction == false) {
+    } else if (isAppIntroduction == false) {
       return HomeScreen();
     }
     return SplashScreen();

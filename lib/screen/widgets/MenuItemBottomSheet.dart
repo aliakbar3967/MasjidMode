@@ -177,12 +177,12 @@ class MenuItemBottomSheet extends StatelessWidget {
     //   ),
     // );
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 16),
+      // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Card(
-            shape: StadiumBorder(),
+            // shape: StadiumBorder(),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
@@ -195,9 +195,8 @@ class MenuItemBottomSheet extends StatelessWidget {
               ).then((response) => null),
             ),
           ),
-          SizedBox(height: 5,),
           Card(
-            shape: StadiumBorder(),
+            // shape: StadiumBorder(),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
@@ -209,9 +208,8 @@ class MenuItemBottomSheet extends StatelessWidget {
                   subject: 'Peace Time - A Silent Scheduler App.'),
             ),
           ),
-          SizedBox(height: 5,),
           Card(
-            shape: StadiumBorder(),
+            // shape: StadiumBorder(),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
@@ -225,9 +223,8 @@ class MenuItemBottomSheet extends StatelessWidget {
                   : throw 'Could not launch',
             ),
           ),
-          SizedBox(height: 5,),
           Card(
-            shape: StadiumBorder(),
+            // shape: StadiumBorder(),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
@@ -241,9 +238,8 @@ class MenuItemBottomSheet extends StatelessWidget {
                   : throw 'Could not launch',
             ),
           ),
-          SizedBox(height: 5,),
           Card(
-            shape: StadiumBorder(),
+            // shape: StadiumBorder(),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
@@ -256,9 +252,8 @@ class MenuItemBottomSheet extends StatelessWidget {
               ).then((response) => null),
             ),
           ),
-          SizedBox(height: 5,),
           Card(
-            shape: StadiumBorder(),
+            // shape: StadiumBorder(),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),
@@ -271,9 +266,8 @@ class MenuItemBottomSheet extends StatelessWidget {
               ).then((response) => null),
             ),
           ),
-          SizedBox(height: 5,),
           Card(
-            shape: StadiumBorder(),
+            // shape: StadiumBorder(),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(0),

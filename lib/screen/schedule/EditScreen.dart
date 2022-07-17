@@ -177,7 +177,7 @@ class _EditScreenState extends State<EditScreen> {
                           },
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Give a name..',
+                            hintText: 'Name..',
                           ),
                         ),
                       ),

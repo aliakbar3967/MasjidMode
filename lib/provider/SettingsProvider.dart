@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:peace_time/controller/SettingsController.dart';
 import 'package:peace_time/controller/DBController.dart';
 import 'package:peace_time/model/SettingsModel.dart';
@@ -11,7 +12,7 @@ class SettingsProvider with ChangeNotifier {
   Settings settings = Settings(
       isDoNotDisturbPermissionStatus: false,
       introductionScreenStatus: false,
-      darkMode: false);
+      theme: ThemeMode.system);
 
   SettingsProvider() {
     // code..
@@ -23,7 +24,7 @@ class SettingsProvider with ChangeNotifier {
         await SettingsController.getPermissionStatus();
     settings.introductionScreenStatus =
         await DBController.getIntroductionScreenStatus();
-    settings.darkMode = await DBController.getDarkModeStatus();
+    settings.theme = await DBController.getThemeMode();
 
     if (settings.introductionScreenStatus == null) {
       settings.introductionScreenStatus = false;
@@ -37,14 +38,14 @@ class SettingsProvider with ChangeNotifier {
     initialize();
   }
 
-  Future<void> toggleDarkMode() async {
-    await DBController.toggleDarkModeStatus(!settings.darkMode);
-    settings.darkMode = await DBController.getDarkModeStatus();
+  Future<void> toggleThemeMode(ThemeMode value) async {
+    await DBController.setThemeMode(value);
+    settings.theme = await DBController.getThemeMode();
     notifyListeners();
   }
 
-  Future<void> darkModeStatus() async {
-    settings.darkMode = await DBController.getDarkModeStatus();
+  Future<void> themeModeStatus() async {
+    settings.theme = await DBController.getThemeMode();
     notifyListeners();
   }
 

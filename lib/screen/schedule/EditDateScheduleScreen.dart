@@ -179,7 +179,7 @@ class _EditDateScheduleScreenState extends State<EditDateScheduleScreen> {
                           },
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Give a name..',
+                            hintText: 'Name..',
                           ),
                         ),
                       ),

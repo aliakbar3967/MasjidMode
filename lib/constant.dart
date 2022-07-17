@@ -28,67 +28,135 @@ class Constant {
   static const APPICON_SVG = 'assets/ic_launcher.svg';
 
   static ThemeData lightMode = ThemeData(
-    // appBarTheme: AppBarTheme(
-    //   elevation: 2,
-    //   // titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20)
-    // ),
-    primarySwatch: Colors.indigo,
-    backgroundColor: Colors.indigo.shade100,
-    scaffoldBackgroundColor: Colors.grey.shade100,
-    chipTheme: ChipThemeData(
-      selectedColor: Colors.indigoAccent,
-      // backgroundColor: Colors.indigo
+    // brightness: Brightness.dark,
+    appBarTheme: AppBarTheme(
+      // brightness: Brightness.light,
+      elevation: 2,
+      // titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20)
     ),
-    progressIndicatorTheme:
-    const ProgressIndicatorThemeData(color: Colors.indigo),
+    primarySwatch: Colors.indigo,
+    primaryColor: Colors.indigo,
+    backgroundColor: Color.fromARGB(255, 243, 243, 243),
+    scaffoldBackgroundColor: Color.fromARGB(255, 243, 243, 243),
     cardTheme: CardTheme(
       elevation: 0,
-      margin: const EdgeInsets.symmetric(vertical: 1),
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
       ),
     ),
-    listTileTheme: ListTileThemeData(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-    ),
     bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: Colors.grey.shade200,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: const Radius.circular(15.0),topRight: const Radius.circular(15.0)),
-      ),
+      backgroundColor: Color.fromARGB(255, 243, 243, 243),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     topLeft: const Radius.circular(15.0),
+      //     topRight: const Radius.circular(15.0),
+      //   ),
+      // ),
+    ),
+    // chipTheme: ChipThemeData(
+    //   elevation: 0,
+    //   // selectedColor: Colors.indigoAccent,
+    //   // backgroundColor: Colors.indigo
+    // ),
+
+    bottomAppBarTheme: BottomAppBarTheme(
+      color: Colors.white,
+      elevation: 2,
     ),
     dividerColor: Colors.transparent,
   );
 
   static ThemeData darkMode = ThemeData(
-    // primarySwatch: Colors.cyan,
-    primaryColor: Colors.cyan,
-    // backgroundColor: Colors.indigo.shade100,
-    // scaffoldBackgroundColor: Colors.grey.shade100,
-    appBarTheme: AppBarTheme(elevation: 2),
+    // colorScheme: ColorScheme.dark(),
     brightness: Brightness.dark,
-    chipTheme: ChipThemeData(
-      selectedColor: Colors.cyanAccent,
+    appBarTheme: AppBarTheme(
+      elevation: 0,
+      backgroundColor: Colors.black,
     ),
+    primaryColor: Colors.indigo,
+    scaffoldBackgroundColor: Colors.black,
     cardTheme: CardTheme(
       elevation: 0,
-      margin: const EdgeInsets.symmetric(vertical: 1),
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1),
+      color: const Color(0xff101010),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
       ),
     ),
-    listTileTheme: ListTileThemeData(
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: Colors.black,
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     topLeft: const Radius.circular(15.0),
+      //     topRight: const Radius.circular(15.0),
+      //   ),
+      // ),
+    ),
+    chipTheme: ChipThemeData(
+      elevation: 0,
+      backgroundColor: Color(0xff121212),
+    ),
+    bottomAppBarTheme: BottomAppBarTheme(
+      color: Color(0xff101010),
+      elevation: 2,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Colors.indigo,
+      foregroundColor: Colors.white,
+      // extendedTextStyle: TextStyle(color: Colors.white),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      refreshBackgroundColor: Color(0xff101010),
+    ),
+    dividerColor: Colors.transparent,
+  );
+
+  static ThemeData darkMode2 = ThemeData(
+    colorScheme: ColorScheme.dark(),
+    brightness: Brightness.dark,
+    appBarTheme: AppBarTheme(elevation: 0),
+    primaryColor: Colors.indigo,
+    scaffoldBackgroundColor: const Color(0xff121212),
+    cardTheme: CardTheme(
+      elevation: 0,
+      color: const Color(0xff191919),
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(0),
       ),
     ),
     bottomSheetTheme: BottomSheetThemeData(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: const Radius.circular(15.0),topRight: const Radius.circular(15.0)),
-      ),
+      backgroundColor: Color(0xff121212),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     topLeft: const Radius.circular(15.0),
+      //     topRight: const Radius.circular(15.0),
+      //   ),
+      // ),
+    ),
+    // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    //   backgroundColor: Color(0xff121212),
+    // ),
+    chipTheme: ChipThemeData(
+      elevation: 0,
+      backgroundColor: Color(0xff202020),
+    ),
+    bottomAppBarTheme: BottomAppBarTheme(
+      color: Color(0xff191919),
+      elevation: 2,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      // backgroundColor: Color(0xff191919),
+      backgroundColor: Colors.indigo,
+      foregroundColor: Colors.white,
+      // extendedTextStyle: TextStyle(color: Colors.white),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      refreshBackgroundColor: Color(0xff191919),
     ),
     dividerColor: Colors.transparent,
+    // iconTheme: IconThemeData(color: Colors.white),
+    // primaryIconTheme: IconThemeData(color: Colors.white),
   );
 }

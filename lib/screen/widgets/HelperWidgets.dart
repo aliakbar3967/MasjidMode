@@ -63,7 +63,7 @@ Widget timeView(Schedule schedule, BuildContext context) {
 Widget dayChipButton(String name, bool status, BuildContext context) {
   return Chip(
     label: Text(name.toUpperCase()),
-    backgroundColor: status ? Theme.of(context).chipTheme.selectedColor : null,
+    backgroundColor: status ? Theme.of(context).primaryColor : null,
     labelStyle: TextStyle(
       color: status ? Theme.of(context).scaffoldBackgroundColor : null,
     ),
@@ -137,8 +137,7 @@ Widget emptyWidget(BuildContext context) {
 }
 
 Widget bottomNavigationBar(BuildContext context) {
-
-  var scheduleProvider = Provider.of<ScheduleProvider>(context,listen: false);
+  var scheduleProvider = Provider.of<ScheduleProvider>(context, listen: false);
   return BottomAppBar(
     child: Container(
       margin: EdgeInsets.only(left: 12.0, right: 75.0),
@@ -148,35 +147,37 @@ Widget bottomNavigationBar(BuildContext context) {
         children: [
           Card(
               shape: StadiumBorder(),
-              child: Icon(Icons.volume_off_sharp,color: Theme.of(context).disabledColor,)
-          ),
+              child: Icon(
+                Icons.volume_off_sharp,
+                color: Theme.of(context).disabledColor,
+              )),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                    onTap: () => scheduleProvider.quick(60),
-                    child: Chip(
-                      label: Text('60m'),
-                    ),
+                  onTap: () => scheduleProvider.quick(60),
+                  child: Chip(
+                    label: Text('60m'),
+                  ),
                 ),
                 GestureDetector(
-                    onTap: () => scheduleProvider.quick(120),
-                    child: Chip(
-                      label: Text('120m'),
-                    ),
+                  onTap: () => scheduleProvider.quick(120),
+                  child: Chip(
+                    label: Text('120m'),
+                  ),
                 ),
                 GestureDetector(
-                    onTap: () => scheduleProvider.quick(180),
-                    child: Chip(
-                      label: Text('150m'),
-                    ),
+                  onTap: () => scheduleProvider.quick(180),
+                  child: Chip(
+                    label: Text('150m'),
+                  ),
                 ),
                 GestureDetector(
-                    onTap: () => scheduleProvider.quick(180),
-                    child: Chip(
-                      label: Text('180m'),
-                    ),
+                  onTap: () => scheduleProvider.quick(180),
+                  child: Chip(
+                    label: Text('180m'),
+                  ),
                 ),
               ],
             ),
