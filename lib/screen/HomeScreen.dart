@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peace_time/screen/HelpScreen.dart';
 import 'package:peace_time/screen/components/ScheduleList.dart';
 import 'package:peace_time/screen/widgets/HelperWidgets.dart';
 import 'package:peace_time/screen/widgets/FloatingActionBottomSheet.dart';
@@ -31,17 +33,12 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("Schedule".toUpperCase()),
         actions: [
           IconButton(
-              icon: Icon(Icons.share),
-              onPressed: () => Share.share(
-                  "Peace Time - A Silent Scheduler App. Please visit https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time and download this awesome app.",
-                  subject: 'Peace Time - A Silent Scheduler App.')),
-          IconButton(
-              onPressed: () async => await canLaunch(
-                      "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
-                  ? await launch(
-                      "https://play.google.com/store/apps/details?id=com.fivepeacetime.peace_time")
-                  : throw 'Could not launch',
-              icon: Icon(Icons.star)),
+            icon: Icon(Icons.help),
+            onPressed: () => Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => HelpScreen()),
+            ).then((response) => null),
+          ),
           IconButton(
               onPressed: () async => showModalBottomSheet<void>(
                     context: context,
