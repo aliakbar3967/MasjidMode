@@ -1,6 +1,6 @@
-# peace_time
+# Masjid MOde
 
-A new Flutter application.
+A new Flutter application which turns your mobile into silent mode in prayer times
 
 ## Getting Started
 
